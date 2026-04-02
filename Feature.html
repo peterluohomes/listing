@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Feature Check Lists — Pinnacle Listing System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B2A4A;
+  --navy-light: #2A3F6A;
+  --gold: #C5A55A;
+  --gold-light: #D4BB7A;
+  --gold-bg: #FAF6ED;
+  --cream: #FDFBF7;
+  --white: #FFFFFF;
+  --text: #222222;
+  --text-mid: #555555;
+  --text-light: #888888;
+  --border: #E8E4DC;
+  --border-light: #F0ECE4;
+  --red-new: #C0392B;
+  --green: #27AE60;
+  --shadow: 0 2px 12px rgba(27,42,74,0.08);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); line-height:1.5; -webkit-font-smoothing:antialiased; }
+
+.header { background:var(--navy); padding:24px 16px 18px; text-align:center; position:sticky; top:0; z-index:100; box-shadow:0 4px 20px rgba(27,42,74,0.3); }
+.header-sub { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+.header-title { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:#fff; }
+.header-meta { font-size:11px; color:rgba(255,255,255,0.45); margin-top:6px; }
+.progress-wrap { background:rgba(255,255,255,0.1); height:4px; border-radius:2px; margin-top:14px; overflow:hidden; }
+.progress-bar { height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:2px; transition:width .4s; width:0; }
+.progress-text { font-size:11px; color:var(--gold-light); margin-top:5px; font-weight:500; }
+.controls { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+.ctrl-btn { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.65); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:600; padding:4px 12px; border-radius:20px; cursor:pointer; transition:all .2s; }
+.ctrl-btn:hover { background:rgba(255,255,255,0.15); color:#fff; }
+.ctrl-btn.active { background:var(--gold); color:var(--navy); border-color:var(--gold); }
+
+.container { max-width:900px; margin:0 auto; padding:16px 14px 80px; }
+
+.prop-bar { background:#fff; border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:var(--shadow); }
+.prop-fields { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.prop-bar label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-light); display:block; margin-bottom:2px; }
+.prop-bar input { width:100%; border:none; border-bottom:2px solid var(--border); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--navy); padding:3px 0; background:transparent; outline:none; }
+.prop-bar input:focus { border-bottom-color:var(--gold); }
+.prop-bar input::placeholder { color:#ccc; font-weight:400; }
+
+.part-div { text-align:center; padding:28px 16px 20px; }
+.part-label { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--navy); }
+.part-desc { font-size:12px; color:var(--text-light); font-style:italic; margin-top:2px; }
+.part-line { width:50px; height:2px; background:var(--gold); margin:10px auto 0; }
+
+.section { margin-bottom:12px; }
+.sec-hdr { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--navy); border-radius:8px 8px 0 0; cursor:pointer; user-select:none; }
+.sec-hdr:hover { background:var(--navy-light); }
+.sec-chev { color:var(--gold); font-size:16px; transition:transform .3s; width:18px; text-align:center; }
+.section.collapsed .sec-chev { transform:rotate(-90deg); }
+.sec-title { font-family:'Playfair Display',serif; font-size:15px; font-weight:600; color:#fff; flex:1; }
+.sec-new { font-size:9px; font-weight:700; color:#fff; background:var(--red-new); padding:2px 7px; border-radius:8px; }
+.sec-count { font-size:11px; color:var(--gold-light); font-weight:600; }
+.sec-body { background:#fff; border:1px solid var(--border); border-top:none; border-radius:0 0 8px 8px; overflow:hidden; box-shadow:var(--shadow); }
+.section.collapsed .sec-body { display:none; }
+
+.feat-row { padding:10px 14px; border-bottom:1px solid var(--border-light); }
+.feat-row:last-child { border-bottom:none; }
+.feat-top { display:flex; align-items:flex-start; gap:6px; }
+.feat-label { font-weight:700; font-size:13px; color:var(--navy); white-space:nowrap; flex-shrink:0; padding-top:1px; }
+.feat-new-dot { display:inline-block; width:6px; height:6px; background:var(--red-new); border-radius:50%; flex-shrink:0; margin-top:7px; }
+.feat-opts { flex:1; display:flex; flex-wrap:wrap; gap:3px 10px; align-items:baseline; min-width:0; }
+.feat-plus { flex-shrink:0; width:24px; height:24px; border:1.5px solid var(--border); border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--text-light); margin-left:6px; background:#fff; transition:all .2s; line-height:1; }
+.feat-plus:hover { border-color:var(--gold); color:var(--gold); background:var(--gold-bg); }
+.feat-plus.active { background:var(--navy); border-color:var(--navy); color:#fff; transform:rotate(45deg); }
+
+.opt { display:inline-flex; align-items:center; gap:3px; cursor:pointer; padding:2px 0; font-size:12.5px; color:var(--text-mid); transition:color .15s; user-select:none; }
+.opt:hover { color:var(--navy); }
+.opt-box { width:15px; height:15px; border:1.5px solid var(--border); border-radius:3px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .15s; background:#fff; }
+.opt.checked .opt-box { background:var(--green); border-color:var(--green); }
+.opt-box::after { content:''; display:none; width:4px; height:7px; border:solid #fff; border-width:0 1.5px 1.5px 0; transform:rotate(45deg) translateY(-1px); }
+.opt.checked .opt-box::after { display:block; }
+.opt.checked { color:var(--navy); font-weight:500; }
+
+.note-wrap { display:none; padding:6px 0 2px 0; margin-top:6px; }
+.note-wrap.open { display:block; }
+.note-area { width:100%; border:1.5px solid var(--border); border-radius:6px; padding:7px 10px; font-family:'DM Sans',sans-serif; font-size:12px; color:var(--text); resize:vertical; min-height:32px; max-height:120px; background:var(--cream); outline:none; }
+.note-area:focus { border-color:var(--gold); background:#fff; }
+.note-area::placeholder { color:var(--text-light); }
+
+@media(max-width:600px) {
+  .header { padding:18px 12px 14px; }
+  .header-title { font-size:20px; }
+  .prop-fields { grid-template-columns:1fr; }
+  .feat-opts { gap:2px 8px; }
+  .opt { font-size:12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-sub">Pinnacle Listing System</div>
+  <div class="header-title">Home Feature Check Lists</div>
+  <div class="header-meta">Peter Luo &nbsp;|&nbsp; RE/MAX Realtron Realty Inc. &nbsp;|&nbsp; peterluo.homes</div>
+  <div class="controls">
+    <button class="ctrl-btn active" data-filter="all">All</button>
+    <button class="ctrl-btn" data-filter="checked">Has Checked</button>
+    <button class="ctrl-btn" data-filter="notes">Has Notes</button>
+    <button class="ctrl-btn" data-filter="new">New Items</button>
+    <button class="ctrl-btn" onclick="resetAll()">Reset</button>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="pBar"></div></div>
+  <div class="progress-text" id="pText">0 / 0 options checked</div>
+</div>
+
+<div class="container" id="app"></div>
+
+<div style="text-align:center;padding:20px 16px;font-size:11px;color:var(--text-light);">
+  <strong>Pinnacle Listing System</strong> &nbsp;|&nbsp; Peter Luo &nbsp;|&nbsp; <a href="https://peterluo.homes" style="color:var(--gold);text-decoration:none;">peterluo.homes</a><br>
+  <span style="color:#aaa;margin-top:3px;display:inline-block;">Red dots = items added beyond the original checklist &nbsp;|&nbsp; Data saved locally in your browser</span>
+</div>
+
+<script>
+const DATA = [
+  {part:"PART 1: LOT & EXTERIOR",pd:"Everything outside the home — lot, yard, structures, and outdoor amenities"},
+  {t:"LOT LAYOUT & POSITIONING",items:[
+    ["Orientation","North-facing|South-facing|East-facing|West-facing"],
+    ["Setback","Front setback|Back setback|Side setback|Corner lot setback"],
+    ["Slope","Flat|Sloped uphill|Sloped downhill|Terraced|Multi-level lot"],
+    ["Size","Small (urban)|Medium (suburban)|Large (estate)|Sprawling (rural acreage)"],
+    ["Shape","Rectangular|Irregular|Corner lot|Cul-de-sac|Pie-shaped"],
+    ["Access","Single-entry driveway|Wraparound road|Private lane|Gated entry"],
+    ["Views","Mountain|Ocean|Forest|City skyline|Unobstructed horizon"],
+    ["Zoning","Residential|Mixed-use|Agricultural|Heritage designation",1],
+    ["Easements","Utility easement|Drainage easement|Right-of-way easement|None",1],
+    ["Flood Zone","Not in flood zone|Low risk|Moderate risk|High risk (flood plain)",1],
+    ["Soil Type","Clay|Sandy|Rocky|Loam",1],
+    ["Lot Grading","Graded away from foundation|Flat grading|Slopes toward house (issue)",1],
+    ["Sidewalks","Municipal sidewalk|No sidewalk|Private walkway",1],
+  ]},
+  {t:"DRIVEWAY & VEHICLE FEATURES",items:[
+    ["Driveway","Asphalt|Gravel|Concrete|Cobblestone|Brick pavers|Heated (snow-melt)|Circular with turnaround|Extra-long (multi-car)"],
+    ["Parking","Attached garage|Detached garage|Carport|Off-street parking|RV/boat parking pad"],
+    ["Garage Features","Single|Double|Multi-car|Tandem|Workshop|Loft storage|Car lift|EV charging station|Heated floor"],
+    ["Turnaround","U-shaped|Hammerhead|None"],
+    ["Gates","Manual|Electric|Wrought iron|Wood|Biometric (smart entry)|None"],
+    ["EV Infrastructure","Level 2 charger|Dedicated 240V circuit|Solar-integrated charging|None",1],
+    ["Snow Removal","Plow stakes|Salt box|Heated driveway zones|Contracted service|N/A",1],
+  ]},
+  {t:"YARD & LANDSCAPING",items:[
+    ["Front Yard","Lawn|Flower beds|Shrubs|Trees|Rock garden|Xeriscaping"],
+    ["Backyard","Grass|Vegetable garden|Herb garden|Flower garden|Orchard (fruit trees)|Pond|Stream|Artificial turf"],
+    ["Side Yard","Narrow walkway|Utility space (AC, bins)|Mini garden|None"],
+    ["Terracing","Retaining walls|Steps|Planters on slope|N/A (flat lot)"],
+    ["Trees","Mature oaks|Fruit-bearing|Ornamental|Windbreaks (evergreens)|None significant"],
+    ["Hedges","Privacy shrubs|Sculpted topiary|Living fence|None"],
+    ["Ground Cover","Mulch|Gravel|Moss|Clover|Wildflowers|Bare soil"],
+    ["Water Features","Natural creek|Man-made pond (koi/lily)|Waterfall|Fountain|None"],
+    ["Outdoor Lighting","Pathway solar lights|Uplighting on trees|String lights|Floodlights|None",1],
+    ["Irrigation System","In-ground sprinklers|Drip irrigation|Smart controller|Manual only|None",1],
+    ["Pest Management","Grub treatment|Mosquito system|Tick barriers|Wildlife deterrents|None",1],
+    ["Tree Health","Arborist report available|Dead branches noted|Root damage risk|All healthy",1],
+  ]},
+  {t:"OUTDOOR LIVING SPACES",items:[
+    ["Porch","Front stoop|Full-width front|Back porch|Wraparound|Screened-in|With swing/bench|None"],
+    ["Deck","Wood|Composite|Multi-level|Rooftop|Built-in seating|None"],
+    ["Patio","Concrete slab|Stone|Brick|Tiled|Covered (pergola/awning)|Open-air|None"],
+    ["Outdoor Kitchen","Grill|Sink|Fridge|Pizza oven|Bar counter|Fire pit|None"],
+    ["Balcony","Off bedrooms|Wraparound|Cantilevered (modern)|None"],
+    ["Veranda","Wide|Shaded|Columned (tropical/colonial)|None"],
+    ["Courtyard","Enclosed (Mediterranean)|With fountain|Open to sky|None"],
+    ["Sunroom","Three-season|Four-season|None",1],
+    ["Pergola/Gazebo","Freestanding|Attached|Retractable canopy|Curtains|None",1],
+    ["Bug Screening","Screened porch|Mosquito netting|Retractable screens|None",1],
+    ["Outdoor Heaters","Propane|Electric|Infrared|Built-in radiant|None",1],
+  ]},
+  {t:"RECREATION & LEISURE",items:[
+    ["Pool","In-ground|Above-ground|Infinity|Lap|Plunge|Saltwater|Heated|With slide/waterfall|None"],
+    ["Hot Tub","Standalone|Pool-adjacent|Built-in|Portable|None"],
+    ["Sports","Tennis court|Basketball half-court|Putting green|Bocce court|Volleyball sandpit|None"],
+    ["Play Area","Swing set|Trampoline|Treehouse|Climbing wall|None"],
+    ["Fire Pit","Stone|Metal|Gas-powered|Sunken (conversation pit)|None"],
+    ["Garden Structures","Gazebo|Pergola|Arbor|Trellis with vines|None"],
+    ["Sauna/Steam","Indoor sauna|Outdoor barrel sauna|Infrared sauna|Steam room|None",1],
+    ["Outdoor Shower","Pool-side rinse|Full enclosed|None",1],
+  ]},
+  {t:"FENCING & BOUNDARIES",items:[
+    ["Fence","Wood picket|Wood privacy|Chain-link|Vinyl|Stone|Metal|Electric|Living hedge|None"],
+    ["Wall","Brick|Stucco|Concrete block|Decorative (mosaics)|None"],
+    ["Gate","Pedestrian|Driveway|Hidden (secret garden)|None"],
+    ["Boundary Markers","Stones|Low shrubs|Surveyor pins|None"],
+    ["Fence Ownership","All yours|Shared|Neighbour's|Unknown",1],
+    ["Height Compliance","Meets bylaw|Non-compliant|Unknown",1],
+  ]},
+  {t:"OUTBUILDINGS & STRUCTURES",items:[
+    ["Shed","Tool storage|Garden shed|Workshop (with power)|None"],
+    ["Barn","Livestock|Storage|Converted living space|None"],
+    ["Guest House","Tiny home|Cottage|In-law suite|None"],
+    ["Greenhouse","Glass|Plastic|For hydroponics|None"],
+    ["Studio","Art studio|Music studio|Office (detached)|None"],
+    ["Kennel","Dog run|Pet shelter|None"],
+    ["Silo","Converted aesthetic|Functional (rural)|None"],
+    ["Well House","Decorative|Functional|None"],
+    ["Laneway/Garden Suite","Rental unit|Family unit|Permitted|Not present",1],
+    ["Pool House","Changing room|Bathroom|Storage|Not present",1],
+  ]},
+  {t:"UTILITIES & LOT-SPECIFIC SYSTEMS",items:[
+    ["Water Source","City hookup|Deep well|Shallow well|Cistern|Rainwater collection"],
+    ["Septic System","Tank and leach field|Municipal sewer|None needed"],
+    ["Drainage","French drains|Swales|Culverts|Dry creek beds|None"],
+    ["Irrigation","Sprinklers|Drip lines|Manual|None"],
+    ["Power","Grid connection|Solar panels (ground)|Wind turbine|Buried lines"],
+    ["Lighting","Pathway lights|Floodlights|Solar stakes|Decorative lanterns|None"],
+    ["Natural Gas","Municipal gas line|Propane tank|Not available",1],
+    ["Sewer Connection","Municipal sewer|Private septic|Unknown",1],
+    ["Internet/Cable","Fiber optic|Cable|DSL|Fixed wireless|None",1],
+  ]},
+  {t:"UNIQUE LOT FEATURES",items:[
+    ["Waterfront","Lake|River|Ocean access|Dock|Pier|Boathouse|Beachfront|None"],
+    ["Cliffside","Built into cliff|Overlooking|Reinforced foundation|N/A"],
+    ["Wooded","Dense forest|Cleared paths|Tree canopy|None"],
+    ["Ravine","Bridged access|Terraced down|N/A"],
+    ["Rooftop Lot","Garden|Deck|Helipad|N/A"],
+    ["Rock Outcrop","Natural boulders|Quarried stone|None"],
+    ["Historical","Old well|Ruins|Preserved artifact|None"],
+    ["Conservation","Protected wetland|Greenbelt buffer|Tree preservation order|None",1],
+  ]},
+  {t:"ENVIRONMENTAL & SUSTAINABILITY",items:[
+    ["Solar Gain","Positioned for passive solar|Not optimized"],
+    ["Windbreaks","Trees|Berms|None"],
+    ["Rain Garden","Planted depression|Not present"],
+    ["Permeable Surfaces","Gravel|Porous pavers|None"],
+    ["Wildlife Features","Birdhouses|Bat boxes|Pollinator garden|Deer fencing|None"],
+    ["Compost Area","Bin|Pile|None"],
+    ["Green Roof","Living roof with vegetation|Not present",1],
+    ["EV Solar Carport","Solar-panel carport|Not present",1],
+  ]},
+  {t:"MISCELLANEOUS LOT ENHANCEMENTS",items:[
+    ["Helipad","Present|Not present"],
+    ["Moat","Decorative|Functional|Not present"],
+    ["Statuary","Sculptures|Sundials|Garden gnomes|None"],
+    ["Flagpole","Standard|With lighting|None"],
+    ["Mailbox","Curbside|Custom-built|Smart (delivery alerts)"],
+    ["Outdoor Sound","Weather-resistant speakers|Landscape speakers|Whole-yard zones|None",1],
+    ["Pet Amenities","Dog wash station|Enclosed dog run|Catio|None",1],
+  ]},
+  {part:"PART 2: HOUSE INTERIOR",pd:"Structure, rooms, systems, finishes, and technology inside the home"},
+  {t:"STRUCTURAL & CORE COMPONENTS",items:[
+    ["Foundation","Concrete slab|Crawlspace|Basement|Piers|Stilts (flood zone)"],
+    ["Walls","Drywall|Plaster|Brick|Stone|Concrete|Timber|Glass (floor-to-ceiling)|Modular panels"],
+    ["Roof","Asphalt shingles|Metal|Clay tiles|Slate|Green (living grass)|Solar panels|Flat|Domed|Retractable"],
+    ["Floors","Hardwood|Tile|Carpet|Vinyl|Bamboo|Cork|Polished concrete|Marble|Terrazzo|Heated"],
+    ["Windows","Single-pane|Double-pane|Triple-pane|Stained glass|Bay|Casement|Skylights|Clerestory"],
+    ["Doors","Wood|Metal|Glass|Sliding|Pocket|Barn-style|Revolving|Biometric (fingerprint)"],
+    ["Ceiling","Flat|Vaulted|Tray|Coffered|Exposed beams|Acoustic panels|Painted murals"],
+    ["Stairs","Straight|Spiral|Floating|Grand staircase|Hidden (fold-out)|None"],
+    ["Chimney","Brick|Metal|Faux (aesthetic)|None"],
+    ["Insulation","Spray foam|Blown-in|Batt|Rigid board|ICF",1],
+    ["Exterior Cladding","Brick veneer|Stone|Stucco|Fiber cement|Wood siding|Metal panel",1],
+    ["Gutters","Aluminum|Copper|Seamless|Leaf guards|Heated cable",1],
+  ]},
+  {t:"ROOMS & LIVING AREAS",items:[
+    ["Living Room","Open-plan|Sunken|Wood fireplace|Gas fireplace|Ethanol fireplace|Built-in seating"],
+    ["Kitchen","Gas stove|Electric stove|Induction|Double ovens|Microwave|Smart fridge|Walk-in fridge|Dishwasher|Trash compactor|Wine cooler|Butcher block|Island|Breakfast bar"],
+    ["Bedrooms","Master suite|Guest room|Kids' room|Bunk room|Loft|Balcony off bedroom|Soundproofed"],
+    ["Bathrooms","Rain shower|Steam shower|Multi-head shower|Clawfoot tub|Jacuzzi tub|Soaking tub|Bidet|Urinal|Dual vanities|Heated towel racks|Composting toilet"],
+    ["Dining Room","Formal|Casual|Chandelier-lit|Foldable (space-saving)"],
+    ["Laundry Room","Washer/dryer stack|Sink|Ironing station|Clothes chute|Pet wash area"],
+    ["Garage (Interior)","Single|Double|Multi-car|Workshop|Car lift|EV charging|Heated floor"],
+    ["Basement","Finished rec room|Finished bar|Unfinished|Wine cellar|Panic room|Bowling alley|Storm shelter|None"],
+    ["Attic","Storage|Loft|Observatory|Insulated living space|None"],
+    ["Mudroom","Bench|Coat hooks|Boot tray|Cubbies|None",1],
+    ["Pantry","Walk-in|Butler's pantry|Pull-out cabinet system|None",1],
+    ["Home Office","Dedicated room|Built-in desk|Filing|Sound insulation|None",1],
+    ["Nursery","Dedicated room|Blackout blinds|Monitor-ready wiring|None",1],
+  ]},
+  {t:"SPECIALTY ROOMS",items:[
+    ["Home Theater","Projector|Surround sound|Recliners|None"],
+    ["Gym","Mirrors|Rubber flooring|Sauna|None"],
+    ["Library","Floor-to-ceiling shelves|Ladder|None"],
+    ["Music Room","Soundproofed|Instrument storage|None"],
+    ["Art Studio","Easels|Skylights|None"],
+    ["Game Room","Pool table|Arcade machines|None"],
+    ["Meditation/Yoga","Zen decor|Calming lights|None"],
+    ["Greenhouse Room","Indoor plants|Hydroponics|None"],
+    ["Wine Room/Cellar","Climate-controlled|Tasting area|Racking system|None",1],
+    ["Craft Room","Sewing station|Cutting table|Supply storage|None",1],
+    ["Pet Room","Feeding station|Wash basin|Pet door access|None",1],
+    ["Cigar/Smoking Lounge","Ventilated|Humidor|Leather seating|None",1],
+  ]},
+  {t:"KITCHEN DETAILS",isNew:true,items:[
+    ["Pot Filler","Wall-mounted above stove|Not present",1],
+    ["Under-Cabinet Lighting","LED strip|Puck lights|None",1],
+    ["Garbage Disposal","In-sink disposal|Not present",1],
+    ["Water Line","Fridge/ice maker line|Shut-off valve|Not present",1],
+    ["Range Ventilation","Ducted range hood|Recirculating hood|Downdraft|None",1],
+    ["Soft-Close Hardware","All drawers|All cabinets|Partial|None",1],
+    ["Pantry Organization","Pull-out shelves|Lazy Susan|Spice racks|Built-in bins|None",1],
+  ]},
+  {t:"BATHROOM DETAILS",isNew:true,items:[
+    ["Exhaust Fan","Adequate CFM|Timer|Humidity sensor|Needs upgrade|None",1],
+    ["Heated Floors","Electric radiant mat|Hydronic under-tile|None",1],
+    ["Lighted Mirror","Backlit|Side-lit|With dimmer|None",1],
+    ["Water Shut-Off","Individual valves accessible|Hard to access|Not present",1],
+    ["Towel Warmer","Wall-mounted heated rack|Freestanding warmer|None",1],
+    ["Accessibility","Curbless shower|Grab bars|Reinforced walls|None",1],
+  ]},
+  {t:"UTILITIES & SYSTEMS",items:[
+    ["Plumbing","City water|Well|Rainwater collection|Greywater recycling|Instant hot water"],
+    ["Electrical","Grid-tied|Off-grid solar|Off-grid wind|Generator|Smart outlets|Whole-house surge"],
+    ["HVAC","Furnace|Heat pump|Radiant heating|Central AC|Ductless AC|Geothermal|HRV"],
+    ["Lighting","LED|Incandescent|Smart bulbs|Motion-sensor|Dimmers|Light tubes"],
+    ["Internet/Tech","Fiber optic|Voice-activated controls|Whole-house audio"],
+    ["Security","Cameras|Alarms|Smart locks|Facial recognition|Drone surveillance"],
+    ["Energy","Solar panels|Wind turbine|Battery storage (Powerwall)|Passive solar"],
+    ["Water Heater","Tank (gas)|Tank (electric)|Tankless|Heat pump|Solar",1],
+    ["Water Treatment","Whole-house filtration|Water softener|Reverse osmosis|UV purification|None",1],
+    ["Backup Power","Whole-house gen (gas)|Whole-house gen (propane)|Portable generator|UPS|None",1],
+    ["Ventilation","HRV|ERV|Bathroom exhaust adequate|Radon mitigation|None",1],
+    ["Fire Suppression","Residential sprinklers|Fire extinguisher stations|None",1],
+    ["Electrical Panel","100A|200A|400A|Sub-panels|Available breaker slots",1],
+    ["Sump Pump","Primary pump|Battery backup|Sump alarm|None",1],
+    ["Backwater Valve","Installed|Not installed|Unknown",1],
+    ["Water Pressure","Good (40-60 PSI)|Low|High|Unknown",1],
+  ]},
+  {t:"LUXURIES & UNIQUE ADD-ONS",items:[
+    ["Elevator","Residential|Glass-walled|Freight-style|None"],
+    ["Fireplace","Multi-sided|Outdoor|Floating (modern)|None"],
+    ["Indoor Water","Fountain|Koi pond|Waterfall|Moat|None"],
+    ["Ceiling Features","Skylights|Retractable panels|Planetarium projector|None"],
+    ["Walls (Special)","Living (plants)|Retractable|Digital (display)|None"],
+    ["Safe Room","Hidden vault|Panic room|Bulletproof bunker|None"],
+    ["Sustainability","Solar tubes|Wind catchers|Earth cooling tubes|Zero-energy cert|None"],
+    ["Automation","Robot vacuum|Smart blinds|Auto-lawnmower|AI butler|None"],
+    ["Oddities","Slide (not stairs)|Climbing wall|Secret passages|Rooftop runway|None"],
+    ["Aquarium","Built-in wall|Floor aquarium|Room divider|None",1],
+    ["Indoor Pool/Spa","Lap pool|Plunge pool|Swim-current|Retractable cover|None",1],
+    ["Smart Mirrors","Display mirror|Weather/news|Health metrics|None",1],
+  ]},
+  {t:"AESTHETIC & FINISHING DETAILS",items:[
+    ["Flooring Details","Inlays|Mosaics|Reclaimed wood|Standard"],
+    ["Wall Finishes","Wallpaper|Shiplap|Exposed brick|Mirrored|Chalkboard paint|Standard"],
+    ["Trim","Crown molding|Wainscoting|LED-lined baseboards|Standard"],
+    ["Fixtures","Gold-plated faucets|Crystal chandeliers|Industrial exposed pipes|Standard"],
+    ["Countertops","Granite|Quartz|Marble|Concrete|Recycled glass|Laminate"],
+    ["Cabinetry","Custom|Soft-close|Glass-front|Pull-out organizers|Standard"],
+    ["Hardware","Brushed nickel|Matte black|Brass|Crystal knobs|Standard",1],
+    ["Backsplash","Subway tile|Mosaic|Natural stone|Glass|Metallic|None",1],
+    ["Paint Finish","Matte|Eggshell|Satin|High-gloss|Accent walls",1],
+    ["Built-ins","Window seats|Bookshelves|Entertainment center|Closet systems|None",1],
+    ["Interior Doors","Solid core|Hollow core|Panel style|Barn door|French doors",1],
+    ["Closet Lighting","Auto LED (door-triggered)|Manual switch|None",1],
+    ["Under-Stair","Storage drawers|Display nook|Wine rack|Reading nook|None",1],
+  ]},
+  {part:"PART 3: ADDED CATEGORIES",pd:"Technology, accessibility, storage, safety, neighbourhood, and financial considerations"},
+  {t:"SMART HOME & TECHNOLOGY",isNew:true,items:[
+    ["Smart Hub","Apple HomeKit|Google Home|Amazon Alexa|SmartThings|None",1],
+    ["Smart Thermostat","Nest|Ecobee|Honeywell|Zoned control|None",1],
+    ["Smart Lighting","Philips Hue|Lutron Caseta|Hardwired switches|Scenes configured|None",1],
+    ["Smart Locks","Keypad|Fingerprint|App-controlled|Auto-lock|None",1],
+    ["Smart Doorbell","Ring|Nest|Two-way audio|Package detection|None",1],
+    ["Wiring","Cat6/Cat6a ethernet|Structured panel|Conduit for future|None",1],
+    ["Whole-Home Wi-Fi","Mesh system|Ceiling-mount APs|Hardwired AP per floor|None",1],
+    ["Motorized Shades","Battery|Hardwired|Smartphone-controlled|Light-sensing|None",1],
+    ["Home Automation","Lighting routines|HVAC routines|Security routines|Appliance routines|None",1],
+    ["Speakers","In-ceiling|In-wall|Multi-room zones|None",1],
+  ]},
+  {t:"ACCESSIBILITY & AGING-IN-PLACE",isNew:true,items:[
+    ["Main Floor Bedroom","Primary on main|Guest on main|None on main",1],
+    ["Main Floor Bath","Full w/ walk-in shower|Full w/ tub|Half bath only|None",1],
+    ["Doorway Width","36-inch (wheelchair)|Standard 32-inch|Narrow",1],
+    ["No-Step Entry","From driveway|From garage|Steps required",1],
+    ["Grab Bars","Installed|Reinforced walls for future|Not present",1],
+    ["Lever Handles","Door levers|Faucet levers|Knobs only",1],
+    ["Elevator/Lift","Residential elevator|Stair lift|Platform lift|None",1],
+    ["Non-Slip Flooring","Textured tile|Matte finish|Slip-resistant coating|Standard",1],
+    ["Adjustable Counters","Lowered kitchen|Lowered bath|Adjustable-height|Standard",1],
+    ["Smart Assist","Voice-controlled lights|Voice-controlled locks|Emergency alerts|None",1],
+  ]},
+  {t:"STORAGE & ORGANIZATION",isNew:true,items:[
+    ["Walk-in Closets","Master closet|Built-in shelving|Drawers|Lighting|None",1],
+    ["Linen Closets","Hallway|Bathroom|Adjustable shelves|None",1],
+    ["Coat Closet","Front entry|Hooks|Shelf|Shoe storage|None",1],
+    ["Garage Storage","Wall racks|Overhead ceiling|Cabinet systems|None",1],
+    ["Basement Storage","Shelving|Climate-controlled|Under-stair|None",1],
+    ["Kitchen Storage","Lazy Susan|Pull-out drawers|Pot racks|Ceiling-hung|None",1],
+    ["Outdoor Storage","Deck box|Under-deck|Weatherproof cabinet|None",1],
+    ["Attic Access","Pull-down ladder|Finished storage|Attic lift|None",1],
+  ]},
+  {t:"SEASONAL & CLIMATE READINESS",isNew:true,items:[
+    ["Ice Dam Prevention","Heated cable|Proper attic insulation|Both|N/A",1],
+    ["Storm Windows","Interior storm|Exterior storm|Not present",1],
+    ["Window Well Covers","Covers installed|Not present|N/A",1],
+    ["Freeze-Proof Spigots","Frost-free bibs|Interior shut-offs|Neither",1],
+    ["Attic Ventilation","Soffit vents|Ridge vents|Powered fan|Adequate|Inadequate",1],
+    ["Sump Alarm","Smart sensor|Audible alarm|None",1],
+    ["Weatherstripping","Good condition|Needs replacement|Missing",1],
+  ]},
+  {t:"NOISE & PRIVACY",isNew:true,items:[
+    ["Soundproofing","Between floors|Party walls|Around mechanical|None",1],
+    ["Window STC","High (STC 35+)|Standard (26-34)|Low (<26)|Unknown",1],
+    ["Privacy Glass","Frosted|Tinted|Smart glass|None",1],
+    ["Neighbour Proximity","Well-separated|Close, no overlap|Close with sight lines",1],
+    ["Street Noise","Quiet|Moderate|Loud (major road)|Very loud (highway/rail)",1],
+  ]},
+  {t:"SAFETY & COMPLIANCE",isNew:true,items:[
+    ["Smoke Detectors","Hardwired interconnected|Smart w/ app|Battery only|Missing",1],
+    ["CO Detectors","Each level|Partial coverage|None",1],
+    ["Fire Extinguishers","Kitchen|Garage|Workshop|None",1],
+    ["Radon Testing","Tested safe|Tested & mitigated|Not tested",1],
+    ["Asbestos/Lead","Clear|Present (managed)|Not tested (pre-1980)|N/A (post-1980)",1],
+    ["Knob & Tube","Replaced|ESA approved|Present|N/A",1],
+    ["GFCI Outlets","Kitchen|Bathrooms|Exterior|All present|Missing some",1],
+    ["AFCI Breakers","Bedrooms protected|Not present|Unknown",1],
+    ["Egress Windows","Code-compliant|Non-compliant|No basement bedrooms",1],
+    ["Handrails/Guards","Meet code|Non-compliant|N/A",1],
+    ["Permits","All permitted|Some unpermitted|Unknown",1],
+    ["Insurance Needs","WETT needed|Pool fencing needed|Sump backup needed|All clear",1],
+  ]},
+  {t:"PET-FRIENDLINESS",isNew:true,items:[
+    ["Fenced Yard","Fully enclosed|Partial fencing|No fence",1],
+    ["Pet Door","To backyard|To laundry/garage|None",1],
+    ["Scratch-Resistant Floors","Tile|Luxury vinyl|Engineered hardwood|Carpet/softwood",1],
+    ["Invisible Fence","Electronic boundary|Not present",1],
+    ["Wash Station","Indoor pet wash|Outdoor pet wash|None",1],
+  ]},
+  {t:"NEIGHBOURHOOD & LOCATION",isNew:true,items:[
+    ["School District","Excellent|Good|Average|Below average|N/A",1],
+    ["Transit Access","Subway/LRT nearby|Bus nearby|GO Transit nearby|Car-dependent",1],
+    ["Walk Score","Very walkable (70+)|Somewhat (50-69)|Car-dependent (<50)",1],
+    ["Commute","Under 30 min|30-60 min|Over 60 min",1],
+    ["Grocery/Retail","Walking distance|Short drive|Far",1],
+    ["Healthcare","Hospital nearby|Walk-in nearby|Far from both",1],
+    ["Parks & Trails","Walking distance|Short drive|None nearby",1],
+    ["Community Centre","Walking distance|Short drive|None nearby",1],
+    ["Future Development","Transit expansion|Subdivision|Commercial|None known",1],
+    ["Noise & Traffic","Quiet residential|Moderate|Near highway|Near rail/flight path",1],
+    ["Crime & Safety","Low crime|Average|High crime|Community watch active",1],
+  ]},
+  {t:"FINANCIAL & OWNERSHIP",isNew:true,items:[
+    ["Property Taxes","Low (<$4K)|Moderate ($4-8K)|High ($8-15K)|Very high ($15K+)",1],
+    ["Utility Costs","Low (<$250/mo)|Moderate ($250-400)|High ($400+)|Unknown",1],
+    ["HOA/Condo Fees","None|Low (<$500)|Moderate ($500-1K)|High ($1K+)",1],
+    ["Insurance","Standard rates|Special endorsements|Flood insurance|Unknown",1],
+    ["Warranty","Tarion (new build)|Transferable|Expired|None",1],
+    ["Rental Potential","Legal secondary suite|Short-term eligible|Income potential|None",1],
+    ["Age of Systems","All under 10 yrs|Some over 10 yrs|Major over 15 yrs|Unknown",1],
+    ["Recent Renos","Within 5 yrs (permitted)|Within 10 yrs|Unpermitted renos|None",1],
+    ["Energy Audit","EnerGuide rated|Audit done|Retrofit recommended|Not audited",1],
+    ["Title Search","Clear title|Liens found|Encroachments|Work orders|Not searched",1],
+  ]},
+];
+
+let st={c:{},n:{},prop:{address:'',mls:'',date:'',agent:''}};
+let filter='all';
+function save(){try{localStorage.setItem('pcl3',JSON.stringify(st))}catch(e){}}
+function load(){try{const s=localStorage.getItem('pcl3');if(s)st=JSON.parse(s)}catch(e){}}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function render(){
+  load();
+  const app=document.getElementById('app');
+  let h='';
+  h+=`<div class="prop-bar"><div class="prop-fields">
+    <div><label>Property Address</label><input placeholder="123 Main St, Toronto" value="${esc(st.prop.address)}" oninput="up('address',this.value)"></div>
+    <div><label>MLS #</label><input placeholder="W1234567" value="${esc(st.prop.mls)}" oninput="up('mls',this.value)"></div>
+    <div><label>Visit Date</label><input type="date" value="${esc(st.prop.date)}" oninput="up('date',this.value)"></div>
+    <div><label>Agent</label><input placeholder="Agent name" value="${esc(st.prop.agent)}" oninput="up('agent',this.value)"></div>
+  </div></div>`;
+
+  let sIdx=0,totalO=0,checkedO=0;
+  for(const entry of DATA){
+    if(entry.part){
+      h+=`<div class="part-div"><div class="part-label">${entry.part}</div><div class="part-desc">${entry.pd}</div><div class="part-line"></div></div>`;
+      continue;
+    }
+    let sT=0,sC=0;
+    entry.items.forEach((item,iIdx)=>{
+      item[1].split('|').forEach((_,oIdx)=>{
+        const k=`${sIdx}-${iIdx}-${oIdx}`;sT++;totalO++;
+        if(st.c[k]){sC++;checkedO++;}
+      });
+    });
+
+    let anyVis=filter==='all';
+    if(!anyVis){
+      entry.items.forEach((item,iIdx)=>{
+        const isNew=!!item[2];
+        const hasNote=!!(st.n[`${sIdx}-${iIdx}`]&&st.n[`${sIdx}-${iIdx}`].trim());
+        const hasChk=item[1].split('|').some((_,oIdx)=>st.c[`${sIdx}-${iIdx}-${oIdx}`]);
+        if(filter==='checked'&&hasChk)anyVis=true;
+        if(filter==='notes'&&hasNote)anyVis=true;
+        if(filter==='new'&&isNew)anyVis=true;
+      });
+    }
+    if(!anyVis){sIdx++;continue;}
+
+    h+=`<div class="section" id="s${sIdx}"><div class="sec-hdr" onclick="togSec(${sIdx})"><span class="sec-chev">&#9662;</span><span class="sec-title">${entry.t}</span>`;
+    if(entry.isNew)h+=`<span class="sec-new">NEW</span>`;
+    h+=`<span class="sec-count" id="sc${sIdx}">${sC}/${sT}</span></div><div class="sec-body">`;
+
+    entry.items.forEach((item,iIdx)=>{
+      const opts=item[1].split('|');
+      const isNew=!!item[2];
+      const nk=`${sIdx}-${iIdx}`;
+      const hasNote=!!(st.n[nk]&&st.n[nk].trim());
+      const hasChk=opts.some((_,oIdx)=>st.c[`${sIdx}-${iIdx}-${oIdx}`]);
+      let vis=true;
+      if(filter==='checked'&&!hasChk)vis=false;
+      if(filter==='notes'&&!hasNote)vis=false;
+      if(filter==='new'&&!isNew)vis=false;
+      if(!vis)return;
+
+      h+=`<div class="feat-row"><div class="feat-top"><span class="feat-label">${item[0]}:</span>`;
+      if(isNew)h+=`<span class="feat-new-dot" title="New item"></span>`;
+      h+=`<div class="feat-opts">`;
+      opts.forEach((opt,oIdx)=>{
+        const ok=`${sIdx}-${iIdx}-${oIdx}`;
+        h+=`<span class="opt${st.c[ok]?' checked':''}" onclick="togOpt(this,'${ok}',${sIdx})"><span class="opt-box"></span>${opt.trim()}</span>`;
+      });
+      h+=`</div><div class="feat-plus${hasNote?' active':''}" onclick="togNote('${nk}',this)" title="Add note">+</div></div>`;
+      h+=`<div class="note-wrap${hasNote?' open':''}" id="nw${nk}"><textarea class="note-area" id="na${nk}" placeholder="Add a note…" oninput="unote('${nk}',this.value)">${esc(st.n[nk]||'')}</textarea></div></div>`;
+    });
+    h+=`</div></div>`;
+    sIdx++;
+  }
+  app.innerHTML=h;
+  updProg(checkedO,totalO);
+}
+
+function togOpt(el,key,sIdx){
+  st.c[key]=!st.c[key];
+  if(!st.c[key])delete st.c[key];
+  save();
+  el.classList.toggle('checked',!!st.c[key]);
+  updSecCt(sIdx);
+  updProgLive();
+}
+
+function togNote(nk,btn){
+  const w=document.getElementById('nw'+nk);
+  const o=!w.classList.contains('open');
+  w.classList.toggle('open');
+  btn.classList.toggle('active');
+  if(o)document.getElementById('na'+nk).focus();
+}
+
+function unote(nk,v){st.n[nk]=v;save();}
+function up(f,v){st.prop[f]=v;save();}
+function togSec(i){document.getElementById('s'+i).classList.toggle('collapsed');}
+
+function updSecCt(sIdx){
+  let si=0;
+  for(const e of DATA){
+    if(e.part)continue;
+    if(si===sIdx){
+      let c=0,t=0;
+      e.items.forEach((item,iIdx)=>{item[1].split('|').forEach((_,oIdx)=>{t++;if(st.c[`${si}-${iIdx}-${oIdx}`])c++;});});
+      const el=document.getElementById('sc'+si);
+      if(el)el.textContent=`${c}/${t}`;
+      return;
+    }
+    si++;
+  }
+}
+
+function updProg(c,t){
+  const p=t>0?(c/t*100):0;
+  document.getElementById('pBar').style.width=p.toFixed(1)+'%';
+  document.getElementById('pText').textContent=`${c} / ${t} options checked (${p.toFixed(0)}%)`;
+}
+
+function updProgLive(){
+  let t=0,c=0,si=0;
+  for(const e of DATA){
+    if(e.part)continue;
+    e.items.forEach((item,iIdx)=>{item[1].split('|').forEach((_,oIdx)=>{t++;if(st.c[`${si}-${iIdx}-${oIdx}`])c++;});});
+    si++;
+  }
+  updProg(c,t);
+}
+
+document.querySelectorAll('.ctrl-btn[data-filter]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.ctrl-btn[data-filter]').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');filter=b.dataset.filter;render();
+  });
+});
+
+function resetAll(){
+  if(confirm('Reset all checkmarks and notes? This cannot be undone.')){
+    st={c:{},n:{},prop:{address:'',mls:'',date:'',agent:''}};
+    save();filter='all';
+    document.querySelectorAll('.ctrl-btn[data-filter]').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.ctrl-btn[data-filter="all"]').classList.add('active');
+    render();
+  }
+}
+
+render();
+</script>
+</body>
+</html>
