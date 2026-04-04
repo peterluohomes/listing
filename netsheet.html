@@ -12,10 +12,11 @@
 
   /* ── Header ── */
   .doc-title { font-size: 28px; font-weight: 400; letter-spacing: 0.5px; color: #111; margin-bottom: 8px; }
-  .meta-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; padding-bottom: 16px; border-bottom: 1px solid #e0e0e0; }
+  .meta-row { display: flex; gap: 16px; flex-wrap: nowrap; margin-bottom: 40px; padding-bottom: 16px; border-bottom: 1px solid #e0e0e0; align-items: flex-end; }
   .meta-field { display: flex; flex-direction: column; gap: 4px; }
-  .meta-field label { font-family: 'Segoe UI', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #888; }
-  .meta-field input[type="text"] { font-family: 'Segoe UI', sans-serif; font-size: 13px; border: none; border-bottom: 1px solid #ccc; padding: 3px 0; width: 220px; color: #333; background: transparent; }
+  .meta-field.grow { flex: 1; }
+  .meta-field label { font-family: 'Segoe UI', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #888; white-space: nowrap; }
+  .meta-field input[type="text"] { font-family: 'Segoe UI', sans-serif; font-size: 13px; border: none; border-bottom: 1px solid #ccc; padding: 3px 0; width: 100%; color: #333; background: transparent; }
   .meta-field input[type="text"]:focus { outline: none; border-bottom-color: #1a3a5c; }
 
   /* ── Selling Price row ── */
@@ -74,8 +75,9 @@
   .saved-item .actions button { padding: 3px 10px; font-size: 12px; }
 
   @media print {
-    body { background: #fff; padding: 0; }
-    .page { box-shadow: none; padding: 40px 56px; }
+    @page { size: A4; margin: 18mm 25.4mm; }
+    html, body { background: #fff; padding: 0; margin: 0; }
+    .page { box-shadow: none; border-radius: 0; padding: 8px 24px; max-width: 100%; }
     .toolbar, .saved-panel { display: none !important; }
     input.currency-in, input.pct-in { border-bottom-color: #999 !important; }
   }
@@ -87,17 +89,17 @@
   <!-- Header -->
   <div class="doc-title">Seller's Net Sheet</div>
   <div class="meta-row">
-    <div class="meta-field">
-      <label>Client / Property</label>
+    <div class="meta-field grow">
+      <label>Property</label>
       <input type="text" id="field-client" placeholder="Enter name or address">
     </div>
-    <div class="meta-field">
+    <div class="meta-field" style="min-width:120px;">
+      <label>Date</label>
+      <input type="text" id="field-date" placeholder="yyyy-mm-dd">
+    </div>
+    <div class="meta-field grow">
       <label>Prepared By</label>
       <input type="text" id="field-preparedby" placeholder="Agent name">
-    </div>
-    <div class="meta-field">
-      <label>Date</label>
-      <input type="text" id="field-date" placeholder="yyyy-mm-dd" style="width:130px;">
     </div>
   </div>
 

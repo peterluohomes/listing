@@ -46,6 +46,12 @@
   .note-area textarea { width: 100%; border: 1px solid #ddd; border-radius: 6px; padding: 8px 10px; font-size: 0.88em; font-family: inherit; resize: vertical; min-height: 60px; outline: none; transition: border-color 0.2s; }
   .note-area textarea:focus { border-color: #1976d2; }
   .quote-line { text-align: center; color: #1a3a5c; font-style: italic; font-size: 1em; margin-bottom: 18px; padding: 12px; background: #e3f2fd; border-radius: 8px; }
+  .meta-row { display: flex; gap: 16px; flex-wrap: nowrap; margin-bottom: 14px; align-items: flex-end; }
+  .meta-field { display: flex; flex-direction: column; gap: 4px; }
+  .meta-field.grow { flex: 1; }
+  .meta-field label { font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.8px; color: #888; white-space: nowrap; }
+  .meta-field input[type="text"] { font-size: 0.93em; border: none; border-bottom: 1px solid #ccc; padding: 4px 0; width: 100%; color: #333; background: transparent; outline: none; }
+  .meta-field input[type="text"]:focus { border-bottom-color: #1a3a5c; }
 
   /* Self Assessment */
   .assessment-section { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 16px; overflow: hidden; }
@@ -90,6 +96,16 @@
 <div class="container">
   <h1>Listing Presentation Preparation Checklist</h1>
   <div class="subtitle">Prepare. Present. Win the Listing.</div>
+  <div class="meta-row">
+    <div class="meta-field grow">
+      <label>Property Address</label>
+      <input type="text" id="field-address" placeholder="Enter property address">
+    </div>
+    <div class="meta-field" style="min-width:130px;">
+      <label>Date</label>
+      <input type="text" id="field-date" placeholder="yyyy-mm-dd">
+    </div>
+  </div>
   <div class="quote-line">"You are in charge of the process… the seller is in charge of the decisions!"</div>
 
   <div class="progress-bar-wrap">
@@ -133,7 +149,8 @@ const SECTIONS = [
     items: [
       { text: "Check to make sure it has current and relevant information" },
       { text: "Customize marketing plan based on seller interview" },
-      { text: "Staging/Pricing Video included based on seller interview" }
+      { text: "Staging/Pricing Video included based on seller interview" },
+      { text: "Reco Information Guide" }
     ]
   },
   {
@@ -143,14 +160,9 @@ const SECTIONS = [
       { text: "Check the house square footage" },
       { text: "Sold/Actives/Expired/New Homes" },
       { text: "Pricing History & Days on Market" },
-      { text: "Absorption Rate \u2013 How long will it take to sell this house?", sub: [
-        { text: "How many months supply of this price range are on the market?" }
-      ]},
       { text: "Check property tax and assessment records" },
       { text: "Review zoning, permits, and building code compliance" },
-      { text: "Search for any liens or encumbrances on the property" },
-      { text: "Verify lot size and legal description" },
-      { text: "Request condo status certificate (if applicable)" }
+      { text: "Verify lot size and legal description" }
     ]
   },
   {
@@ -164,12 +176,13 @@ const SECTIONS = [
       { text: "Average price MOM change%" },
       { text: "Sales YOY change%" },
       { text: "Sales MOM change%" },
+      { text: "Months supply of this price range" },
+      { text: "Seasonal market patterns" },
       { text: "In the area", isLabel: true },
       { text: "30 days inventory" },
       { text: "30 days sales" },
       { text: "List-to-sale price ratio" },
-      { text: "Price per square foot trends" },
-      { text: "Seasonal market patterns" }
+      { text: "Price per square foot trends (condo)" }
     ]
   },
   {
@@ -195,7 +208,7 @@ const SECTIONS = [
       { text: 'Where will we be "in line" to get this house sold in the time frame requested by seller?' },
       { text: "What are the potential pricing objections they may have?" },
       { text: "What is my walk away price?" },
-      { text: "Consider search bracket strategy (price just below key thresholds, e.g. $499,900 vs $500,000)" },
+      { text: "Consider search bracket strategy (price just below key thresholds, e.g. $2,000,000 vs $1,999,000)" },
       { text: "Plan offer date strategy if applicable (hold offers to create competition)" },
       { text: "Prepare net sheet at different price scenarios for the seller" }
     ]
@@ -204,15 +217,13 @@ const SECTIONS = [
     title: "Leaving Home \u2014 20-30 Min + Commute Before Appointment",
     items: [
       { text: "Check all the documents bag", sub: [
-        { text: "Listing agreements" },
+        { text: "Listing agreements (Form 271, Form 244, Reco Information Guide Signing Page)" },
         { text: "CMA \u2013 Sold Lists" },
         { text: "CMA \u2013 Sold Details" },
         { text: "CMA \u2013 Active Lists" },
         { text: "CMA \u2013 Active Details" },
         { text: "Price mapping \u2014 peterluo.homes/tools/mapper" },
         { text: "Seller\u2019s Net Sheet" },
-        { text: "SPIS (Seller Property Information Statement) form" },
-        { text: "Working With a REALTOR\u00AE form" },
         { text: "Personal brochure / business cards" },
         { text: "Client testimonials sheet" },
         { text: "Notepad and extra pens" }
@@ -222,9 +233,12 @@ const SECTIONS = [
         { text: "Ruler" }
       ]},
       { text: "Personal", sub: [
-        { text: "Dress up" },
-        { text: "Hair" },
-        { text: "Shoes clean" }
+        { text: "Dress up (suit & tie)" },
+        { text: "Check hair" },
+        { text: "Check face" },
+        { text: "Brush teeth" },
+        { text: "Shoes clean" },
+        { text: "Hands/nails clean" }
       ]}
     ]
   },
@@ -492,11 +506,15 @@ function gatherData() {
     if (an && an.value.trim()) assessNotes[c.id] = an.value;
   });
   const overall = document.getElementById('overallReflection').value;
-  return { checks, notes, ratings, assessNotes, overall, savedAt: new Date().toISOString() };
+  const address = document.getElementById('field-address').value;
+  const date = document.getElementById('field-date').value;
+  return { address, date, checks, notes, ratings, assessNotes, overall, savedAt: new Date().toISOString() };
 }
 
 function applyData(data) {
   if (!data) return;
+  if (data.address) document.getElementById('field-address').value = data.address;
+  if (data.date) document.getElementById('field-date').value = data.date;
   if (data.checks) {
     allCheckboxes.forEach(cb => {
       if (data.checks[cb.id]) {
@@ -566,6 +584,8 @@ function resetAll() {
   document.querySelectorAll('.rating-group input').forEach(r => r.checked = false);
   document.querySelectorAll('.assess-note textarea').forEach(ta => { ta.value = ''; });
   document.getElementById('overallReflection').value = '';
+  document.getElementById('field-address').value = '';
+  document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
   updateProgress();
   updateSectionCounts();
   toast('Reset complete.');
@@ -573,46 +593,12 @@ function resetAll() {
 
 function exportData() {
   const data = gatherData();
-  let text = 'LISTING PRESENTATION PREPARATION CHECKLIST\n';
-  text += 'Exported: ' + new Date().toLocaleString() + '\n';
-  text += '='.repeat(60) + '\n\n';
-
-  SECTIONS.forEach((sec, si) => {
-    text += sec.title.toUpperCase() + '\n';
-    text += '-'.repeat(40) + '\n';
-    const body = document.getElementById('sb_' + si);
-    const cbs = body.querySelectorAll('input[type="checkbox"]');
-    cbs.forEach(cb => {
-      const lbl = cb.nextElementSibling;
-      const mark = cb.checked ? '[x]' : '[ ]';
-      const indent = cb.closest('.sub-item2') ? '      ' : cb.closest('.sub-item') ? '    ' : '  ';
-      text += `${indent}${mark} ${lbl.textContent}\n`;
-      const note = document.getElementById('nt_' + cb.id);
-      if (note && note.value.trim()) {
-        text += `${indent}     Note: ${note.value.trim()}\n`;
-      }
-    });
-    text += '\n';
-  });
-
-  text += 'SELF-ASSESSMENT\n';
-  text += '-'.repeat(40) + '\n';
-  ASSESS_CRITERIA.forEach(c => {
-    const sel = document.querySelector(`input[name="rate_${c.id}"]:checked`);
-    const rating = sel ? sel.value + '/5' : 'Not rated';
-    text += `  ${c.label}: ${rating}\n`;
-    const an = document.getElementById('an_' + c.id);
-    if (an && an.value.trim()) text += `    Note: ${an.value.trim()}\n`;
-  });
-  const overall = document.getElementById('overallReflection').value;
-  if (overall.trim()) {
-    text += `\n  Overall Reflection:\n    ${overall.trim()}\n`;
-  }
-
-  const blob = new Blob([text], { type: 'text/plain' });
+  const addr = (data.address || 'no_address').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const dt = data.date || new Date().toISOString().slice(0, 10);
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'listing_prep_checklist_' + new Date().toISOString().slice(0,10) + '.txt';
+  a.download = `Appointment_prep_checklist_${addr}_${dt}.json`;
   a.click();
   toast('Exported!');
 }
@@ -621,6 +607,7 @@ function exportData() {
 async function init() {
   renderSections();
   renderAssessment();
+  document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
   await openDB();
   const data = await dbGet('listing_prep');
   if (data) applyData(data);
