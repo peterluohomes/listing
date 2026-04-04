@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Presentation Preparation Checklist</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; padding: 20px; }
+  .container { max-width: 860px; margin: 0 auto; }
+  h1 { text-align: center; color: #1a3a5c; margin-bottom: 6px; font-size: 1.6em; }
+  .subtitle { text-align: center; color: #666; font-size: 0.95em; margin-bottom: 20px; font-style: italic; }
+  .progress-bar-wrap { background: #ddd; border-radius: 10px; height: 22px; margin-bottom: 20px; position: relative; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, #2e7d32, #43a047); border-radius: 10px; transition: width 0.4s ease; }
+  .progress-text { position: absolute; top: 0; left: 0; right: 0; text-align: center; line-height: 22px; font-size: 0.8em; font-weight: 600; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+  .toolbar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .toolbar button { padding: 8px 18px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: 600; transition: background 0.2s; }
+  .btn-save { background: #1976d2; color: #fff; }
+  .btn-save:hover { background: #1565c0; }
+  .btn-load { background: #388e3c; color: #fff; }
+  .btn-load:hover { background: #2e7d32; }
+  .btn-reset { background: #d32f2f; color: #fff; }
+  .btn-reset:hover { background: #b71c1c; }
+  .btn-print { background: #6a1b9a; color: #fff; }
+  .btn-print:hover { background: #4a148c; }
+  .btn-export { background: #e65100; color: #fff; }
+  .btn-export:hover { background: #bf360c; }
+  .section { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 16px; overflow: hidden; }
+  .section-header { background: #1a3a5c; color: #fff; padding: 12px 18px; font-size: 1.05em; font-weight: 600; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .section-header .toggle-icon { font-size: 1.2em; transition: transform 0.3s; }
+  .section-header .toggle-icon.collapsed { transform: rotate(-90deg); }
+  .section-header .section-count { font-size: 0.8em; opacity: 0.85; margin-left: 10px; }
+  .section-body { padding: 0; }
+  .section-body.hidden { display: none; }
+  .item-row { display: flex; align-items: flex-start; padding: 10px 18px; border-bottom: 1px solid #f0f0f0; gap: 10px; }
+  .item-row:last-child { border-bottom: none; }
+  .item-row.sub-item { padding-left: 48px; }
+  .item-row.sub-item2 { padding-left: 72px; }
+  .item-row input[type="checkbox"] { margin-top: 3px; width: 18px; height: 18px; accent-color: #1976d2; flex-shrink: 0; cursor: pointer; }
+  .item-text { flex: 1; font-size: 0.93em; line-height: 1.5; }
+  .item-text.checked { text-decoration: line-through; color: #999; }
+  .note-btn { background: none; border: 1px solid #ccc; color: #888; font-size: 0.75em; padding: 2px 8px; border-radius: 4px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.2s; }
+  .note-btn:hover { border-color: #1976d2; color: #1976d2; }
+  .note-btn.has-note { border-color: #f9a825; color: #f57f17; background: #fff8e1; }
+  .note-area { width: 100%; padding: 8px 18px 12px 46px; display: none; }
+  .note-area textarea { width: 100%; border: 1px solid #ddd; border-radius: 6px; padding: 8px 10px; font-size: 0.88em; font-family: inherit; resize: vertical; min-height: 60px; outline: none; transition: border-color 0.2s; }
+  .note-area textarea:focus { border-color: #1976d2; }
+  .quote-line { text-align: center; color: #1a3a5c; font-style: italic; font-size: 1em; margin-bottom: 18px; padding: 12px; background: #e3f2fd; border-radius: 8px; }
+
+  /* Self Assessment */
+  .assessment-section { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 16px; overflow: hidden; }
+  .assessment-header { background: #4a148c; color: #fff; padding: 12px 18px; font-size: 1.05em; font-weight: 600; }
+  .assessment-body { padding: 18px; }
+  .assess-item { margin-bottom: 16px; }
+  .assess-label { font-weight: 600; font-size: 0.93em; margin-bottom: 6px; }
+  .rating-group { display: flex; gap: 4px; margin-bottom: 6px; }
+  .rating-group label { display: flex; align-items: center; gap: 4px; padding: 4px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 0.82em; cursor: pointer; transition: all 0.2s; }
+  .rating-group input[type="radio"] { display: none; }
+  .rating-group input[type="radio"]:checked + span { font-weight: 700; }
+  .rating-group label.r1 { border-color: #e53935; color: #e53935; }
+  .rating-group label.r2 { border-color: #fb8c00; color: #fb8c00; }
+  .rating-group label.r3 { border-color: #fdd835; color: #f9a825; }
+  .rating-group label.r4 { border-color: #66bb6a; color: #388e3c; }
+  .rating-group label.r5 { border-color: #1b5e20; color: #1b5e20; }
+  .rating-group label.selected { font-weight: 700; }
+  .rating-group label.r1.selected { background: #ffebee; }
+  .rating-group label.r2.selected { background: #fff3e0; }
+  .rating-group label.r3.selected { background: #fffde7; }
+  .rating-group label.r4.selected { background: #e8f5e9; }
+  .rating-group label.r5.selected { background: #e8f5e9; }
+  .assess-note textarea { width: 100%; border: 1px solid #ddd; border-radius: 6px; padding: 8px 10px; font-size: 0.88em; font-family: inherit; resize: vertical; min-height: 50px; margin-top: 4px; }
+  .overall-box { margin-top: 20px; padding: 16px; background: #f5f5f5; border-radius: 8px; }
+  .overall-box label { font-weight: 600; display: block; margin-bottom: 6px; }
+  .overall-box textarea { width: 100%; min-height: 80px; border: 1px solid #ddd; border-radius: 6px; padding: 8px 10px; font-size: 0.88em; font-family: inherit; resize: vertical; }
+
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 28px; border-radius: 8px; font-size: 0.9em; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+  .toast.show { opacity: 1; }
+
+  @media print {
+    body { background: #fff; padding: 10px; }
+    .toolbar, .btn-print { display: none !important; }
+    .section { box-shadow: none; break-inside: avoid; }
+    .note-area { display: block !important; }
+    .note-area textarea { border: 1px solid #ccc; }
+    .progress-bar-wrap { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Listing Presentation Preparation Checklist</h1>
+  <div class="subtitle">Prepare. Present. Win the Listing.</div>
+  <div class="quote-line">"You are in charge of the process… the seller is in charge of the decisions!"</div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progressBar" style="width:0%"></div>
+    <div class="progress-text" id="progressText">0 / 0 completed</div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn-save" onclick="saveData()">Save</button>
+    <button class="btn-load" onclick="loadData()">Load</button>
+    <button class="btn-reset" onclick="resetAll()">Reset</button>
+    <button class="btn-export" onclick="exportData()">Export</button>
+    <button class="btn-print" onclick="window.print()">Print</button>
+  </div>
+
+  <div id="sections"></div>
+
+  <!-- Self Assessment Section -->
+  <div class="assessment-section" id="selfAssessment">
+    <div class="assessment-header">Self-Assessment</div>
+    <div class="assessment-body" id="assessBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SECTIONS = [
+  {
+    title: "Pre-listing Interview",
+    items: [
+      { text: "Decide if this will be a 1 or 2 call listing presentation" },
+      { text: "Explain the Process to the Seller", sub: [
+        { text: '"Here\u2019s what happens next\u2026"' },
+        { text: '"Will that work for you?\u2026"' }
+      ]}
+    ]
+  },
+  {
+    title: "Pre-listing Package Delivery",
+    items: [
+      { text: "Check to make sure it has current and relevant information" },
+      { text: "Customize marketing plan based on seller interview" },
+      { text: "Staging/Pricing Video included based on seller interview" }
+    ]
+  },
+  {
+    title: "Prepare for CMA",
+    items: [
+      { text: "Check the house transaction history" },
+      { text: "Check the house square footage" },
+      { text: "Sold/Actives/Expired/New Homes" },
+      { text: "Pricing History & Days on Market" },
+      { text: "Absorption Rate \u2013 How long will it take to sell this house?", sub: [
+        { text: "How many months supply of this price range are on the market?" }
+      ]},
+      { text: "Check property tax and assessment records" },
+      { text: "Review zoning, permits, and building code compliance" },
+      { text: "Search for any liens or encumbrances on the property" },
+      { text: "Verify lot size and legal description" },
+      { text: "Request condo status certificate (if applicable)" }
+    ]
+  },
+  {
+    title: "Prepare Market Statistics",
+    items: [
+      { text: "TREB", isSub: false, isLabel: true },
+      { text: "Absorption Rate" },
+      { text: "Sales/New Listing Ratio" },
+      { text: "DOM (Days on Market)" },
+      { text: "Average price YOY change%" },
+      { text: "Average price MOM change%" },
+      { text: "Sales YOY change%" },
+      { text: "Sales MOM change%" },
+      { text: "In the area", isLabel: true },
+      { text: "30 days inventory" },
+      { text: "30 days sales" },
+      { text: "List-to-sale price ratio" },
+      { text: "Price per square foot trends" },
+      { text: "Seasonal market patterns" }
+    ]
+  },
+  {
+    title: "Meet Yourself",
+    items: [
+      { text: "What is the Seller\u2019s most important objective?" },
+      { text: "What does the seller think is their most important objective?" },
+      { text: "What do I know about the seller? (FORD)" },
+      { text: "What are 3 things the seller is looking for in a REALTOR\u00AE?" },
+      { text: "What are the objections they may have listing with me?" },
+      { text: "What are the problems with the property?" },
+      { text: "What are my strategies to handling their objections?" },
+      { text: "Prepare your value proposition with specific stats (recent sales, DOM vs area average, list-to-sale ratio)" },
+      { text: "Identify your key differentiators from competing agents" },
+      { text: "Rehearse your listing presentation opening and closing" }
+    ]
+  },
+  {
+    title: "What Is Pricing Strategy?",
+    items: [
+      { text: "What is the price range for this house (careful to make assumption)" },
+      { text: "Where would I like to see this house priced?" },
+      { text: 'Where will we be "in line" to get this house sold in the time frame requested by seller?' },
+      { text: "What are the potential pricing objections they may have?" },
+      { text: "What is my walk away price?" },
+      { text: "Consider search bracket strategy (price just below key thresholds, e.g. $499,900 vs $500,000)" },
+      { text: "Plan offer date strategy if applicable (hold offers to create competition)" },
+      { text: "Prepare net sheet at different price scenarios for the seller" }
+    ]
+  },
+  {
+    title: "Leaving Home \u2014 20-30 Min + Commute Before Appointment",
+    items: [
+      { text: "Check all the documents bag", sub: [
+        { text: "Listing agreements" },
+        { text: "CMA \u2013 Sold Lists" },
+        { text: "CMA \u2013 Sold Details" },
+        { text: "CMA \u2013 Active Lists" },
+        { text: "CMA \u2013 Active Details" },
+        { text: "Price mapping \u2014 peterluo.homes/tools/mapper" },
+        { text: "Seller\u2019s Net Sheet" },
+        { text: "SPIS (Seller Property Information Statement) form" },
+        { text: "Working With a REALTOR\u00AE form" },
+        { text: "Personal brochure / business cards" },
+        { text: "Client testimonials sheet" },
+        { text: "Notepad and extra pens" }
+      ]},
+      { text: "Pre-Listing package laminated paper version" },
+      { text: "Bring tools", sub: [
+        { text: "Ruler" }
+      ]},
+      { text: "Personal", sub: [
+        { text: "Dress up" },
+        { text: "Hair" },
+        { text: "Shoes clean" }
+      ]}
+    ]
+  },
+  {
+    title: "Staging & Photography Planning",
+    items: [
+      { text: "Discuss staging recommendations with seller (declutter, depersonalize, deep clean)" },
+      { text: "Research and book professional photographer" },
+      { text: "Plan virtual tour / video walkthrough approach" },
+      { text: "Identify best time of day for exterior and interior photos" },
+      { text: "Prepare shot list for photographer (key features, angles, room order)" }
+    ]
+  },
+  {
+    title: "Drive the Neighborhood",
+    items: [
+      { text: "Digital photo of house for brochure" },
+      { text: "Check out similar actives/solds" },
+      { text: "Note condition/open space/busy streets" },
+      { text: "FSBO? Call and get their information" },
+      { text: "Look for changes in the neighborhood (+/-)" },
+      { text: "Become the neighborhood expert" }
+    ]
+  },
+  {
+    title: "Listing Presentation",
+    items: []
+  },
+  {
+    title: "After the Appointment",
+    items: [
+      { text: "Send a thank-you email within a few hours recapping what you discussed and next steps" },
+      { text: "If they didn\u2019t sign, include a one-page summary of your marketing plan and the net sheet as a reminder" },
+      { text: "Follow up on the agreed date \u2014 no sooner, no later" },
+      { text: "Update CRM with appointment notes and seller status" },
+      { text: "Schedule follow-up call/email on the agreed date" },
+      { text: "If listing signed: book photographer, schedule stager consultation, begin MLS data entry prep" },
+      { text: "If not signed: send recap email with marketing plan summary and net sheet attached" },
+      { text: "Add seller to drip campaign if they need more time to decide" }
+    ]
+  }
+];
+
+const ASSESS_CRITERIA = [
+  { id: "cma", label: "CMA & Market Research Preparation" },
+  { id: "pricing", label: "Pricing Strategy Readiness" },
+  { id: "docs", label: "Documents & Materials Completeness" },
+  { id: "knowledge", label: "Knowledge of Seller\u2019s Needs & Objectives" },
+  { id: "objections", label: "Objection Handling Preparedness" },
+  { id: "presentation", label: "Presentation Confidence & Flow" },
+  { id: "appearance", label: "Professional Appearance & Punctuality" },
+  { id: "neighborhood", label: "Neighborhood & Competition Knowledge" },
+  { id: "followup", label: "Follow-up Plan Clarity" }
+];
+
+const DB_NAME = 'ListingPrepDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'checklist';
+let db = null;
+let allCheckboxes = [];
+let allNotes = {};
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE_NAME)) d.createObjectStore(STORE_NAME);
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = e => reject(e);
+  });
+}
+
+function dbPut(key, val) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(val, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = e => reject(e);
+  });
+}
+
+function dbGet(key) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const req = tx.objectStore(STORE_NAME).get(key);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = e => reject(e);
+  });
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function updateProgress() {
+  const total = allCheckboxes.length;
+  const done = allCheckboxes.filter(cb => cb.checked).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${done} / ${total} completed (${pct}%)`;
+}
+
+let itemCounter = 0;
+
+function buildItem(item, sectionIdx, depth) {
+  const id = `item_${sectionIdx}_${itemCounter++}`;
+  const cls = depth === 1 ? ' sub-item' : depth >= 2 ? ' sub-item2' : '';
+
+  if (item.isLabel) {
+    return `<div class="item-row${cls}" style="padding-top:14px;padding-bottom:4px;">
+      <div class="item-text" style="font-weight:600;color:#1a3a5c;">${item.text}</div>
+    </div>`;
+  }
+
+  let html = `<div class="item-row${cls}">
+    <input type="checkbox" id="${id}" onchange="onCheck(this)">
+    <label class="item-text" for="${id}">${item.text}</label>
+    <button class="note-btn" id="nb_${id}" onclick="toggleNote('${id}')">+Note</button>
+  </div>
+  <div class="note-area" id="na_${id}">
+    <textarea id="nt_${id}" placeholder="Add your notes here..." oninput="onNoteInput('${id}')"></textarea>
+  </div>`;
+
+  allCheckboxes.push(null); // placeholder, will collect after render
+
+  if (item.sub) {
+    for (const s of item.sub) {
+      html += buildItem(s, sectionIdx, depth + 1);
+    }
+  }
+  return html;
+}
+
+function renderSections() {
+  const container = document.getElementById('sections');
+  let html = '';
+  SECTIONS.forEach((sec, si) => {
+    itemCounter = 0;
+    let bodyHtml = '';
+    if (sec.items.length === 0) {
+      bodyHtml = '<div style="padding:18px;color:#999;font-style:italic;">No items yet</div>';
+    } else {
+      sec.items.forEach(item => {
+        bodyHtml += buildItem(item, si, 0);
+      });
+    }
+    html += `<div class="section">
+      <div class="section-header" onclick="toggleSection(${si})">
+        <div>${sec.title}<span class="section-count" id="sc_${si}"></span></div>
+        <span class="toggle-icon" id="ti_${si}">\u25BC</span>
+      </div>
+      <div class="section-body" id="sb_${si}">${bodyHtml}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+
+  // Collect actual checkbox elements
+  allCheckboxes = Array.from(document.querySelectorAll('#sections input[type="checkbox"]'));
+  updateProgress();
+  updateSectionCounts();
+}
+
+function toggleSection(si) {
+  const body = document.getElementById('sb_' + si);
+  const icon = document.getElementById('ti_' + si);
+  body.classList.toggle('hidden');
+  icon.classList.toggle('collapsed');
+}
+
+function onCheck(cb) {
+  const lbl = cb.nextElementSibling;
+  if (cb.checked) lbl.classList.add('checked');
+  else lbl.classList.remove('checked');
+  updateProgress();
+  updateSectionCounts();
+}
+
+function toggleNote(id) {
+  const area = document.getElementById('na_' + id);
+  const btn = document.getElementById('nb_' + id);
+  if (area.style.display === 'block') {
+    area.style.display = 'none';
+  } else {
+    area.style.display = 'block';
+    area.querySelector('textarea').focus();
+  }
+}
+
+function onNoteInput(id) {
+  const ta = document.getElementById('nt_' + id);
+  const btn = document.getElementById('nb_' + id);
+  if (ta.value.trim()) {
+    btn.classList.add('has-note');
+    btn.textContent = 'Note';
+  } else {
+    btn.classList.remove('has-note');
+    btn.textContent = '+Note';
+  }
+}
+
+function updateSectionCounts() {
+  SECTIONS.forEach((sec, si) => {
+    const body = document.getElementById('sb_' + si);
+    if (!body) return;
+    const cbs = body.querySelectorAll('input[type="checkbox"]');
+    const done = Array.from(cbs).filter(c => c.checked).length;
+    const el = document.getElementById('sc_' + si);
+    if (cbs.length > 0) {
+      el.textContent = ` (${done}/${cbs.length})`;
+    }
+  });
+}
+
+function renderAssessment() {
+  const body = document.getElementById('assessBody');
+  let html = '';
+  ASSESS_CRITERIA.forEach(c => {
+    html += `<div class="assess-item">
+      <div class="assess-label">${c.label}</div>
+      <div class="rating-group" id="rg_${c.id}">`;
+    const labels = ['1 - Poor', '2 - Fair', '3 - OK', '4 - Good', '5 - Excellent'];
+    for (let i = 1; i <= 5; i++) {
+      html += `<label class="r${i}" onclick="selectRating('${c.id}', ${i}, this)">
+        <input type="radio" name="rate_${c.id}" value="${i}"><span>${labels[i-1]}</span>
+      </label>`;
+    }
+    html += `</div>
+      <div class="assess-note"><textarea id="an_${c.id}" placeholder="Notes on ${c.label.toLowerCase()}..."></textarea></div>
+    </div>`;
+  });
+  html += `<div class="overall-box">
+    <label>Overall Reflection & Action Items</label>
+    <textarea id="overallReflection" placeholder="What went well? What can I improve next time? Key action items..."></textarea>
+  </div>`;
+  body.innerHTML = html;
+}
+
+function selectRating(cid, val, el) {
+  const group = document.getElementById('rg_' + cid);
+  group.querySelectorAll('label').forEach(l => l.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ---- Save / Load / Reset / Export ----
+
+function gatherData() {
+  const checks = {};
+  const notes = {};
+  allCheckboxes.forEach(cb => {
+    checks[cb.id] = cb.checked;
+    const ta = document.getElementById('nt_' + cb.id);
+    if (ta && ta.value.trim()) notes[cb.id] = ta.value;
+  });
+  const ratings = {};
+  const assessNotes = {};
+  ASSESS_CRITERIA.forEach(c => {
+    const sel = document.querySelector(`input[name="rate_${c.id}"]:checked`);
+    if (sel) ratings[c.id] = parseInt(sel.value);
+    const an = document.getElementById('an_' + c.id);
+    if (an && an.value.trim()) assessNotes[c.id] = an.value;
+  });
+  const overall = document.getElementById('overallReflection').value;
+  return { checks, notes, ratings, assessNotes, overall, savedAt: new Date().toISOString() };
+}
+
+function applyData(data) {
+  if (!data) return;
+  if (data.checks) {
+    allCheckboxes.forEach(cb => {
+      if (data.checks[cb.id]) {
+        cb.checked = true;
+        cb.nextElementSibling.classList.add('checked');
+      }
+    });
+  }
+  if (data.notes) {
+    Object.entries(data.notes).forEach(([id, val]) => {
+      const ta = document.getElementById('nt_' + id);
+      if (ta) {
+        ta.value = val;
+        onNoteInput(id);
+        document.getElementById('na_' + id).style.display = 'block';
+      }
+    });
+  }
+  if (data.ratings) {
+    Object.entries(data.ratings).forEach(([cid, val]) => {
+      const radio = document.querySelector(`input[name="rate_${cid}"][value="${val}"]`);
+      if (radio) {
+        radio.checked = true;
+        radio.parentElement.classList.add('selected');
+      }
+    });
+  }
+  if (data.assessNotes) {
+    Object.entries(data.assessNotes).forEach(([cid, val]) => {
+      const an = document.getElementById('an_' + cid);
+      if (an) an.value = val;
+    });
+  }
+  if (data.overall) {
+    document.getElementById('overallReflection').value = data.overall;
+  }
+  updateProgress();
+  updateSectionCounts();
+}
+
+async function saveData() {
+  const data = gatherData();
+  await dbPut('listing_prep', data);
+  toast('Saved successfully!');
+}
+
+async function loadData() {
+  const data = await dbGet('listing_prep');
+  if (data) {
+    applyData(data);
+    toast('Loaded! (saved ' + new Date(data.savedAt).toLocaleString() + ')');
+  } else {
+    toast('No saved data found.');
+  }
+}
+
+function resetAll() {
+  if (!confirm('Reset all checkboxes, notes, and self-assessment? This cannot be undone.')) return;
+  allCheckboxes.forEach(cb => {
+    cb.checked = false;
+    cb.nextElementSibling.classList.remove('checked');
+  });
+  document.querySelectorAll('.note-area textarea').forEach(ta => { ta.value = ''; });
+  document.querySelectorAll('.note-btn').forEach(btn => { btn.classList.remove('has-note'); btn.textContent = '+Note'; });
+  document.querySelectorAll('.note-area').forEach(na => { na.style.display = 'none'; });
+  document.querySelectorAll('.rating-group label').forEach(l => l.classList.remove('selected'));
+  document.querySelectorAll('.rating-group input').forEach(r => r.checked = false);
+  document.querySelectorAll('.assess-note textarea').forEach(ta => { ta.value = ''; });
+  document.getElementById('overallReflection').value = '';
+  updateProgress();
+  updateSectionCounts();
+  toast('Reset complete.');
+}
+
+function exportData() {
+  const data = gatherData();
+  let text = 'LISTING PRESENTATION PREPARATION CHECKLIST\n';
+  text += 'Exported: ' + new Date().toLocaleString() + '\n';
+  text += '='.repeat(60) + '\n\n';
+
+  SECTIONS.forEach((sec, si) => {
+    text += sec.title.toUpperCase() + '\n';
+    text += '-'.repeat(40) + '\n';
+    const body = document.getElementById('sb_' + si);
+    const cbs = body.querySelectorAll('input[type="checkbox"]');
+    cbs.forEach(cb => {
+      const lbl = cb.nextElementSibling;
+      const mark = cb.checked ? '[x]' : '[ ]';
+      const indent = cb.closest('.sub-item2') ? '      ' : cb.closest('.sub-item') ? '    ' : '  ';
+      text += `${indent}${mark} ${lbl.textContent}\n`;
+      const note = document.getElementById('nt_' + cb.id);
+      if (note && note.value.trim()) {
+        text += `${indent}     Note: ${note.value.trim()}\n`;
+      }
+    });
+    text += '\n';
+  });
+
+  text += 'SELF-ASSESSMENT\n';
+  text += '-'.repeat(40) + '\n';
+  ASSESS_CRITERIA.forEach(c => {
+    const sel = document.querySelector(`input[name="rate_${c.id}"]:checked`);
+    const rating = sel ? sel.value + '/5' : 'Not rated';
+    text += `  ${c.label}: ${rating}\n`;
+    const an = document.getElementById('an_' + c.id);
+    if (an && an.value.trim()) text += `    Note: ${an.value.trim()}\n`;
+  });
+  const overall = document.getElementById('overallReflection').value;
+  if (overall.trim()) {
+    text += `\n  Overall Reflection:\n    ${overall.trim()}\n`;
+  }
+
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'listing_prep_checklist_' + new Date().toISOString().slice(0,10) + '.txt';
+  a.click();
+  toast('Exported!');
+}
+
+// ---- Init ----
+async function init() {
+  renderSections();
+  renderAssessment();
+  await openDB();
+  const data = await dbGet('listing_prep');
+  if (data) applyData(data);
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seller's Net Sheet</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', 'Times New Roman', serif; background: #f0f2f5; padding: 30px 20px; }
+
+  .page { max-width: 720px; margin: 0 auto; background: #fff; padding: 56px 64px 64px; box-shadow: 0 2px 20px rgba(0,0,0,0.10); border-radius: 4px; }
+
+  /* ── Header ── */
+  .doc-title { font-size: 28px; font-weight: 400; letter-spacing: 0.5px; color: #111; margin-bottom: 8px; }
+  .meta-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; padding-bottom: 16px; border-bottom: 1px solid #e0e0e0; }
+  .meta-field { display: flex; flex-direction: column; gap: 4px; }
+  .meta-field label { font-family: 'Segoe UI', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #888; }
+  .meta-field input[type="text"] { font-family: 'Segoe UI', sans-serif; font-size: 13px; border: none; border-bottom: 1px solid #ccc; padding: 3px 0; width: 220px; color: #333; background: transparent; }
+  .meta-field input[type="text"]:focus { outline: none; border-bottom-color: #1a3a5c; }
+
+  /* ── Selling Price row ── */
+  .selling-price-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 36px; }
+  .row-label { font-size: 15px; color: #222; }
+  .selling-price-row .row-label { font-size: 16px; }
+  .price-input-wrap { display: flex; align-items: baseline; gap: 4px; }
+  .currency-prefix { font-size: 13px; color: #555; margin-right: 2px; }
+  input.currency-in { font-family: 'Segoe UI', sans-serif; font-size: 15px; text-align: right; border: none; border-bottom: 1.5px solid #999; width: 160px; padding: 2px 4px; background: transparent; color: #111; }
+  input.currency-in:focus { outline: none; border-bottom-color: #1a3a5c; background: #f8fbff; }
+  .calc-value { font-family: 'Segoe UI', sans-serif; font-size: 15px; text-align: right; width: 160px; display: inline-block; color: #111; padding: 2px 4px; border-bottom: 1.5px solid #bbb; }
+  .calc-value.auto { color: #444; background: transparent; }
+  .subtotal-value { font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 600; text-align: right; width: 160px; display: inline-block; color: #111; border-bottom: 2px solid #555; padding: 2px 4px; }
+  .net-value { font-family: 'Segoe UI', sans-serif; font-size: 17px; font-weight: 700; text-align: right; width: 160px; display: inline-block; color: #1a3a5c; border-bottom: 3px double #1a3a5c; padding: 2px 4px; }
+  input.pct-in { font-family: 'Segoe UI', sans-serif; font-size: 14px; text-align: right; border: none; border-bottom: 1.5px solid #999; width: 64px; padding: 2px 4px; background: transparent; color: #111; }
+  input.pct-in:focus { outline: none; border-bottom-color: #1a3a5c; background: #f8fbff; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 32px; }
+  .section-heading { font-size: 15px; font-weight: 700; color: #222; margin-bottom: 14px; }
+  .section-heading .light { font-weight: 400; }
+
+  /* ── Data rows ── */
+  .data-row { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; min-height: 28px; }
+  .data-row .row-label { font-size: 14px; color: #333; }
+  .data-row .row-label.indent { padding-left: 24px; }
+  .row-right { display: flex; align-items: baseline; gap: 10px; }
+  .operator { font-size: 13px; color: #666; width: 14px; text-align: center; flex-shrink: 0; }
+  .subtotal-row { margin-top: 8px; padding-top: 6px; border-top: 1px solid #ddd; }
+  .subtotal-row .row-label { font-size: 14px; font-weight: 700; color: #222; }
+  .net-row { margin-top: 24px; padding-top: 12px; border-top: 2px solid #333; }
+  .net-row .row-label { font-size: 16px; font-weight: 700; color: #111; }
+  .eq-sign { font-size: 13px; color: #555; }
+
+  /* ── Dual-field (pct + currency) ── */
+  .dual-field { display: flex; align-items: baseline; gap: 10px; }
+  .pct-wrap { display: flex; align-items: baseline; gap: 3px; }
+  .pct-suffix { font-size: 12px; color: #666; }
+
+  /* ── Toolbar ── */
+  .toolbar { max-width: 720px; margin: 16px auto 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  .toolbar-left { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { padding: 9px 20px; border: none; border-radius: 5px; font-family: 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.18s; }
+  .btn-primary   { background: #1a3a5c; color: #fff; } .btn-primary:hover   { background: #254d75; }
+  .btn-secondary { background: #e8eef4; color: #1a3a5c; } .btn-secondary:hover { background: #d0dbe8; }
+  .btn-danger    { background: #dc3545; color: #fff; } .btn-danger:hover    { background: #c82333; }
+  .btn-export    { background: #28a745; color: #fff; } .btn-export:hover    { background: #218838; }
+  #saveIndicator { font-family: 'Segoe UI', sans-serif; font-size: 12px; color: #888; }
+
+  /* Saved list */
+  .saved-panel { max-width: 720px; margin: 12px auto 0; background: #fff; border-radius: 6px; padding: 18px 24px; box-shadow: 0 1px 8px rgba(0,0,0,0.07); display: none; }
+  .saved-panel h3 { font-family: 'Segoe UI', sans-serif; font-size: 14px; color: #1a3a5c; margin-bottom: 10px; }
+  .saved-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 6px; font-family: 'Segoe UI', sans-serif; font-size: 13px; }
+  .saved-item .info { flex: 1; }
+  .saved-item .actions { display: flex; gap: 6px; }
+  .saved-item .actions button { padding: 3px 10px; font-size: 12px; }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { box-shadow: none; padding: 40px 56px; }
+    .toolbar, .saved-panel { display: none !important; }
+    input.currency-in, input.pct-in { border-bottom-color: #999 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- Header -->
+  <div class="doc-title">Seller's Net Sheet</div>
+  <div class="meta-row">
+    <div class="meta-field">
+      <label>Client / Property</label>
+      <input type="text" id="field-client" placeholder="Enter name or address">
+    </div>
+    <div class="meta-field">
+      <label>Prepared By</label>
+      <input type="text" id="field-preparedby" placeholder="Agent name">
+    </div>
+    <div class="meta-field">
+      <label>Date</label>
+      <input type="text" id="field-date" placeholder="yyyy-mm-dd" style="width:130px;">
+    </div>
+  </div>
+
+  <!-- Selling Price -->
+  <div class="selling-price-row">
+    <span class="row-label">Selling Price</span>
+    <div class="price-input-wrap">
+      <input type="text" class="currency-in" id="selling-price" placeholder="0.00" inputmode="decimal">
+    </div>
+  </div>
+
+  <!-- ─── Marketing Expense ─── -->
+  <div class="section">
+    <div class="section-heading"><strong>Marketing</strong> <span class="light">Expense</span></div>
+
+    <!-- Marketing Fees: % + auto currency -->
+    <div class="data-row">
+      <span class="row-label indent">Marketing Fees</span>
+      <div class="row-right">
+        <div class="dual-field">
+          <div class="pct-wrap">
+            <input type="text" class="pct-in" id="mkt-pct" placeholder="0.00" inputmode="decimal">
+            <span class="pct-suffix">%</span>
+          </div>
+          <span class="calc-value auto" id="mkt-fee-amt">0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HST on Marketing Fee -->
+    <div class="data-row">
+      <span class="row-label indent">HST on Marketing Fee</span>
+      <div class="row-right">
+        <span class="operator">+</span>
+        <span class="calc-value auto" id="mkt-hst">0.00</span>
+      </div>
+    </div>
+
+    <!-- Sub Total Marketing -->
+    <div class="data-row subtotal-row">
+      <span class="row-label indent"><strong>Sub</strong> Total :</span>
+      <div class="row-right">
+        <span class="eq-sign">= &minus;</span>
+        <span class="subtotal-value" id="sub-mkt">0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Approximate Closing Expense ─── -->
+  <div class="section">
+    <div class="section-heading">Approximate Closing Expense</div>
+
+    <!-- Lawyer's Fee -->
+    <div class="data-row">
+      <span class="row-label indent">Lawyer's Fee</span>
+      <div class="row-right">
+        <input type="text" class="currency-in" id="lawyers-fee" placeholder="0.00" inputmode="decimal">
+      </div>
+    </div>
+
+    <!-- HST Lawyer -->
+    <div class="data-row">
+      <span class="row-label indent">HST Lawyer</span>
+      <div class="row-right">
+        <span class="operator">+</span>
+        <span class="calc-value auto" id="hst-lawyer">0.00</span>
+      </div>
+    </div>
+
+    <!-- Disbursements -->
+    <div class="data-row">
+      <span class="row-label indent">Disbursements</span>
+      <div class="row-right">
+        <span class="operator">+</span>
+        <input type="text" class="currency-in" id="disbursements" placeholder="0.00" inputmode="decimal">
+      </div>
+    </div>
+
+    <!-- Adjustments -->
+    <div class="data-row">
+      <span class="row-label indent">Adjustments</span>
+      <div class="row-right">
+        <span class="operator">+</span>
+        <input type="text" class="currency-in" id="adjustments" placeholder="0.00" inputmode="decimal">
+      </div>
+    </div>
+
+    <!-- Sub Total Closing -->
+    <div class="data-row subtotal-row">
+      <span class="row-label indent"><strong>Sub</strong> Total :</span>
+      <div class="row-right">
+        <span class="eq-sign">= &minus;</span>
+        <span class="subtotal-value" id="sub-closing">0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Mortgage ─── -->
+  <div class="section">
+    <div class="section-heading">Mortgage</div>
+
+    <!-- Pay Out -->
+    <div class="data-row">
+      <span class="row-label indent">Pay Out</span>
+      <div class="row-right">
+        <input type="text" class="currency-in" id="pay-out" placeholder="0.00" inputmode="decimal">
+      </div>
+    </div>
+
+    <!-- Penalty -->
+    <div class="data-row">
+      <span class="row-label indent">Penalty</span>
+      <div class="row-right">
+        <span class="operator">+</span>
+        <input type="text" class="currency-in" id="penalty" placeholder="0.00" inputmode="decimal">
+      </div>
+    </div>
+
+    <!-- HLC -->
+    <div class="data-row">
+      <span class="row-label indent">HLC</span>
+      <div class="row-right">
+        <span class="operator">+</span>
+        <input type="text" class="currency-in" id="hlc" placeholder="0.00" inputmode="decimal">
+      </div>
+    </div>
+
+    <!-- HLC Penalty -->
+    <div class="data-row">
+      <span class="row-label indent">HLC Penalty</span>
+      <div class="row-right">
+        <span class="operator">+</span>
+        <input type="text" class="currency-in" id="hlc-penalty" placeholder="0.00" inputmode="decimal">
+      </div>
+    </div>
+
+    <!-- Sub Total Mortgage -->
+    <div class="data-row subtotal-row">
+      <span class="row-label indent"><strong>Sub</strong> Total :</span>
+      <div class="row-right">
+        <span class="eq-sign">= &minus;</span>
+        <span class="subtotal-value" id="sub-mortgage">0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Net ─── -->
+  <div class="data-row net-row">
+    <span class="row-label">Net :</span>
+    <div class="row-right">
+      <span class="eq-sign">=</span>
+      <span class="net-value" id="net-value">0.00</span>
+    </div>
+  </div>
+</div>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <button class="btn btn-primary"   onclick="saveRecord()">Save</button>
+    <button class="btn btn-secondary" onclick="loadSavedList()">Load Saved</button>
+    <button class="btn btn-danger"    onclick="clearForm()">Clear</button>
+    <button class="btn btn-export"    onclick="exportJSON()">Export JSON</button>
+    <button class="btn btn-secondary" onclick="window.print()">Print</button>
+  </div>
+  <span id="saveIndicator"></span>
+</div>
+
+<div class="saved-panel" id="savedPanel"></div>
+
+<script>
+// ── Numeric field formatter ───────────────────────────────
+// Blocks non-numeric keys, live-formats as ###,###,###.## while
+// preserving the cursor position through comma insertion/removal.
+const ALLOWED_KEYS = new Set([
+  'Backspace','Delete','Tab','Escape','Enter',
+  'ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'
+]);
+
+function setupNumericField(el) {
+  // Block non-numeric keystrokes
+  el.addEventListener('keydown', function(e) {
+    if (ALLOWED_KEYS.has(e.key)) return;
+    if ((e.ctrlKey || e.metaKey) && 'acvxz'.includes(e.key.toLowerCase())) return;
+    if (e.key >= '0' && e.key <= '9') return;
+    // Allow one decimal point
+    if (e.key === '.' && !this.value.replace(/,/g,'').includes('.')) return;
+    e.preventDefault();
+  });
+
+  // Format on every input event
+  el.addEventListener('input', function() {
+    const cursorPos = this.selectionStart;
+
+    // Count how many non-comma chars sit before the cursor in the CURRENT (pre-format) string
+    let charsBeforeCursor = 0;
+    for (let i = 0; i < cursorPos; i++) {
+      if (this.value[i] !== ',') charsBeforeCursor++;
+    }
+
+    // Sanitise: keep only digits and the first dot (max 2 decimal places)
+    let raw = this.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+    const dotIdx = raw.indexOf('.');
+    if (dotIdx !== -1) {
+      raw = raw.slice(0, dotIdx + 1) +
+            raw.slice(dotIdx + 1).replace(/\./g, '').slice(0, 2);
+    }
+
+    // Build formatted string  ###,###,###.##
+    const parts   = raw.split('.');
+    const intFmt  = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const formatted = parts.length > 1 ? intFmt + '.' + parts[1] : intFmt;
+    this.value = formatted;
+
+    // Restore cursor: walk through formatted string counting non-comma chars
+    let counted = 0, newCursor = formatted.length;
+    for (let i = 0; i < formatted.length; i++) {
+      if (counted >= charsBeforeCursor) { newCursor = i; break; }
+      if (formatted[i] !== ',') counted++;
+    }
+    this.setSelectionRange(newCursor, newCursor);
+
+    recalc();
+  });
+
+  // Sanitise pasted content
+  el.addEventListener('paste', function(e) {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData('text');
+    // Insert only the numeric part of the paste at cursor
+    const clean = pasted.replace(/[^\d.]/g, '');
+    document.execCommand('insertText', false, clean);
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function parseNum(id) {
+  const v = document.getElementById(id).value.replace(/,/g, '').trim();
+  const n = parseFloat(v);
+  return isNaN(n) ? 0 : n;
+}
+
+// Format a computed number as ###,###,###.##
+function fmt(n) {
+  return n.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function setCalc(id, val) {
+  document.getElementById(id).textContent = fmt(val);
+}
+
+// Set a formatted value into an input (used by restoreData)
+function setInput(id, raw) {
+  const el = document.getElementById(id);
+  // raw may already have commas — strip and reformat cleanly
+  const n = parseFloat(String(raw).replace(/,/g, ''));
+  el.value = isNaN(n) ? (raw || '') : fmt(n);
+}
+
+// ── Core Calculations ─────────────────────────────────────
+function recalc() {
+  const sellingPrice = parseNum('selling-price');
+  const mktPct       = parseNum('mkt-pct');
+
+  // Marketing Expense
+  const mktFeeAmt = sellingPrice * (mktPct / 100);
+  const mktHST    = mktFeeAmt * 0.13;
+  const subMkt    = mktFeeAmt + mktHST;
+  setCalc('mkt-fee-amt', mktFeeAmt);
+  setCalc('mkt-hst',     mktHST);
+  setCalc('sub-mkt',     subMkt);
+
+  // Approximate Closing Expense
+  const lawyersFee    = parseNum('lawyers-fee');
+  const hstLawyer     = lawyersFee * 0.13;
+  const disbursements = parseNum('disbursements');
+  const adjustments   = parseNum('adjustments');
+  const subClosing    = lawyersFee + hstLawyer + disbursements + adjustments;
+  setCalc('hst-lawyer',  hstLawyer);
+  setCalc('sub-closing', subClosing);
+
+  // Mortgage
+  const payOut      = parseNum('pay-out');
+  const penalty     = parseNum('penalty');
+  const hlc         = parseNum('hlc');
+  const hlcPenalty  = parseNum('hlc-penalty');
+  const subMortgage = payOut + penalty + hlc + hlcPenalty;
+  setCalc('sub-mortgage', subMortgage);
+
+  // Net = Selling Price − sub-mkt − sub-closing − sub-mortgage
+  const net   = sellingPrice - subMkt - subClosing - subMortgage;
+  const netEl = document.getElementById('net-value');
+  netEl.textContent = fmt(net);
+  netEl.style.color = net < 0 ? '#c0392b' : '#1a3a5c';
+
+  autoSave();
+}
+
+// ── IndexedDB ─────────────────────────────────────────────
+const DB_NAME = 'SellerNetSheetDB', DB_VERSION = 1, STORE = 'records';
+let db = null;
+function openDB() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open(DB_NAME, DB_VERSION);
+    r.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE))
+        d.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
+    };
+    r.onsuccess = e => { db = e.target.result; res(db); };
+    r.onerror   = e => rej(e.target.error);
+  });
+}
+const dbOp = (mode, fn) => new Promise((res, rej) => {
+  const tx  = db.transaction(STORE, mode);
+  const req = fn(tx.objectStore(STORE));
+  req.onsuccess = () => res(req.result);
+  req.onerror   = () => rej(req.error);
+});
+const dbAdd    = r  => dbOp('readwrite', s => s.add(r));
+const dbPut    = r  => dbOp('readwrite', s => s.put(r));
+const dbGetAll = () => dbOp('readonly',  s => s.getAll());
+const dbDel    = id => dbOp('readwrite', s => s.delete(id));
+
+// ── Collect / Restore ─────────────────────────────────────
+// Store raw numeric strings (no commas) so values survive reload cleanly
+function collectData() {
+  const raw = id => parseNum(id) || '';   // store as plain number
+  return {
+    client:        document.getElementById('field-client').value,
+    preparedBy:    document.getElementById('field-preparedby').value,
+    date:          document.getElementById('field-date').value,
+    sellingPrice:  raw('selling-price'),
+    mktPct:        raw('mkt-pct'),
+    lawyersFee:    raw('lawyers-fee'),
+    disbursements: raw('disbursements'),
+    adjustments:   raw('adjustments'),
+    payOut:        raw('pay-out'),
+    penalty:       raw('penalty'),
+    hlc:           raw('hlc'),
+    hlcPenalty:    raw('hlc-penalty'),
+  };
+}
+
+function restoreData(d) {
+  document.getElementById('field-client').value     = d.client    || '';
+  document.getElementById('field-preparedby').value = d.preparedBy|| '';
+  document.getElementById('field-date').value       = d.date      || '';
+  // Numeric fields — format on restore
+  const fields = {
+    'selling-price': d.sellingPrice, 'mkt-pct': d.mktPct,
+    'lawyers-fee': d.lawyersFee, 'disbursements': d.disbursements,
+    'adjustments': d.adjustments, 'pay-out': d.payOut,
+    'penalty': d.penalty, 'hlc': d.hlc, 'hlc-penalty': d.hlcPenalty
+  };
+  Object.entries(fields).forEach(([id, val]) => {
+    const n = parseFloat(val);
+    document.getElementById(id).value = (val && !isNaN(n)) ? fmt(n) : '';
+  });
+  recalc();
+}
+
+// ── Save / Load ───────────────────────────────────────────
+let currentId = null, autoTimer = null;
+
+function autoSave() {
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(async () => {
+    if (!currentId) return;
+    const d = collectData(); d.id = currentId; d.savedAt = new Date().toISOString();
+    await dbPut(d);
+    showInd('Auto-saved ' + new Date().toLocaleTimeString(), '#888');
+  }, 1800);
+}
+
+function showInd(msg, color) {
+  const el = document.getElementById('saveIndicator');
+  el.textContent = msg; el.style.color = color || '#888';
+  setTimeout(() => el.textContent = '', 3000);
+}
+
+async function saveRecord() {
+  const d = collectData(); d.savedAt = new Date().toISOString();
+  if (currentId) { d.id = currentId; await dbPut(d); }
+  else { currentId = await dbAdd(d); }
+  showInd('Saved!', '#28a745');
+}
+
+async function loadSavedList() {
+  const panel   = document.getElementById('savedPanel');
+  const records = await dbGetAll();
+  if (!records.length) {
+    panel.innerHTML = '<h3>Saved Records</h3><p style="font-family:sans-serif;font-size:13px;color:#888;">No saved records yet.</p>';
+    panel.style.display = 'block'; return;
+  }
+  records.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+  const esc = s => { const d = document.createElement('div'); d.textContent = String(s||''); return d.innerHTML; };
+  panel.innerHTML = `<h3>Saved Records (${records.length})</h3>` + records.map(r => {
+    const price = r.sellingPrice ? '$' + Number(r.sellingPrice).toLocaleString('en-CA', {minimumFractionDigits:2}) : 'No price';
+    return `<div class="saved-item">
+      <div class="info">
+        <strong>${esc(r.client || 'No client')}</strong> &mdash; ${esc(price)}<br>
+        <span style="color:#888;font-size:11px;font-family:sans-serif;">Saved: ${new Date(r.savedAt).toLocaleString()}</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="loadRecord(${r.id})">Load</button>
+        <button class="btn btn-danger" onclick="delRecord(${r.id})" style="font-size:12px;padding:3px 9px;">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+  panel.style.display = 'block';
+}
+
+async function loadRecord(id) {
+  const records = await dbGetAll();
+  const rec = records.find(r => r.id === id);
+  if (!rec) return;
+  restoreData(rec); currentId = id;
+  document.getElementById('savedPanel').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function delRecord(id) {
+  if (!confirm('Delete this record?')) return;
+  await dbDel(id);
+  if (currentId === id) currentId = null;
+  loadSavedList();
+}
+
+function clearForm() {
+  if (!confirm('Clear all fields?')) return;
+  ['field-client','field-preparedby','field-date','selling-price','mkt-pct',
+   'lawyers-fee','disbursements','adjustments','pay-out','penalty','hlc','hlc-penalty'
+  ].forEach(id => document.getElementById(id).value = '');
+  currentId = null;
+  recalc();
+}
+
+function exportJSON() {
+  const d = collectData(); d.exportedAt = new Date().toISOString();
+  const url = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `seller-net-sheet_${d.client || 'export'}_${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ── Init ──────────────────────────────────────────────────
+(async () => {
+  await openDB();
+  document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
+
+  // Attach numeric formatter to all numeric inputs
+  ['selling-price','mkt-pct','lawyers-fee','disbursements',
+   'adjustments','pay-out','penalty','hlc','hlc-penalty'
+  ].forEach(id => setupNumericField(document.getElementById(id)));
+
+  // Meta text fields trigger autosave only
+  ['field-client','field-preparedby','field-date'].forEach(id =>
+    document.getElementById(id).addEventListener('input', autoSave)
+  );
+
+  recalc();
+})();
+</script>
+</body>
+</html>
