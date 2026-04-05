@@ -90,6 +90,20 @@
   .sub-card { margin-left: 24px; border-left: 2px solid var(--border); }
 
   /* ══════════════════════════════════════════
+     FIELD ITEMS
+     ══════════════════════════════════════════ */
+  .field-card { background: #fffcf0; border: 1px solid var(--gold-light); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 4px rgba(200,164,90,0.1); }
+  .field-card label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #b8860b; flex-shrink: 0; min-width: 90px; }
+  .field-card input, .field-card select { flex: 1; border: none; border-bottom: 1px solid var(--gold-light); background: transparent; padding: 5px 2px; font-family: 'DM Sans', sans-serif; font-size: 0.92em; color: var(--text); outline: none; }
+  .field-card input:focus, .field-card select:focus { border-bottom-color: var(--navy); }
+  .field-card select { cursor: pointer; }
+  @media (max-width: 430px) {
+    .field-card { padding: 8px 10px; gap: 8px; }
+    .field-card label { font-size: 0.65em; min-width: 72px; }
+    .field-card input, .field-card select { font-size: 0.85em; }
+  }
+
+  /* ══════════════════════════════════════════
      TOOLBAR
      ══════════════════════════════════════════ */
   .toolbar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy); padding: 10px 16px; display: flex; gap: 8px; justify-content: center; align-items: center; z-index: 100; }
@@ -122,9 +136,9 @@
     .header-meta input.dt { width: 100px; }
 
     .tab-bar { flex-wrap: wrap; overflow-x: visible; gap: 3px; }
-    .tab-btn { font-size: 0.7em; padding: 7px 8px; flex: 1 1 calc(50% - 3px); text-align: center; line-height: 1.35; white-space: normal; border-radius: 6px 6px 0 0; }
+    .tab-btn { font-size: 0.72em; padding: 8px 6px; flex: 1 1 calc(50% - 3px); text-align: center; line-height: 1.3; white-space: normal; border-radius: 6px 6px 0 0; min-height: 42px; }
     .tab-btn .tab-num, .tab-btn .tab-name { display: block; }
-    .tab-btn .tab-num { font-size: 0.9em; opacity: 0.7; }
+    .tab-btn .tab-num { font-size: 1em; opacity: 1; }
     .tab-btn .tab-name { font-size: 1em; }
     .tab-btn .tab-full { display: none; }
 
@@ -337,6 +351,7 @@ const TABS = [
           { type:"script", anchor:"Promise", text:"Jane, Mike… Before we dive in, I promise: By the time we finish today, you'll have a clear, customized plan to get your home sold for the absolute maximum the market will pay — with minimal stress." },
           { type:"script", anchor:"Multiple opinions?", text:"Quick question before we start — are you getting multiple opinions on listing your home?" },
           { type:"response", anchor:"If yes: what matters?", text:"If yes: \"Great. Smart sellers often do. What matters most to you in choosing who to work with?\" (Note their answer — address it throughout.)" },
+          { type:"field", field:"what", label:"What", fieldType:"text", maxlength:30 },
           { type:"response", anchor:"If no: appreciate trust", text:"If no: \"Appreciate the trust. I'll make sure you feel confident we're the right fit.\"" },
           { type:"script", anchor:"3-step roadmap", text:"To make sure we cover everything and protect your time, here's our simple 3-step roadmap: 1) Understand your situation and goals, 2) Build your tailored marketing plan, 3) Comparative Market Analysis and pricing strategy." },
           { type:"script", anchor:"Permission to ask", text:"The first step is the foundation — the more I understand your unique situation, the better I can deliver exactly what you're looking for. With your permission, may I ask a few questions?" }
@@ -347,17 +362,20 @@ const TABS = [
         items: [
           { type:"tip", anchor:"Goal: 80% listen", text:"Goal: Deep dive into motivation and timeline. Mirror, echo, reflect. Let them talk 80% of the time." },
           { type:"label", anchor:"Step 1: WHY" },
+          { type:"field", field:"why", label:"Why", fieldType:"text", maxlength:30 },
           { type:"script", anchor:"Big picture", text:"Thank you. Let's start with the big picture — what's bringing you to the point of thinking about selling right now?" },
           { type:"response", anchor:"If positive", text:"If Positive (Upsizing/Relocation/New chapter): \"That's exciting! What are you looking forward to most about this change? My job is to make this easy so you can focus on what's next.\"" },
           { type:"response", anchor:"If difficult", text:"If Difficult (Divorce/Debt/Probate/Health): \"Thank you for sharing — I know that's not easy. This stays completely confidential, and I've helped many families in similar situations move forward quickly and discreetly.\"" },
           { type:"script", anchor:"Why now?", text:"What makes now the right time? What's changed recently?" },
           { type:"script", anchor:"Allow you to", text:"If everything goes perfectly, what does this move really allow you to do next?" },
           { type:"label", anchor:"Step 2: WHERE" },
+          { type:"field", field:"where", label:"Where", fieldType:"text", maxlength:30 },
           { type:"script", anchor:"Next place?", text:"That makes total sense. So where does this journey take you next — have you started looking for your next place, or found something already?" },
           { type:"response", anchor:"Found something", text:"If they've found something: \"That's exciting — tell me about it! What do you love most? Do you already have an accepted offer or a firm closing date?\"" },
           { type:"response", anchor:"Still looking", text:"If still looking: \"What are you looking for in your next home? And roughly, what price range are you targeting?\"" },
-          { type:"script", anchor:"Reflect back", text:"So you're moving to [location/type] because [their reason] — that sounds like a great fit for what you described." },
+          { type:"script", anchor:"Reflect back", text:"So you're moving to {{where}} because {{why}} — that sounds like a great fit for what you described." },
           { type:"label", anchor:"Step 3: WHEN" },
+          { type:"field", field:"when", label:"When", fieldType:"text", maxlength:30 },
           { type:"tip", anchor:"Pick 2–3", text:"Choose 2-3 questions based on their situation:" },
           { type:"script", anchor:"Sell before buy?", text:"To keep you safe financially — does this home need to sell before you can buy the next one?" },
           { type:"script", anchor:"Perfect move-out", text:"In your ideal scenario, what's the perfect move-out date? Any must-hit deadlines — job start, school, lease ending?" },
@@ -369,10 +387,19 @@ const TABS = [
         title: "Discovery Part 2: Priorities / Concerns / Decision-Making",
         items: [
           { type:"label", anchor:"Step 1: PRIORITIES" },
+          { type:"field", field:"priorities", label:"Priorities", fieldType:"select", options:[
+            "Price, Timing, Convenience",
+            "Price, Convenience, Timing",
+            "Timing, Price, Convenience",
+            "Timing, Convenience, Price",
+            "Convenience, Price, Timing",
+            "Convenience, Timing, Price"
+          ]},
           { type:"script", anchor:"What's most important?", text:"That gives me a clear picture — thank you. When it comes to selling, what's most important to you? Some people tell me \"the absolute highest price possible\"… others want a quick sale so they can move on… and some just want it to be as low-stress as possible. What feels most important for you?" },
           { type:"response", anchor:"Rank: price/time/ease", text:"If they say \"everything\": \"That's very common. If you had to rank them — price, timing, and convenience — how would you order them?\"" },
           { type:"script", anchor:"Complete success", text:"When this is all done, what would make you feel like it was a complete success?" },
           { type:"label", anchor:"Step 2: CONCERNS" },
+          { type:"field", field:"concerns", label:"Concerns", fieldType:"text", maxlength:30 },
           { type:"script", anchor:"Deal-breakers", text:"Price gets the headlines, but the terms are what keep you safe. Besides price, do you have any deal-breakers? Specific dates? Fixtures you want to keep?" },
           { type:"script", anchor:"One worry", text:"I want to take the weight off your shoulders. If you could eliminate one specific worry from this process right now, what would it be?" },
           { type:"response", anchor:"Offer examples", text:"If they hesitate, offer examples: \"Is it strangers walking through your home? The negotiation? Or just the uncertainty of not knowing the timeline?\"" },
@@ -383,6 +410,10 @@ const TABS = [
           { type:"response", anchor:"If 10+ yrs ago", text:"If long ago (10+ years): \"A lot has changed since then — especially with technology and buyer behavior. I'll guide you through every step so nothing catches you off guard.\"" },
           { type:"response", anchor:"If first time", text:"If first time: \"That's exciting — you're in good hands. I'll walk you through every step so you never feel lost or unsure.\"" },
           { type:"script", anchor:"Feel taken care of", text:"When all is said and done, what's the one thing that will make you feel truly taken care of?" },
+          { type:"field", field:"decision", label:"Decision", fieldType:"text", maxlength:30 },
+          { type:"label", anchor:"Step 4: Communication" },
+          { type:"field", field:"communication", label:"Communication", fieldType:"select", options:["Phone","Text","Email"] },
+          { type:"field", field:"frequency", label:"Frequency", fieldType:"select", options:["Weekly","When News"] },
           { type:"script", anchor:"Communication prefs", text:"For communication — what works best: text, email, or call? And how often for updates: weekly, only when there's news, or something else?" }
         ]
       },
@@ -391,7 +422,7 @@ const TABS = [
         items: [
           { type:"tip", anchor:"Goal: prove you listened", text:"Goal: Prove you listened and create a seamless transition to your solution." },
           { type:"script", anchor:"Got everything straight", text:"Just to make sure I've got everything straight…" },
-          { type:"script", anchor:"Full recap", text:"It sounds like the main reason you're selling is [motivation], you're hoping to [next plans], ideally around [timeline]. Your top priorities are [priorities in order], and you want to make sure [key concerns] are handled well. You're looking for an agent who [what they said matters]." },
+          { type:"script", anchor:"Full recap", text:"It sounds like the main reason you're selling is {{why}}, you're hoping to {{where}}, ideally around {{when}}. Your top priorities are {{priorities}}, and you want to make sure {{concerns}} are handled well. You're looking for an agent who {{what}}." },
           { type:"script", anchor:"Miss anything?", text:"Did I miss anything or get anything wrong? I want to be sure I'm seeing it exactly the way you do." },
           { type:"response", anchor:"They confirm" },
           { type:"script", anchor:"Protect equity", text:"Perfect. My job now is to protect your equity and deliver exactly what you've described." },
@@ -416,10 +447,10 @@ const TABS = [
         ]
       },
       {
-        title: "Pinnacle Listing System — Your Blueprint",
+        title: "Pinnacle Listing System — Your Blueprint to Success",
         items: [
           { type:"script", anchor:"Three pillars", text:"I refuse to leave your maximum value to chance. We follow a disciplined, proven system built on three strategic pillars that deliver the highest possible price and the strongest terms." },
-          { type:"label", anchor:"🥇 Pillar 1 — Prepare" },
+          { type:"label", anchor:"🥇 Pillar 1 — Prepare", text:"Prepare your home for maximum Appeal." },
           { type:"script", anchor:"Irresistible home", text:"We make your home look and feel irresistible so buyers fall in love and compete with strong offers." },
           { type:"script", anchor:"Designer + staging", text:"We start with small changes that make a big difference: a designer consultation to spot little details that shift how buyers feel the moment they walk in, and — if it fits your property — professional staging to turn rooms into lifestyle dreams." },
           { type:"script", anchor:"1-yr home warranty", text:"I also provide a one-year home warranty at my cost — because in a low-absorption market, buyers are often held back by the fear of hidden costs. This removes that hurdle and gives them the confidence to choose your home over the competition." },
@@ -427,17 +458,17 @@ const TABS = [
           { type:"script", anchor:"Showing protocol", text:"Every showing follows the same welcoming protocol: soft background music, a light citrus scent, perfect lighting — we're engineering an emotional connection, not just opening doors." },
           { type:"script", anchor:"Photo + video + drone", text:"And we capture everything with professional photography — including stunning twilight shots — plus virtual tours, video walkthroughs, and drone views when they add value. These visuals are what stop the scroll and drive showings." },
           { type:"check", anchor:"Check-in: first impression", text:"CHECK-IN: Jane & Mike, can you see how these small details add up to a stronger first impression — and a stronger price?" },
-          { type:"label", anchor:"🥈 Pillar 2 — Market" },
+          { type:"label", anchor:"🥈 Pillar 2 — Market", text:"Market to the Maximum Number of Buyers." },
           { type:"script", anchor:"Expose + compete", text:"We expose your home everywhere and create real buyer competition." },
           { type:"script", anchor:"Two dozen channels", text:"We launch with a structured proactive plan across two dozen channels — digital, social, broker networks — and I personally reach out by phone, text, and email to agents who have active qualified buyers right now. We target the hottest, most motivated buyers first." },
           { type:"script", anchor:"24/7 scheduling", text:"My brokerage offers 24/7 instant appointment scheduling because in a market where 86% of homes fail to sell, we cannot afford to miss a single motivated buyer just because an agent didn't pick up the phone." },
           { type:"script", anchor:"Digital lockbox + feedback", text:"Every showing is tracked by a digital lockbox with a unique access code for each visit, so you always know exactly who entered your home. After each visit, I collect agent feedback within 48 hours and turn it into a clear weekly intelligence report." },
           { type:"check", anchor:"Check-in: exposure", text:"CHECK-IN: Jane & Mike, that's how we flood your home with the right buyers. Does this feel like the kind of exposure your home deserves?" },
-          { type:"label", anchor:"🥉 Pillar 3 — Negotiate" },
+          { type:"label", anchor:"🥉 Pillar 3 — Negotiate", text:"Negotiate the Highest Price and Best Terms." },
           { type:"script", anchor:"Three-phase process", text:"We follow a proven three-phase negotiation process that builds maximum leverage and protects your proceeds." },
           { type:"script", anchor:"Position strongly", text:"First, we position strongly: I learn what each buyer really wants and where their pressure points are, then use timing and competition to create early leverage." },
           { type:"script", anchor:"Firm counters", text:"In the exchange phase, every counter is firm — we never give without getting. My goal isn't just to find a buyer; it's to find that buyer's absolute ceiling. We negotiate on more than just the price — we fight for the terms, dates, and certainties that ensure this deal actually crosses the finish line." },
-          { type:"label", anchor:"Safety Net — Appraisal" },
+          { type:"label", anchor:"Safety Net — Appraisal", text:"The Final Safety Net – Protecting the Appraisal." },
           { type:"script", anchor:"Attend appraisal", text:"After we win at the negotiating table, there is still one final hurdle most agents ignore: the bank's appraisal. We never leave your final sale price exposed to that risk. I personally attend the appraisal to protect our contract price. No surprises, no last-minute reductions." },
           { type:"check", anchor:"Check-in: protection", text:"CHECK-IN: Jane & Mike, this is how we protect every dollar. Are you comfortable with this level of negotiation and protection working for you?" }
         ]
@@ -588,13 +619,20 @@ function render() {
   tabBar.innerHTML = '';
   content.innerHTML = '';
 
+  // Mobile two-line tab labels (line1 / line2)
+  const MOBILE_TAB_LABELS = [
+    ["1. Walk", "Through"],
+    ["2.", "Discovery"],
+    ["3. Plan", "of Action"],
+    ["4. Price", "Presentation"]
+  ];
+
   TABS.forEach((tab, ti) => {
     // Tab button
     const btn = document.createElement('button');
     btn.className = 'tab-btn' + (ti === 0 ? ' active' : '');
-    // Split label at " · " for two-line mobile display
-    const parts = tab.label.split(' · ');
-    btn.innerHTML = `<span class="tab-full">${tab.label}</span><span class="tab-num">${parts[0]} ·</span><span class="tab-name">${parts[1] || ''}</span>`;
+    const m = MOBILE_TAB_LABELS[ti] || ['', tab.label];
+    btn.innerHTML = `<span class="tab-full">${tab.label}</span><span class="tab-num">${m[0]}</span><span class="tab-name">${m[1]}</span>`;
     btn.onclick = () => switchTab(ti);
     tabBar.appendChild(btn);
 
@@ -611,6 +649,41 @@ function render() {
 
       sec.items.forEach((item, ii) => {
         const uid = `t${ti}_s${si}_i${ii}`;
+
+        // ── FIELD ITEM ──
+        if (item.type === 'field') {
+          const fieldCard = document.createElement('div');
+          fieldCard.className = 'field-card';
+          const lbl = document.createElement('label');
+          lbl.textContent = item.label;
+          lbl.htmlFor = 'fld_' + item.field;
+          fieldCard.appendChild(lbl);
+          let input;
+          if (item.fieldType === 'select') {
+            input = document.createElement('select');
+            const blank = document.createElement('option');
+            blank.value = ''; blank.textContent = '— select —';
+            input.appendChild(blank);
+            (item.options || []).forEach(opt => {
+              const o = document.createElement('option');
+              o.value = opt; o.textContent = opt;
+              input.appendChild(o);
+            });
+          } else {
+            input = document.createElement('input');
+            input.type = 'text';
+            if (item.maxlength) input.maxLength = item.maxlength;
+            input.placeholder = item.label;
+          }
+          input.id = 'fld_' + item.field;
+          input.dataset.field = item.field;
+          input.addEventListener('input', () => refreshTemplates());
+          input.addEventListener('change', () => refreshTemplates());
+          fieldCard.appendChild(input);
+          panel.appendChild(fieldCard);
+          return;
+        }
+
         const card = document.createElement('div');
         card.className = 'card';
 
@@ -632,7 +705,7 @@ function render() {
         anchor.textContent = item.anchor || item.text || '';
         header.appendChild(anchor);
 
-        const hasFullText = item.text && item.text !== item.anchor && item.type !== 'label';
+        const hasFullText = item.text && item.text !== item.anchor;
         if (hasFullText) {
           const expander = document.createElement('span');
           expander.className = 'card-expander';
@@ -661,6 +734,7 @@ function render() {
           const fullDiv = document.createElement('div');
           fullDiv.className = 'card-full';
           fullDiv.id = 'fd_' + uid;
+          fullDiv.dataset.template = item.text;
           fullDiv.textContent = item.text;
           card.appendChild(fullDiv);
         }
@@ -706,6 +780,21 @@ function toggleFull(uid) {
   if (ex) ex.textContent = showing ? '▸' : '▾';
 }
 
+function refreshTemplates() {
+  const values = {};
+  document.querySelectorAll('[data-field]').forEach(el => {
+    values[el.dataset.field] = el.value.trim();
+  });
+  document.querySelectorAll('[data-template]').forEach(div => {
+    let text = div.dataset.template;
+    text = text.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+      const v = values[key];
+      return v ? v : '_____';
+    });
+    div.textContent = text;
+  });
+}
+
 function onNoteInput(uid) {
   const ta = document.getElementById('nt_' + uid);
   const btn = document.getElementById('nb_' + uid);
@@ -722,10 +811,15 @@ function collectData() {
   document.querySelectorAll('.card-note textarea').forEach(ta => {
     if (ta.value.trim()) notes[ta.id.replace('nt_', '')] = ta.value;
   });
+  const fields = {};
+  document.querySelectorAll('[data-field]').forEach(el => {
+    if (el.value.trim()) fields[el.dataset.field] = el.value;
+  });
   return {
     address: document.getElementById('field-address').value,
     date: document.getElementById('field-date').value,
     client: document.getElementById('field-client').value,
+    fields,
     notes
   };
 }
@@ -735,6 +829,13 @@ function restoreData(d) {
   document.getElementById('field-address').value = d.address || '';
   document.getElementById('field-date').value = d.date || '';
   document.getElementById('field-client').value = d.client || '';
+  if (d.fields) {
+    Object.entries(d.fields).forEach(([k, v]) => {
+      const el = document.querySelector(`[data-field="${k}"]`);
+      if (el) el.value = v;
+    });
+    refreshTemplates();
+  }
   if (d.notes) {
     Object.entries(d.notes).forEach(([uid, val]) => {
       const ta = document.getElementById('nt_' + uid);
@@ -790,6 +891,8 @@ function resetFields() {
   document.getElementById('field-address').value = '';
   document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
   document.getElementById('field-client').value = '';
+  document.querySelectorAll('[data-field]').forEach(el => { el.value = ''; });
+  refreshTemplates();
   document.querySelectorAll('.card-note textarea').forEach(ta => { ta.value = ''; });
   document.querySelectorAll('.card-note-toggle').forEach(btn => { btn.classList.remove('has-note'); btn.textContent = '+Note'; });
   document.querySelectorAll('.card-note').forEach(nd => { nd.style.display = 'none'; });
@@ -820,6 +923,7 @@ function exportData() {
 // ═══════════════════════════════════════════════════════════
 (async () => {
   render();
+  refreshTemplates();
   document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
   await openDB();
 })();
