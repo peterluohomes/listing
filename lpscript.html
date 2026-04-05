@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Presentation Companion</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1a3a5c; --navy-light: #254d75; --gold: #c8a45a; --gold-light: #e8d5a0;
+    --bg: #f4f3ef; --card: #fff; --text: #2a2a2a; --text-light: #666; --border: #e2e0da;
+    --action: #2e7d32; --script: #1565c0; --response: #6a1b9a; --tip: #e65100; --check: #00695c;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+
+  /* ── Header ── */
+  .header { background: var(--navy); padding: 20px 24px 0; position: sticky; top: 0; z-index: 100; }
+  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 1.35em; color: #fff; font-weight: 600; letter-spacing: 0.3px; }
+  .header-meta { display: flex; gap: 10px; align-items: center; }
+  .header-meta input { font-family: 'DM Sans', sans-serif; font-size: 0.82em; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 5px 10px; border-radius: 4px; outline: none; }
+  .header-meta input::placeholder { color: rgba(255,255,255,0.45); }
+  .header-meta input:focus { border-color: var(--gold); background: rgba(255,255,255,0.18); }
+  .header-meta input.addr { width: 180px; }
+  .header-meta input.dt { width: 110px; }
+
+  /* ── Tabs ── */
+  .tab-bar { display: flex; gap: 0; }
+  .tab-btn { font-family: 'DM Sans', sans-serif; font-size: 0.78em; font-weight: 600; padding: 10px 16px; border: none; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); cursor: pointer; border-radius: 8px 8px 0 0; transition: all 0.2s; white-space: nowrap; letter-spacing: 0.3px; }
+  .tab-btn:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
+  .tab-btn.active { background: var(--bg); color: var(--navy); }
+
+  /* ── Content ── */
+  .content { max-width: 860px; margin: 0 auto; padding: 0 16px 80px; }
+  .tab-panel { display: none; padding-top: 20px; }
+  .tab-panel.active { display: block; }
+
+  /* ── Sections & Cards ── */
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.15em; color: var(--navy); margin: 24px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--gold-light); }
+  .section-title:first-child { margin-top: 0; }
+  .card { background: var(--card); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 10px; overflow: hidden; }
+  .card-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; user-select: none; }
+  .card-header:hover { background: #fafaf8; }
+  .card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .card-dot.action { background: var(--action); }
+  .card-dot.script { background: var(--script); }
+  .card-dot.response { background: var(--response); }
+  .card-dot.tip { background: var(--tip); }
+  .card-dot.check { background: var(--check); }
+  .card-dot.label { background: var(--gold); }
+  .card-tag { font-size: 0.65em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 7px; border-radius: 3px; flex-shrink: 0; }
+  .card-tag.action { background: #e8f5e9; color: var(--action); }
+  .card-tag.script { background: #e3f2fd; color: var(--script); }
+  .card-tag.response { background: #f3e5f5; color: var(--response); }
+  .card-tag.tip { background: #fff3e0; color: var(--tip); }
+  .card-tag.check { background: #e0f2f1; color: var(--check); }
+  .card-tag.label { background: #fff8e1; color: #f57f17; }
+  .card-text { flex: 1; font-size: 0.88em; line-height: 1.55; color: var(--text); }
+  .card-note-toggle { font-size: 0.7em; color: var(--text-light); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
+  .card-note-toggle:hover { border-color: var(--navy); color: var(--navy); }
+  .card-note-toggle.has-note { border-color: var(--gold); color: #b8860b; background: #fffcf0; }
+  .card-note { padding: 0 16px 12px 36px; display: none; }
+  .card-note textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: 'DM Sans', sans-serif; font-size: 0.85em; resize: vertical; min-height: 50px; outline: none; color: var(--text); }
+  .card-note textarea:focus { border-color: var(--navy); }
+
+  /* sub items */
+  .sub-card { margin-left: 24px; border-left: 2px solid var(--border); }
+
+  /* ── Toolbar ── */
+  .toolbar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy); padding: 10px 16px; display: flex; gap: 8px; justify-content: center; z-index: 100; }
+  .toolbar button { font-family: 'DM Sans', sans-serif; font-size: 0.8em; font-weight: 600; padding: 8px 18px; border: none; border-radius: 5px; cursor: pointer; transition: all 0.15s; }
+  .btn-save { background: var(--gold); color: var(--navy); }
+  .btn-save:hover { background: #d4b06a; }
+  .btn-load { background: rgba(255,255,255,0.15); color: #fff; }
+  .btn-load:hover { background: rgba(255,255,255,0.25); }
+  .btn-reset { background: rgba(220,53,69,0.85); color: #fff; }
+  .btn-reset:hover { background: #dc3545; }
+  .btn-export { background: rgba(255,255,255,0.15); color: #fff; }
+  .btn-export:hover { background: rgba(255,255,255,0.25); }
+  .save-ind { font-size: 0.75em; color: var(--gold-light); align-self: center; }
+
+  /* ── Toast ── */
+  .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 8px 24px; border-radius: 6px; font-size: 0.85em; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 200; }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .header-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .tab-btn { font-size: 0.7em; padding: 8px 10px; }
+    .header-meta input.addr { width: 140px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .header { position: static; }
+    .toolbar { display: none !important; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .tab-panel:first-child { page-break-before: auto; }
+    .card-note { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>Listing Presentation Companion</h1>
+    <div class="header-meta">
+      <input type="text" class="addr" id="field-address" placeholder="Property address">
+      <input type="text" class="dt" id="field-date" placeholder="yyyy-mm-dd">
+      <input type="text" class="addr" id="field-client" placeholder="Client name(s)">
+    </div>
+  </div>
+  <div class="tab-bar" id="tabBar"></div>
+</div>
+
+<div class="content" id="content"></div>
+
+<div class="toolbar">
+  <button class="btn-save" onclick="saveData()">Save</button>
+  <button class="btn-load" onclick="loadList()">Load</button>
+  <button class="btn-reset" onclick="resetAll()">Reset</button>
+  <button class="btn-export" onclick="exportData()">Export</button>
+  <span class="save-ind" id="saveInd"></span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// SCRIPT DATA
+// ═══════════════════════════════════════════════════════════
+const TABS = [
+  {
+    label: "1 · Arrival & Walk-Through",
+    sections: [
+      {
+        title: "Part 1: Arrival",
+        items: [
+          { type:"label", text:"1. Greeting" },
+          { type:"action", text:"Firm handshake, eye contact, genuine smile. Pause at the door." },
+          { type:"script", text:"Thanks for having me. I know prep takes effort — I really appreciate the time." },
+          { type:"action", text:"Stop walking. Look at a specific feature (landscaping, door, entryway)." },
+          { type:"script", text:"Before we go in — I love this front porch. It has real charm. How do you typically use it?" },
+          { type:"response", text:"Wait for their answer. Support it: \"I can tell. You have done a great job with it.\"" },
+          { type:"label", text:"2. Permission" },
+          { type:"script", text:"Do you mind if I set my bag down right here?" },
+          { type:"label", text:"3. The Two Lenses Method" },
+          { type:"action", text:"Stand still. Do not start the tour yet." },
+          { type:"script", text:"Before we walk through, I want to explain the two angles I'll be looking at your home from. First, I'll see it the way YOU do — as a place full of memories and meaning. Then I'll look at it the way the MARKET does — as a product buyers are comparing against others. My job is to protect both — the home you've loved and the equity you've built." }
+        ]
+      },
+      {
+        title: "Part 2: Walk-Through",
+        items: [
+          { type:"label", text:"0. Tour Transition" },
+          { type:"script", text:"Great — please lead the way! Show me what you fell in love with. That's exactly what buyers need to hear." },
+          { type:"script", text:"I will take notes so I do not miss any special details." },
+          { type:"label", text:"1. The Entrance (First 90 Seconds)" },
+          { type:"script", text:"Wow, look at this natural light. What time of day is the light best in here?" },
+          { type:"script", text:"When you bought this house, what was the one thing that made you say Yes?" },
+          { type:"script", text:"The windows and doors feel solid. What upgrades have you done here?" },
+          { type:"script", text:"Quick question — when friends visit, what do they usually notice first?" },
+          { type:"response", text:"After they answer: \"Perfect. That is exactly what every buyer will feel walking in.\"" },
+          { type:"label", text:"2. Living Area" },
+          { type:"script", text:"This room pulls you in. Tell me your favorite memory here — holiday mornings, game nights?" },
+          { type:"response", text:"After they share: \"That feeling is what sells the home. Buyers remember stories, not square footage.\"" },
+          { type:"script", text:"The light here is beautiful. What time of day do you love it most? That is exactly when we will bring in the photographer." },
+          { type:"label", text:"3. Kitchen (Most Important Room)" },
+          { type:"script", text:"What do guests comment about your kitchen?" },
+          { type:"script", text:"Great storage. What storage solutions do you have inside the cabinets? Buyers love those details." },
+          { type:"script", text:"Appliances look well-maintained. What do you know about the appliances — age, warranties? Buyers always ask." },
+          { type:"script", text:"If you could change one thing about this kitchen, what would it be?" },
+          { type:"tip", text:"Clear counters make the kitchen look twice as big on camera." },
+          { type:"label", text:"4. Bedrooms" },
+          { type:"script", text:"Main Bedroom: This feels peaceful. How does this space help you recharge?" },
+          { type:"script", text:"This closet has great depth. What would help it photograph even bigger?" },
+          { type:"script", text:"Other Bedrooms: This room is flexible. How has it served you best? Office, guest room, gym? Knowing that helps me target the right buyer." },
+          { type:"script", text:"Do these windows open easily? Let us smooth out this latch — we want buyers focusing on the view, not the handle." },
+          { type:"label", text:"5. Bathrooms" },
+          { type:"script", text:"The tile and fixtures look fresh. Updated bathrooms add a lot of value." },
+          { type:"script", text:"For the photos, we will want that clean spa look — it gets way more clicks. I will send you a quick checklist; most sellers knock it out in an hour." },
+          { type:"label", text:"6. Basement" },
+          { type:"script", text:"This space feels dry and solid. What systems do you have in place to keep this space dry?" },
+          { type:"script", text:"What was your dream for this space before life took you in a new direction? Potential is just as valuable as finished space." },
+          { type:"script", text:"The electrical panel looks modern. What electrical upgrades have you done — EV charger, panel, outlets?" },
+          { type:"label", text:"7. Garage" },
+          { type:"script", text:"How do you use your garage — storage, workshop, parking? Buyers always want to know." },
+          { type:"label", text:"8. Exterior" },
+          { type:"script", text:"The front yard is welcoming. What comes up throughout the seasons?" },
+          { type:"script", text:"The backyard feels like part of the house. How do you use this backyard on a summer evening?" },
+          { type:"script", text:"The roof looks good. What do you know about the roof — age, repairs? Newer roofs save sellers thousands in negotiations." },
+          { type:"script", text:"What's your favorite thing about the neighborhood that someone driving by wouldn't know?" },
+          { type:"label", text:"9. Mechanicals" },
+          { type:"script", text:"Roughly how old are the furnace, A/C, and water heater?" },
+          { type:"response", text:"After they answer: \"This proves you have taken great care of the home. Buyers pay more for peace of mind.\"" }
+        ]
+      },
+      {
+        title: "Part 3: Wrap-Up",
+        items: [
+          { type:"label", text:"1. Digging Deeper" },
+          { type:"script", text:"The feeling I'm getting as we walk through is really special — and that emotion is going to help sell this home. And to get the optimal price, we need to back it up with facts — the things buyers can't see." },
+          { type:"script", text:"So let me ask you this: over the years, have you made any major upgrades to the windows, insulation, or the plumbing and electrical systems? These are significant value-adders during appraisal." },
+          { type:"response", text:"Listen and acknowledge — \"That's significant,\" \"That's going to help a lot,\" etc." },
+          { type:"script", text:"That's really helpful — those hard metrics help the bank match our price. Now let me ask this: if you were going to stay another few years, what would have been your next renovation project?" },
+          { type:"script", text:"And finally, a more personal question on behalf of whoever ends up calling this place home: when you move, what's the one thing you're going to miss the most?" },
+          { type:"response", text:"Listen — this is usually a powerful, emotional moment." },
+          { type:"label", text:"2. Summary & Motivation" },
+          { type:"script", text:"Thank you so much for the tour and for sharing these meaningful stories. Honestly, I'm very impressed with how beautifully you've loved and cared for this home." },
+          { type:"script", text:"Before we get into the market data and pricing strategy, I'd like a quick sense of where you stand. On a scale of 1 to 10 — where 10 means \"we're confident and ready to take photos and list right now,\" and 1 means \"we're still hesitating and haven't fully decided to sell\" — where would you put yourselves today?" },
+          { type:"response", text:"IF 8-10: \"Perfect! That tells me you're ready to move decisively. Thank you for that clarity — it really helps me serve you best.\"" },
+          { type:"response", text:"IF 1-7: \"I completely understand. Selling is a big milestone. What's the main thing holding you back from feeling fully ready right now?\"" },
+          { type:"script", text:"Thank you again for opening up and for showing me your wonderful home. Now I'd like to sit down with you and talk about the best path forward to achieve the strongest possible outcome. Shall we move to the dining table?" }
+        ]
+      }
+    ]
+  },
+  {
+    label: "2 · Discovery",
+    sections: [
+      {
+        title: "The Agenda (Sitting Down)",
+        items: [
+          { type:"tip", text:"Goal: Establish authority, reduce anxiety, surface competition early, and ask permission to get personal." },
+          { type:"script", text:"Jane, Mike… Before we dive in, I promise: By the time we finish today, you'll have a clear, customized plan to get your home sold for the absolute maximum the market will pay — with minimal stress." },
+          { type:"script", text:"Quick question before we start — are you getting multiple opinions on listing your home?" },
+          { type:"response", text:"If yes: \"Great. Smart sellers often do. What matters most to you in choosing who to work with?\" (Note their answer — address it throughout.)" },
+          { type:"response", text:"If no: \"Appreciate the trust. I'll make sure you feel confident we're the right fit.\"" },
+          { type:"script", text:"To make sure we cover everything and protect your time, here's our simple 3-step roadmap: 1) Understand your situation and goals, 2) Build your tailored marketing plan, 3) Comparative Market Analysis and pricing strategy." },
+          { type:"script", text:"The first step is the foundation — the more I understand your unique situation, the better I can deliver exactly what you're looking for. With your permission, may I ask a few questions?" }
+        ]
+      },
+      {
+        title: "Discovery Part 1: Why / Where / When",
+        items: [
+          { type:"tip", text:"Goal: Deep dive into motivation and timeline. Mirror, echo, reflect. Let them talk 80% of the time." },
+          { type:"label", text:"Step 1: WHY" },
+          { type:"script", text:"Thank you. Let's start with the big picture — what's bringing you to the point of thinking about selling right now?" },
+          { type:"response", text:"If Positive (Upsizing/Relocation/New chapter): \"That's exciting! What are you looking forward to most about this change? My job is to make this easy so you can focus on what's next.\"" },
+          { type:"response", text:"If Difficult (Divorce/Debt/Probate/Health): \"Thank you for sharing — I know that's not easy. This stays completely confidential, and I've helped many families in similar situations move forward quickly and discreetly.\"" },
+          { type:"script", text:"What makes now the right time? What's changed recently?" },
+          { type:"script", text:"If everything goes perfectly, what does this move really allow you to do next?" },
+          { type:"label", text:"Step 2: WHERE" },
+          { type:"script", text:"That makes total sense. So where does this journey take you next — have you started looking for your next place, or found something already?" },
+          { type:"response", text:"If they've found something: \"That's exciting — tell me about it! What do you love most? Do you already have an accepted offer or a firm closing date?\"" },
+          { type:"response", text:"If still looking: \"What are you looking for in your next home? And roughly, what price range are you targeting?\"" },
+          { type:"script", text:"So you're moving to [location/type] because [their reason] — that sounds like a great fit for what you described." },
+          { type:"label", text:"Step 3: WHEN" },
+          { type:"tip", text:"Choose 2-3 questions based on their situation:" },
+          { type:"script", text:"To keep you safe financially — does this home need to sell before you can buy the next one?" },
+          { type:"script", text:"In your ideal scenario, what's the perfect move-out date? Any must-hit deadlines — job start, school, lease ending?" },
+          { type:"script", text:"If we get a strong offer tomorrow, what's the earliest you'd be ready to hand over keys?" },
+          { type:"script", text:"Would you need flexibility — like staying a few extra days after closing?" }
+        ]
+      },
+      {
+        title: "Discovery Part 2: Priorities / Concerns / Decision Making",
+        items: [
+          { type:"label", text:"Step 1: PRIORITIES" },
+          { type:"script", text:"That gives me a clear picture — thank you. When it comes to selling, what's most important to you? Some people tell me \"the absolute highest price possible\"… others want a quick sale so they can move on… and some just want it to be as low-stress as possible. What feels most important for you?" },
+          { type:"response", text:"If they say \"everything\": \"That's very common. If you had to rank them — price, timing, and convenience — how would you order them?\"" },
+          { type:"script", text:"When this is all done, what would make you feel like it was a complete success?" },
+          { type:"label", text:"Step 2: CONCERNS" },
+          { type:"script", text:"Price gets the headlines, but the terms are what keep you safe. Besides price, do you have any deal-breakers? Specific dates? Fixtures you want to keep?" },
+          { type:"script", text:"I want to take the weight off your shoulders. If you could eliminate one specific worry from this process right now, what would it be?" },
+          { type:"response", text:"If they hesitate, offer examples: \"Is it strangers walking through your home? The negotiation? Or just the uncertainty of not knowing the timeline?\"" },
+          { type:"response", text:"After they answer: \"Perfect. That's exactly what we'll manage together.\"" },
+          { type:"label", text:"Step 3: DECISION-MAKING" },
+          { type:"script", text:"To help me tailor this process — when was the last time you sold a home?" },
+          { type:"response", text:"If recent (1-5 years): \"How was that experience? What worked well, and what was missing that you really need this time?\"" },
+          { type:"response", text:"If long ago (10+ years): \"A lot has changed since then — especially with technology and buyer behavior. I'll guide you through every step so nothing catches you off guard.\"" },
+          { type:"response", text:"If first time: \"That's exciting — you're in good hands. I'll walk you through every step so you never feel lost or unsure.\"" },
+          { type:"script", text:"When all is said and done, what's the one thing that will make you feel truly taken care of?" },
+          { type:"script", text:"For communication — what works best: text, email, or call? And how often for updates: weekly, only when there's news, or something else?" }
+        ]
+      },
+      {
+        title: "Discovery Part 3: The Recap",
+        items: [
+          { type:"tip", text:"Goal: Prove you listened and create a seamless transition to your solution." },
+          { type:"script", text:"Just to make sure I've got everything straight…" },
+          { type:"script", text:"It sounds like the main reason you're selling is [motivation], you're hoping to [next plans], ideally around [timeline]. Your top priorities are [priorities in order], and you want to make sure [key concerns] are handled well. You're looking for an agent who [what they said matters]." },
+          { type:"script", text:"Did I miss anything or get anything wrong? I want to be sure I'm seeing it exactly the way you do." },
+          { type:"response", text:"They confirm." },
+          { type:"script", text:"Perfect. My job now is to protect your equity and deliver exactly what you've described." },
+          { type:"script", text:"Last question — just between us: What's the dream price you're quietly hoping for? Even a ballpark helps." },
+          { type:"response", text:"If commission question arises: \"Excellent question — we'll go through every cost line-by-line in Step 3 so you see exactly what you keep. For now, knowing your target helps me build the strongest pricing strategy possible.\"" },
+          { type:"tip", text:"→ Transition to Tailored Plan" }
+        ]
+      }
+    ]
+  },
+  {
+    label: "3 · Plan of Action",
+    sections: [
+      {
+        title: "Transition from Discovery",
+        items: [
+          { type:"script", text:"Jane and Mike, that was a great conversation. I now have a crystal-clear picture of your priorities and what matters most to you." },
+          { type:"script", text:"To get you top dollar right now, we have to face the ground reality of this market. Current TRREB numbers show an absorption rate around 14%. That means for every 100 homes listed, 86 will sit, lose their freshness, and eventually sell for less. Hope is not a strategy. In this environment, 'average' is a liability." },
+          { type:"script", text:"Most agents provide the 'inventory,' but my goal is to ensure you provide the 'sale' by positioning you in that top 14% from day one — using a strategy that creates attention and competition where other listings just sit quietly." },
+          { type:"script", text:"You're not just selling a house. You're unlocking the full value of your home to power your next chapter. Ready to see the exact blueprint? Over the next few minutes, we'll build it together. Feel free to stop me anytime to adjust or ask questions. Fair enough?" },
+          { type:"response", text:"Wait for yes." }
+        ]
+      },
+      {
+        title: "Pinnacle Listing System — Your Blueprint",
+        items: [
+          { type:"script", text:"I refuse to leave your maximum value to chance. We follow a disciplined, proven system built on three strategic pillars that deliver the highest possible price and the strongest terms." },
+          { type:"label", text:"🥇 Pillar 1 — Prepare Your Home for Maximum Appeal" },
+          { type:"script", text:"We make your home look and feel irresistible so buyers fall in love and compete with strong offers." },
+          { type:"script", text:"We start with small changes that make a big difference: a designer consultation to spot little details that shift how buyers feel the moment they walk in, and — if it fits your property — professional staging to turn rooms into lifestyle dreams." },
+          { type:"script", text:"I also provide a one-year home warranty at my cost — because in a low-absorption market, buyers are often held back by the fear of hidden costs. This removes that hurdle and gives them the confidence to choose your home over the competition." },
+          { type:"script", text:"Every buyer and buyer's agent will clearly see what makes your home special through in-home highlight cards, agent pre-showing sheets, and take-home brochures that keep your property top-of-mind." },
+          { type:"script", text:"Every showing follows the same welcoming protocol: soft background music, a light citrus scent, perfect lighting — we're engineering an emotional connection, not just opening doors." },
+          { type:"script", text:"And we capture everything with professional photography — including stunning twilight shots — plus virtual tours, video walkthroughs, and drone views when they add value. These visuals are what stop the scroll and drive showings." },
+          { type:"check", text:"CHECK-IN: Jane & Mike, can you see how these small details add up to a stronger first impression — and a stronger price?" },
+          { type:"label", text:"🥈 Pillar 2 — Market to the Maximum Number of Buyers" },
+          { type:"script", text:"We expose your home everywhere and create real buyer competition." },
+          { type:"script", text:"We launch with a structured proactive plan across two dozen channels — digital, social, broker networks — and I personally reach out by phone, text, and email to agents who have active qualified buyers right now. We target the hottest, most motivated buyers first." },
+          { type:"script", text:"My brokerage offers 24/7 instant appointment scheduling because in a market where 86% of homes fail to sell, we cannot afford to miss a single motivated buyer just because an agent didn't pick up the phone." },
+          { type:"script", text:"Every showing is tracked by a digital lockbox with a unique access code for each visit, so you always know exactly who entered your home. After each visit, I collect agent feedback within 48 hours and turn it into a clear weekly intelligence report." },
+          { type:"check", text:"CHECK-IN: Jane & Mike, that's how we flood your home with the right buyers. Does this feel like the kind of exposure your home deserves?" },
+          { type:"label", text:"🥉 Pillar 3 — Negotiate the Highest Price and Best Terms" },
+          { type:"script", text:"We follow a proven three-phase negotiation process that builds maximum leverage and protects your proceeds." },
+          { type:"script", text:"First, we position strongly: I learn what each buyer really wants and where their pressure points are, then use timing and competition to create early leverage." },
+          { type:"script", text:"In the exchange phase, every counter is firm — we never give without getting. My goal isn't just to find a buyer; it's to find that buyer's absolute ceiling. We negotiate on more than just the price — we fight for the terms, dates, and certainties that ensure this deal actually crosses the finish line." },
+          { type:"label", text:"The Final Safety Net — Protecting the Appraisal" },
+          { type:"script", text:"After we win at the negotiating table, there is still one final hurdle most agents ignore: the bank's appraisal. We never leave your final sale price exposed to that risk. I personally attend the appraisal to protect our contract price. No surprises, no last-minute reductions." },
+          { type:"check", text:"CHECK-IN: Jane & Mike, this is how we protect every dollar. Are you comfortable with this level of negotiation and protection working for you?" }
+        ]
+      },
+      {
+        title: "Conclusion & Three-Step Close",
+        items: [
+          { type:"script", text:"Jane, Mike — this isn't a pitch. It's exactly what I'm going to do for you. In a market that rewards the prepared, you'll have certainty, leverage, and someone fully committed to delivering an outstanding result — together." },
+          { type:"label", text:"Step 1: The Value Tie-Down" },
+          { type:"script", text:"Jane, Mike — we've covered the complete blueprint — The Pinnacle Listing System that maximizes the value of your home. You've seen how we make your home irresistible, how we flood it with the right buyers, and how I protect every dollar through negotiation and appraisal." },
+          { type:"label", text:"Step 2: The Process Close" },
+          { type:"script", text:"Before we move to pricing and launch strategy — one important question: Based on everything you've seen, the preparation, the marketing, the negotiation — do you feel confident that this strategic process will get you the highest price in today's market?" },
+          { type:"response", text:"Wait for \"Yes\" — pause — let them say it." },
+          { type:"label", text:"Step 3: Pivot to CMA" },
+          { type:"script", text:"Jane & Mike, we've aligned on your goals, and mapped out our plan of action. Now comes the pivotal part: pricing and launch strategy. This directly impacts your timeline, stress, and net proceeds." }
+        ]
+      }
+    ]
+  },
+  {
+    label: "4 · Price Presentation",
+    sections: [
+      {
+        title: "Opener — Frame the Conversation",
+        items: [
+          { type:"script", text:"Jane & Mike, we've aligned on your goals, and mapped out our plan of action. Now comes the pivotal part: pricing and launch strategy. This directly impacts your timeline, stress, and net proceeds." },
+          { type:"script", text:"You mentioned your top priorities are [recap clearly, e.g., 'maximizing net proceeds with a quick, low-hassle sale']. Everything I'm sharing today is tailored to achieve exactly that." },
+          { type:"script", text:"My recommendations are grounded in fresh market data, proven buyer behavior, and what's succeeding right now — I pulled the latest numbers this morning. We're working with real-time insights. Sound good?" },
+          { type:"response", text:"Pause for clear 'yes' — nod and proceed only after agreement." }
+        ]
+      },
+      {
+        title: "Part 1: Current Market Snapshot",
+        items: [
+          { type:"script", text:"Quick view of buyer activity in our area:" },
+          { type:"script", text:"Last 30 days — 571 homes on market, 81 homes sold. That means for every 100 homes on the market, 14 sold, and 86 are not sold." },
+          { type:"script", text:"Key trend: Sharply priced homes get multiple offers in the first 1-2 weeks. Overpriced homes linger, accumulate reductions, and often net less after holding costs and concessions." },
+          { type:"script", text:"Pricing isn't about what the home is 'worth' to us — it's about what sparks maximum buyer response from day one. Get that right, and you control the process." }
+        ]
+      },
+      {
+        title: "Part 2: Recent Sold Comparables",
+        items: [
+          { type:"script", text:"The best value indicator is what qualified buyers have recently paid — not estimates or wishes." },
+          { type:"tip", text:"Display 4-6 relevant sold comps on one clean slide." },
+          { type:"script", text:"These 5 properties represent the most relevant value indicators." },
+          { type:"script", text:"Highlight 2-3: This one sold for 1.7m in 30 days — similar in beds/baths/size, but yours edges it with [e.g., updated kitchen, superior lot/condition]." },
+          { type:"script", text:"These solds define the proven buyer-accepted range today — a solid floor and ceiling." },
+          { type:"tip", text:"Credibility boost: My listings this year averaged 103% of list price vs. the market's 96% — thanks to strategic pricing upfront." }
+        ]
+      },
+      {
+        title: "Part 3: Active Competition",
+        items: [
+          { type:"script", text:"These are the homes buyers will compare yours to at launch." },
+          { type:"tip", text:"Show 4-6 key actives/pendings." },
+          { type:"script", text:"Solds show what's possible; actives reveal direct rivals. Priced right, your advantages in [2-3 specifics] make it the standout choice." }
+        ]
+      },
+      {
+        title: "Part 4: Guided Discovery",
+        items: [
+          { type:"script", text:"Jane & Mike, let's think like buyers for a moment. From these solds and actives, which homes does yours compete most with? Where are your clear edges? Any buyer-perceived trade-offs?" },
+          { type:"response", text:"Spot on — buyers will see those strengths as well. Pricing to showcase them builds instant momentum." }
+        ]
+      },
+      {
+        title: "Part 5: Buyer Behavior",
+        items: [
+          { type:"script", text:"Most sellers overlook this: Buyer energy peaks early." },
+          { type:"script", text:"Weeks 1-2: 70-80% of showings, strongest competition, best offers." },
+          { type:"script", text:"After 30 days: Listings go 'stale,' fewer buyers, weaker leverage." },
+          { type:"script", text:"Even 5% over market often backfires — lost buzz, reductions, extra costs, lower net. Data proves competitively priced homes sell faster and net more." },
+          { type:"tip", text:"Add pricing pyramid visual if possible: Lower pricing draws 60-90% more buyers, creating competition that drives the final price up." }
+        ]
+      },
+      {
+        title: "Part 6: Three Proven Pricing Strategies",
+        items: [
+          { type:"script", text:"It really comes down to this: How quickly do you want certainty and a smooth, low-stress process — and how much uncertainty or extra hassle are you willing to accept in exchange for the possibility of a slightly higher return?" },
+          { type:"label", text:"Momentum-Driven" },
+          { type:"script", text:"List below market → Ignites urgency, multiple offers, highest chance of bidding war pushing above range. Best for speed + max net." },
+          { type:"label", text:"Market-Aligned" },
+          { type:"script", text:"List at fair market value → Steady interest, solid offers in 2-4 weeks, low reduction risk." },
+          { type:"label", text:"Test-the-Market" },
+          { type:"script", text:"List above solds → Longer timeline, higher stagnation/reduction risk. Suited only for unique homes or flexible timelines." },
+          { type:"script", text:"Jane & Mike, based on your priorities of [recap], which strategy resonates most?" }
+        ]
+      },
+      {
+        title: "Part 7: Data-Driven Recommendation",
+        items: [
+          { type:"script", text:"Factoring sold data, competition, trends, your home's strengths, and your priorities — the supported range is 1.7m to 1.8m." },
+          { type:"script", text:"My recommendation: List at 1.59m with the Momentum-Driven approach. This maximizes Week 1 traffic, draws multiple buyers, and positions us for the upper end (or higher) without reductions or added stress." },
+          { type:"tip", text:"Similar launches I've done netted clients $31,000 more on average vs. starting high and reducing." }
+        ]
+      },
+      {
+        title: "Part 8: Assumptive Close",
+        items: [
+          { type:"script", text:"Jane & Mike, looking at the data and your goals — how does this price and strategy feel?" },
+          { type:"script", text:"Since this is clearly the smartest path to maximizing your net proceeds and getting you moved on your timeline, let's get to work. This agreement puts the plan in motion immediately. I'll handle the heavy lifting so you can stay focused on your move." },
+          { type:"script", text:"Let's finish this paperwork and we start to get you that top-dollar result." },
+          { type:"action", text:"Hand pen, smile, pause confidently." }
+        ]
+      }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// IndexedDB
+// ═══════════════════════════════════════════════════════════
+const DB_NAME = 'LPScriptDB', DB_VER = 1, STORE = 'records';
+let db = null;
+
+function openDB() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open(DB_NAME, DB_VER);
+    r.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE))
+        d.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
+    };
+    r.onsuccess = e => { db = e.target.result; res(db); };
+    r.onerror = e => rej(e.target.error);
+  });
+}
+const dbOp = (mode, fn) => new Promise((res, rej) => {
+  const tx = db.transaction(STORE, mode);
+  const req = fn(tx.objectStore(STORE));
+  req.onsuccess = () => res(req.result);
+  req.onerror = () => rej(req.error);
+});
+const dbAdd = r => dbOp('readwrite', s => s.add(r));
+const dbPut = r => dbOp('readwrite', s => s.put(r));
+const dbGetAll = () => dbOp('readonly', s => s.getAll());
+const dbDel = id => dbOp('readwrite', s => s.delete(id));
+
+// ═══════════════════════════════════════════════════════════
+// Rendering
+// ═══════════════════════════════════════════════════════════
+let currentId = null;
+
+function render() {
+  const tabBar = document.getElementById('tabBar');
+  const content = document.getElementById('content');
+  tabBar.innerHTML = '';
+  content.innerHTML = '';
+
+  TABS.forEach((tab, ti) => {
+    // Tab button
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (ti === 0 ? ' active' : '');
+    btn.textContent = tab.label;
+    btn.onclick = () => switchTab(ti);
+    tabBar.appendChild(btn);
+
+    // Panel
+    const panel = document.createElement('div');
+    panel.className = 'tab-panel' + (ti === 0 ? ' active' : '');
+    panel.id = 'panel-' + ti;
+
+    tab.sections.forEach((sec, si) => {
+      const h2 = document.createElement('div');
+      h2.className = 'section-title';
+      h2.textContent = sec.title;
+      panel.appendChild(h2);
+
+      sec.items.forEach((item, ii) => {
+        const uid = `t${ti}_s${si}_i${ii}`;
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const header = document.createElement('div');
+        header.className = 'card-header';
+
+        const dot = document.createElement('span');
+        dot.className = 'card-dot ' + item.type;
+        header.appendChild(dot);
+
+        const typeLabels = { action:'DO', script:'SAY', response:'IF/THEN', tip:'TIP', check:'CHECK-IN', label:'—' };
+        const tag = document.createElement('span');
+        tag.className = 'card-tag ' + item.type;
+        tag.textContent = typeLabels[item.type] || '';
+        header.appendChild(tag);
+
+        const text = document.createElement('span');
+        text.className = 'card-text';
+        text.textContent = item.text;
+        header.appendChild(text);
+
+        if (item.type !== 'label') {
+          const noteBtn = document.createElement('span');
+          noteBtn.className = 'card-note-toggle';
+          noteBtn.textContent = '+Note';
+          noteBtn.id = 'nb_' + uid;
+          noteBtn.onclick = (e) => { e.stopPropagation(); toggleNote(uid); };
+          header.appendChild(noteBtn);
+        }
+
+        card.appendChild(header);
+
+        if (item.type !== 'label') {
+          const noteDiv = document.createElement('div');
+          noteDiv.className = 'card-note';
+          noteDiv.id = 'nd_' + uid;
+          const ta = document.createElement('textarea');
+          ta.id = 'nt_' + uid;
+          ta.placeholder = 'Your notes...';
+          ta.oninput = () => onNoteInput(uid);
+          noteDiv.appendChild(ta);
+          card.appendChild(noteDiv);
+        }
+
+        panel.appendChild(card);
+      });
+    });
+
+    content.appendChild(panel);
+  });
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+}
+
+function toggleNote(uid) {
+  const nd = document.getElementById('nd_' + uid);
+  const showing = nd.style.display === 'block';
+  nd.style.display = showing ? 'none' : 'block';
+  if (!showing) document.getElementById('nt_' + uid).focus();
+}
+
+function onNoteInput(uid) {
+  const ta = document.getElementById('nt_' + uid);
+  const btn = document.getElementById('nb_' + uid);
+  if (!ta || !btn) return;
+  if (ta.value.trim()) { btn.classList.add('has-note'); btn.textContent = '★ Note'; }
+  else { btn.classList.remove('has-note'); btn.textContent = '+Note'; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// Data collection
+// ═══════════════════════════════════════════════════════════
+function collectData() {
+  const notes = {};
+  document.querySelectorAll('.card-note textarea').forEach(ta => {
+    if (ta.value.trim()) notes[ta.id.replace('nt_', '')] = ta.value;
+  });
+  return {
+    address: document.getElementById('field-address').value,
+    date: document.getElementById('field-date').value,
+    client: document.getElementById('field-client').value,
+    notes
+  };
+}
+
+function restoreData(d) {
+  if (!d) return;
+  document.getElementById('field-address').value = d.address || '';
+  document.getElementById('field-date').value = d.date || '';
+  document.getElementById('field-client').value = d.client || '';
+  if (d.notes) {
+    Object.entries(d.notes).forEach(([uid, val]) => {
+      const ta = document.getElementById('nt_' + uid);
+      if (ta) {
+        ta.value = val;
+        onNoteInput(uid);
+        const nd = document.getElementById('nd_' + uid);
+        if (nd) nd.style.display = 'block';
+      }
+    });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// Save / Load / Reset / Export
+// ═══════════════════════════════════════════════════════════
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function showInd(msg) {
+  const el = document.getElementById('saveInd');
+  el.textContent = msg;
+  setTimeout(() => el.textContent = '', 3000);
+}
+
+async function saveData() {
+  const d = collectData();
+  d.savedAt = new Date().toISOString();
+  if (currentId) { d.id = currentId; await dbPut(d); }
+  else { currentId = await dbAdd(d); }
+  toast('Saved!');
+}
+
+async function loadList() {
+  const records = await dbGetAll();
+  if (!records.length) { toast('No saved records.'); return; }
+  records.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+  const choice = records.map((r, i) => `${i + 1}. ${r.address || 'No address'} — ${r.date || 'No date'} (${r.client || 'No client'})`).join('\n');
+  const pick = prompt('Select a record to load:\n\n' + choice + '\n\nEnter number:');
+  const idx = parseInt(pick) - 1;
+  if (isNaN(idx) || idx < 0 || idx >= records.length) return;
+  const rec = records[idx];
+  resetFields();
+  restoreData(rec);
+  currentId = rec.id;
+  toast('Loaded: ' + (rec.address || 'record'));
+}
+
+function resetFields() {
+  document.getElementById('field-address').value = '';
+  document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('field-client').value = '';
+  document.querySelectorAll('.card-note textarea').forEach(ta => { ta.value = ''; });
+  document.querySelectorAll('.card-note-toggle').forEach(btn => { btn.classList.remove('has-note'); btn.textContent = '+Note'; });
+  document.querySelectorAll('.card-note').forEach(nd => { nd.style.display = 'none'; });
+}
+
+function resetAll() {
+  if (!confirm('Clear all notes and fields?')) return;
+  resetFields();
+  currentId = null;
+  toast('Reset complete.');
+}
+
+function exportData() {
+  const d = collectData();
+  d.exportedAt = new Date().toISOString();
+  const addr = (d.address || 'no_address').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const dt = d.date || new Date().toISOString().slice(0, 10);
+  const blob = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `LP_Script_Notes_${addr}_${dt}.json`;
+  a.click();
+  toast('Exported!');
+}
+
+// ═══════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════
+(async () => {
+  render();
+  document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
+  await openDB();
+})();
+</script>
+</body>
+</html>
