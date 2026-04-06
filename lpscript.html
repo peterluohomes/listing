@@ -116,10 +116,10 @@
     .header-meta input.addr { flex: 1; width: auto; min-width: 0; }
     .header-meta input.dt { width: 100px; }
 
-    .tab-bar { flex-wrap: wrap; overflow-x: visible; gap: 3px; }
-    .tab-btn { font-size: 0.7em; padding: 7px 8px; flex: 1 1 calc(50% - 3px); text-align: center; line-height: 1.35; white-space: normal; border-radius: 6px 6px 0 0; }
+    .tab-bar { flex-wrap: nowrap; overflow-x: visible; gap: 2px; }
+    .tab-btn { font-size: 0.68em; padding: 7px 4px; flex: 1 1 0; min-width: 0; text-align: center; line-height: 1.25; white-space: normal; border-radius: 6px 6px 0 0; min-height: 42px; }
     .tab-btn .tab-num, .tab-btn .tab-name { display: block; }
-    .tab-btn .tab-num { font-size: 0.9em; opacity: 0.7; }
+    .tab-btn .tab-num { font-size: 1em; }
     .tab-btn .tab-name { font-size: 1em; }
     .tab-btn .tab-full { display: none; }
 
@@ -574,13 +574,20 @@ function render() {
   tabBar.innerHTML = '';
   content.innerHTML = '';
 
+  // Mobile two-line tab labels (line1 / line2)
+  const MOBILE_TAB_LABELS = [
+    ["1. Walk", "Through"],
+    ["2.", "Discovery"],
+    ["3. Plan", "of Action"],
+    ["4. Price", "Presentation"]
+  ];
+
   TABS.forEach((tab, ti) => {
     // Tab button
     const btn = document.createElement('button');
     btn.className = 'tab-btn' + (ti === 0 ? ' active' : '');
-    // Split label at " · " for two-line mobile display
-    const parts = tab.label.split(' · ');
-    btn.innerHTML = `<span class="tab-full">${tab.label}</span><span class="tab-num">${parts[0]} ·</span><span class="tab-name">${parts[1] || ''}</span>`;
+    const m = MOBILE_TAB_LABELS[ti] || ['', tab.label];
+    btn.innerHTML = `<span class="tab-full">${tab.label}</span><span class="tab-num">${m[0]}</span><span class="tab-name">${m[1]}</span>`;
     btn.onclick = () => switchTab(ti);
     tabBar.appendChild(btn);
 
