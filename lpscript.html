@@ -609,262 +609,105 @@ const TABS = [
     "label": "1.5 · Motivation Fallback",
     "sections": [
       {
-        "title": "Logic Tree",
+        "title": "Entry · The Readiness Scale",
         "items": [
-          {
-            "type": "tip",
-            "text": "Triggered by the 1-to-10 motivation question at the end of the Walk-Through. Answer routes you down this tree."
-          },
-          {
-            "type": "label",
-            "text": "Score 8–10 → Proceed normally"
-          },
-          {
-            "type": "tip",
-            "text": "Thank them for the clarity and transition to the dining table. Run the full appointment as planned."
-          },
-          {
-            "type": "label",
-            "text": "Score 1–7 → Ask the follow-up"
-          },
-          {
-            "type": "script",
-            "text": "I completely understand. Selling is a big milestone. What's the main thing holding you back from feeling fully ready right now?"
-          },
-          {
-            "type": "tip",
-            "text": "Classify the answer into one of five paths:  •  Informational → Path A  •  Relational → Path B  •  Circumstantial → Path C  •  Spousal split → Path D  •  Exploratory (just curious) → Path E"
-          },
-          {
-            "type": "tip",
-            "text": "If it doesn't cleanly match, default to Path A. If it matches two, pick the larger blocker. Difficulty order: A < C < B < D — pick the one further right. Path E sits outside this spectrum — it's a different kind of meeting, not a harder version."
-          },
-          {
-            "type": "label",
-            "text": "HARD RULE"
-          },
-          {
-            "type": "tip",
-            "text": "Never attempt to close a seller at motivation 1–5 at the walk-through. The fork decides how to invest the next 90 minutes, not whether to ask for a signature today."
-          }
+          { "type": "label", "anchor": "1-to-10 scale", "text": "Triggered by the 1-to-10 motivation question at the end of the Walk-Through. The answer routes you down this tree." },
+          { "type": "script", "anchor": "scale 1 to 10", "text": "Before we get into the market data and pricing strategy, I'd like a quick sense of where you stand. On a scale of 1 to 10 — where 10 means 'we're confident and ready to take photos and list right now,' and 1 means 'we're still hesitating and haven't fully decided to sell' — where would you put yourselves today? (Pause and listen to both partners, separately if they hesitate.)" },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 at the walk-through. The fork decides how to invest the next 90 minutes, not whether to ask for a signature today." },
+          { "type": "label", "anchor": "— routing —", "text": "Three entry routes" },
+          { "type": "action", "anchor": "both 8–10", "text": "Both aligned & ready → go to Default path. Thank them for the clarity, transition to dining table, open Discovery." },
+          { "type": "action", "anchor": "both 1–7", "text": "Shared hesitation → ask the follow-up: 'I completely understand. Selling is a big milestone. What's the main thing holding you back from feeling fully ready right now?' Classify their answer, route to Path A / B / C / D / E." },
+          { "type": "action", "anchor": "split / divergent", "text": "Scores differ, OR one leans in while the other leans back, OR one answers and the other looks at the floor → go directly to Path D. Do NOT ask the follow-up first." },
+          { "type": "label", "anchor": "— signal classification —", "text": "If Both 1–7, classify the follow-up answer into a path" },
+          { "type": "tip", "anchor": "Path A signals", "text": "Informational: 'we don't really know the market,' 'not sure what our home is worth,' 'haven't thought through timing,' 'don't know what we don't know.'" },
+          { "type": "tip", "anchor": "Path B signals", "text": "Relational: 'interviewing a few agents,' 'last agent was terrible,' 'bad experience with realtors,' 'not sure who to trust,' 'friend is also a realtor and we feel obligated.'" },
+          { "type": "tip", "anchor": "Path C signals", "text": "Circumstantial: 'need to talk to accountant,' 'waiting for retirement in March,' 'need to find our next place first,' 'waiting to see what happens with the market,' 'kids finish school in June.'" },
+          { "type": "tip", "anchor": "Path D signals", "text": "Split revealed in the answer: 'my wife/husband is ready — I'm not,' 'she's more ready than I am,' 'honestly, this is more her idea than mine.' Also: one partner answers while the other stays silent, or body language disagreement (crossed arms, leaning away, short nods)." },
+          { "type": "tip", "anchor": "Path E signals", "text": "Exploratory: 'just curious what it's worth,' 'thinking about selling in a couple of years,' 'neighbour just sold and it got us wondering.' Motivation typically 1–3, no specific blocker when asked — because nothing is holding them back. They have no near-term trigger." },
+          { "type": "label", "anchor": "— multi-path —", "text": "When two paths match" },
+          { "type": "tip", "anchor": "larger blocker rule", "text": "Matches two means: the seller names signals from two different paths in the same breath. Larger blocker means: if unresolved, which one would still kill the deal? Rough difficulty order (easier → harder): Path A < Path C < Path B < Path D. When two match, pick the one further right on that spectrum. Path E sits outside — it's a different kind of meeting, not a harder version." },
+          { "type": "tip", "anchor": "split-revealed wins", "text": "If Path D triggers alongside any other path, Path D wins. A hidden readiness split must be resolved before any blocker can be meaningfully addressed." },
+          { "type": "tip", "anchor": "exploratory wins", "text": "If Path E triggers alongside any non-D path, Path E wins. Exploratory is a different meeting frame entirely — don't run the full 90 minutes." },
+          { "type": "script", "anchor": "acknowledge the skipped", "text": "Before I dive in — I heard you mention [the information piece / the trust piece / the timing piece], and I want you to know I haven't forgotten that. We'll come back to it. But let me first address the bigger piece, because if we don't resolve that first, the rest doesn't really matter. Is that okay with you?" },
+          { "type": "tip", "anchor": "listen for redirect", "text": "If the skipped spouse says 'actually, I'd rather start with mine' — you just learned their concern is bigger to them than it looked. Flip the primary. Free intel you only get by asking." }
         ]
       },
       {
-        "title": "Path A: Informational Hesitation",
+        "title": "Default · Both 8–10",
         "items": [
-          {
-            "type": "tip",
-            "text": "DECISION: PROCEED to the full appointment. Reframe goal from 'win the listing today' to 'earn the right to come back when they're ready.'"
-          },
-          {
-            "type": "script",
-            "text": "That makes complete sense, and honestly, I'd rather you feel informed than rushed. Here's what I'd like to suggest: let's still use our time today the way we planned — I'll walk you through the market, the strategy, and the numbers — but think of it as a conversation, not a pitch. No decision needed at the end. By the time we finish, you'll know exactly where the market is, what your home is worth, and what a great sale would look like for you. Then you decide what makes sense, in your own time. Sound fair?"
-          }
+          { "type": "label", "anchor": "proceed normally", "text": "Aligned & ready. Thank them for the clarity, transition to the dining table, and open the Discovery phase." },
+          { "type": "script", "anchor": "ready to move decisively", "text": "Perfect — that tells me you're ready to move decisively. Thank you for that clarity — it really helps me serve you best." },
+          { "type": "script", "anchor": "dining table", "text": "Thank you again for opening up and for showing me your wonderful home. Now I'd like to sit down with you and talk about the best path forward to achieve the strongest possible outcome. Shall we move to the dining table?" },
+          { "type": "action", "anchor": "— seated —", "text": "Once at the dining table, open Discovery with the Agenda sequence (also shown on Tab 2)." },
+          { "type": "script", "anchor": "clear customized plan", "text": "Jane, Mike — before we dive in, I promise: by the time we finish today, you'll have a clear, customized plan to get your home sold for the absolute maximum the market will pay — with minimal stress." },
+          { "type": "script", "anchor": "multiple opinions", "text": "Quick question before we start — are you getting multiple opinions on listing your home? (If yes: 'Smart sellers often do. What matters most to you in choosing who to work with?' If no: 'Appreciate the trust. I'll make sure you feel confident we're the right fit.')" },
+          { "type": "script", "anchor": "3-step roadmap", "text": "To make sure we cover everything and protect your time, here's our simple 3-step roadmap: (1) Understand your situation and goals. (2) Build your tailored marketing plan. (3) Comparative Market Analysis and pricing strategy." },
+          { "type": "script", "anchor": "may I ask", "text": "The first step is the foundation — the more I understand your unique situation, the better I can deliver exactly what you're looking for. With your permission, may I ask a few questions?" }
         ]
       },
       {
-        "title": "Path B: Relational Hesitation",
+        "title": "Path A · Informational Hesitation",
         "items": [
-          {
-            "type": "tip",
-            "text": "DECISION: PROCEED but REBALANCE. Expand Discovery and POA, compress Price Presentation. Focus on earning trust, not naming a price."
-          },
-          {
-            "type": "script",
-            "text": "I really appreciate you telling me that. Honestly, I'd rather know now than guess. Here's what I'd like to do: let's still go through our conversation, but I'm going to spend a little more time understanding what went wrong last time, and showing you exactly how my process works day by day — because the difference between a good agent and a frustrating one is almost always process, not promises. I'll keep the pricing conversation short today. If you decide I'm someone you'd want to work with, we can dig into numbers in a second meeting. Sound fair?"
-          }
+          { "type": "label", "anchor": "proceed, reframe", "text": "PROCEED to the full appointment. Reframe internal goal from 'win the listing today' to 'earn the right to come back when they're ready.'" },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today." },
+          { "type": "script", "anchor": "informed not rushed", "text": "That makes complete sense, and honestly, I'd rather you feel informed than rushed. Here's what I'd like to suggest: let's still use our time today the way we planned — I'll walk you through the market, the strategy, and the numbers — but think of it as a conversation, not a pitch. No decision needed at the end. By the time we finish, you'll know exactly where the market is, what your home is worth, and what a great sale would look like for you. Then you decide what makes sense, in your own time. Sound fair?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Verbal soft yes → follow up within 7 days. Named follow-up date → send calendar invite immediately. No decision yet → don't push; thank-you note within 2 hours, value touches every 2–3 weeks." }
         ]
       },
       {
-        "title": "Path C: Circumstantial Hesitation",
+        "title": "Path B · Relational Hesitation",
         "items": [
-          {
-            "type": "tip",
-            "text": "DECISION: PIVOT to a 20-minute market orientation. Light Discovery (why/where/when only), 2–3 comps, book a named follow-up date, leave early."
-          },
-          {
-            "type": "script",
-            "text": "Thank you for being upfront about that — it actually really helps me. Here's what I'd suggest: instead of walking you through the full pricing and strategy presentation today, which would probably feel premature given where you are, let me spend just 20 minutes giving you a quick market orientation so you have a sense of where things stand. Then let's put a specific date on both our calendars — say, two weeks after your situation resolves — for me to come back and do the full conversation when it's actually useful. I'd rather give you 20 great minutes today than 90 wasted ones. Does that feel right?"
-          },
-          {
-            "type": "label",
-            "text": "Optional — Offering the POA after light Discovery"
-          },
-          {
-            "type": "script",
-            "text": "I have a full plan of action I'd love to walk you through — how I market a home, what the timeline looks like day by day, how showings and offers work. But I'm also very aware that you're not in a position to act on any of it until [their circumstance resolves]. So I'm happy to go through it now if you're curious, or I can save it for when we meet again on [follow-up date] and it'll actually be actionable. What would feel more useful to you?"
-          }
+          { "type": "label", "anchor": "proceed, rebalance", "text": "PROCEED to the full appointment but REBALANCE it. Expand Discovery and POA, compress Price Presentation. Focus on earning trust, not naming a price." },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today." },
+          { "type": "script", "anchor": "process not promises", "text": "I really appreciate you telling me that. Honestly, I'd rather know now than guess. Here's what I'd like to do: let's still go through our conversation, but I'm going to spend a little more time understanding what went wrong last time, and showing you exactly how my process works day by day — because the difference between a good agent and a frustrating one is almost always process, not promises. I'll keep the pricing conversation short today. If you decide I'm someone you'd want to work with, we can dig into numbers in a second meeting. Sound fair?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Verbal soft yes → follow up within 7 days. Named follow-up date → send calendar invite. No decision yet → thank-you note within 2 hours, value touches every 2–3 weeks." }
         ]
       },
       {
-        "title": "Path D: Spousal Split",
+        "title": "Path C · Circumstantial Hesitation",
         "items": [
-          {
-            "type": "tip",
-            "text": "DECISION: STOP the presentation track. Gentle conversation with the lower-scoring partner while the higher-scoring partner listens. Don't persuade — understand."
-          },
-          {
-            "type": "label",
-            "text": "Step 1 — Opening"
-          },
-          {
-            "type": "script",
-            "text": "I'm noticing you two might be in slightly different places on this, and that's actually really common — I see it in most of the homes I visit. Can I ask you directly, [name of hesitant spouse]: what would need to be true for you to feel like this was the right moment? I'm not asking you to agree with anything today. I'm just trying to understand what matters most to you, because if I'm going to work with your family, I need to be working for both of you, not just one."
-          },
-          {
-            "type": "label",
-            "text": "Step 2 — Follow-up questions (Deepen the concern)"
-          },
-          {
-            "type": "script",
-            "text": "Can you tell me a little more about that? I want to make sure I really understand what's weighing on you."
-          },
-          {
-            "type": "script",
-            "text": "How long has that been on your mind — is this something recent, or have you been sitting with it for a while?"
-          },
-          {
-            "type": "script",
-            "text": "If that one thing were resolved tomorrow, would you feel differently about the timing — or is there something else underneath it?"
-          },
-          {
-            "type": "label",
-            "text": "Follow-up questions (Shift toward a good outcome)"
-          },
-          {
-            "type": "script",
-            "text": "When you picture this going well — not the sale itself, but the whole experience from start to finish — what does that look like for you?"
-          },
-          {
-            "type": "script",
-            "text": "What would the worst version of this process look like? What are you most trying to avoid?"
-          },
-          {
-            "type": "script",
-            "text": "Is there something a previous agent or someone in your life said about selling that stuck with you — good or bad?"
-          },
-          {
-            "type": "label",
-            "text": "Follow-up questions (Relationship to the decision)"
-          },
-          {
-            "type": "script",
-            "text": "Do you feel like you've had enough space to think about this on your own terms, or has it felt like the decision has been moving faster than you're comfortable with?"
-          },
-          {
-            "type": "script",
-            "text": "Is there any information you feel like you're missing — something that, if you had it, would make this feel less uncertain?"
-          },
-          {
-            "type": "script",
-            "text": "What would you need to hear from me — not today, but over time — to feel like you're in good hands?"
-          },
-          {
-            "type": "tip",
-            "text": "Softening doesn't look like agreement. It looks like relaxed shoulders, more eye contact, or a sentence starting with \"well, I guess what I really want is…\""
-          },
-          {
-            "type": "label",
-            "text": "Step 3a — Softened (continue with them as primary audience)"
-          },
-          {
-            "type": "script",
-            "text": "Thank you for sharing that with me — it really helps. [Name of hesitant spouse], what you just said is going to shape how I go through the rest of our conversation today. I'd like to keep checking in with you as we go, and if anything I say doesn't sit right, I want you to stop me. There's no wrong answer and no pressure to decide anything today. Can we keep going on that basis?"
-          },
-          {
-            "type": "label",
-            "text": "Step 3b — Middle ground (acknowledge enthusiastic spouse, slow pace)"
-          },
-          {
-            "type": "script",
-            "text": "[Name of enthusiastic spouse], I want to acknowledge you too — I can tell you're ready, and I appreciate your patience while we work through this together. Here's what I'd like to suggest: let's still go through the rest of our conversation, but at a slightly slower pace, and I'm going to keep pausing to check in with [name of hesitant spouse] along the way. If by the end it feels like the right fit for both of you, great. If not, no decision needed today. Does that work for both of you?"
-          },
-          {
-            "type": "label",
-            "text": "Step 3c — Still closed (exit to Path C)"
-          },
-          {
-            "type": "script",
-            "text": "Thank you both for being so honest with me — that's actually the most valuable thing that could have happened in this meeting. Here's what I'd like to suggest: rather than walk you through the full pricing and strategy presentation today, which would feel premature given where you two are, let me spend just 20 minutes giving you a quick market orientation so you both have a sense of where things stand. Then let's put a specific date on both our calendars — say three or four weeks out — and if you've had a chance to talk it through together by then and want to continue the conversation, we pick up from there. And if not, no hard feelings. Does that feel right?"
-          },
-          {
-            "type": "tip",
-            "text": "When in doubt between softened and closed, default to middle ground — it keeps the appointment alive without over-committing the hesitant spouse."
-          }
+          { "type": "label", "anchor": "pivot, 20-min orient", "text": "PIVOT to a 20-minute market orientation. Light Discovery (why/where/when only), 2–3 comps, book a named follow-up date, leave early." },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today." },
+          { "type": "script", "anchor": "20 great minutes", "text": "Thank you for being upfront about that — it actually really helps me. Here's what I'd suggest: instead of walking you through the full pricing and strategy presentation today, which would probably feel premature given where you are, let me spend just 20 minutes giving you a quick market orientation so you have a sense of where things stand. Then let's put a specific date on both our calendars — say, two weeks after your situation resolves — for me to come back and do the full conversation when it's actually useful. I'd rather give you 20 great minutes today than 90 wasted ones. Does that feel right?" },
+          { "type": "script", "anchor": "offer POA optional", "text": "I have a full plan of action I'd love to walk you through — how I market a home, what the timeline looks like day by day, how showings and offers work. But I'm also very aware that you're not in a position to act on any of it until [their circumstance resolves]. So I'm happy to go through it now if you're curious, or I can save it for when we meet again on [follow-up date] and it'll actually be actionable. What would feel more useful to you?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Named follow-up date is the primary win on this path. Verbal soft yes without a date → follow up within 7 days." }
         ]
       },
       {
-        "title": "Path E: Exploratory Hesitation",
+        "title": "Path D · Spousal Split",
         "items": [
-          {
-            "type": "tip",
-            "text": "SIGNALS: \"just curious what it's worth,\" \"thinking about selling in a couple of years,\" \"neighbour just sold and it got us wondering.\" Motivation typically 1–3, no specific blocker when asked — because nothing is holding them back. They have no near-term trigger."
-          },
-          {
-            "type": "tip",
-            "text": "EARLY WARNING: vague phone call, no next destination, lived-in (not show-ready) home, \"just wondering\" as the reason. Three of four true? Pre-commit to Path E before the walk-through."
-          },
-          {
-            "type": "tip",
-            "text": "DECISION: RENAME the meeting. Do NOT deliver the full 90-minute appointment — it trains them to expect your full presentation for free. Offer 20 minutes: snapshot, soft range, honest answers, permission for monthly updates. No follow-up date."
-          },
-          {
-            "type": "label",
-            "text": "Transition — Permission to Invest"
-          },
-          {
-            "type": "script",
-            "text": "I'm really glad we're meeting today, and I want to check something with you before we go further. The full appointment I usually run takes about 90 minutes and covers pricing, strategy, marketing, and negotiation — it's designed for sellers who are leaning toward listing in the next few months. Based on what you've shared, it sounds like you're earlier than that — more in the exploration stage, is that fair?"
-          },
-          {
-            "type": "response",
-            "text": "Wait for confirmation. They almost always agree — the relief of being named correctly is visible. Then continue:"
-          },
-          {
-            "type": "script",
-            "text": "That's completely fine — and honestly, more common than people think. Here's what I'd suggest: let me give you about 20 minutes today — a quick market snapshot for your area, a rough value range for the home based on what I've seen, and an honest answer to whatever questions you have. No pitch, no pricing strategy, no pressure. Then if down the road you decide to move forward, I'm a phone call away and we pick up from there. Does that feel right?"
-          },
-          {
-            "type": "label",
-            "text": "What to deliver in the 20 minutes"
-          },
-          {
-            "type": "tip",
-            "text": "• Short neighbourhood market snapshot (2–3 recent sales, absorption, one-line direction)  •  Soft value range, NOT a listing price (\"homes like yours are in the mid-1.6s\")  •  Honest answers to whatever they ask  •  ONE ask: permission for monthly market updates"
-          },
-          {
-            "type": "label",
-            "text": "Closing — The one ask"
-          },
-          {
-            "type": "script",
-            "text": "One small thing before I head out: I send a short monthly update on what's actually happening in your neighbourhood — recent sales, price direction, anything relevant. No pitch, just data. Would it be alright if I added you to that list? If the right moment ever arrives for you, you'll already have the context to move quickly — and if it never does, you'll just have useful information about your biggest asset."
-          },
-          {
-            "type": "tip",
-            "text": "DO NOT book a follow-up date. Path E is the one path where a calendar invite backfires. The monthly market update IS the follow-up. Stay consistent 12–24 months — when the trigger finally arrives, they call the name that's been quietly in their inbox."
-          },
-          {
-            "type": "tip",
-            "text": "UPGRADE RULE: If during the 20 minutes a real trigger surfaces (\"actually, my mother just moved in…\"), acknowledge the shift and offer to come back for a proper appointment. Don't try to convert on the spot — the 20-minute format was why they relaxed. Book the real meeting for a later date."
-          }
+          { "type": "label", "anchor": "stop, understand", "text": "STOP the presentation track. Direct, gentle conversation with the lower-scoring partner while the higher-scoring partner listens. Don't persuade — understand." },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today. Softening ≠ agreement. It looks like relaxed shoulders, more eye contact, or a sentence starting with 'well, I guess what I really want is…'" },
+          { "type": "label", "anchor": "— step 1 opening —", "text": "Step 1: Opening" },
+          { "type": "script", "anchor": "different places", "text": "I'm noticing you two might be in slightly different places on this, and that's actually really common — I see it in most of the homes I visit. Can I ask you directly, [name of hesitant spouse]: what would need to be true for you to feel like this was the right moment? I'm not asking you to agree with anything today. I'm just trying to understand what matters most to you, because if I'm going to work with your family, I need to be working for both of you, not just one." },
+          { "type": "label", "anchor": "— step 2 deepen —", "text": "Step 2: Follow-up questions for the hesitant spouse" },
+          { "type": "script", "anchor": "tell me more", "text": "Can you tell me a little more about that? I want to make sure I really understand what's weighing on you." },
+          { "type": "script", "anchor": "how long", "text": "How long has that been on your mind — is this something recent, or have you been sitting with it for a while?" },
+          { "type": "script", "anchor": "if resolved tomorrow", "text": "If that one thing were resolved tomorrow, would you feel differently about the timing — or is there something else underneath it?" },
+          { "type": "script", "anchor": "picture going well", "text": "When you picture this going well — not the sale itself, but the whole experience from start to finish — what does that look like for you?" },
+          { "type": "script", "anchor": "worst version", "text": "What would the worst version of this process look like? What are you most trying to avoid?" },
+          { "type": "script", "anchor": "previous agent stuck", "text": "Is there something a previous agent or someone in your life said about selling that stuck with you — good or bad?" },
+          { "type": "script", "anchor": "enough space", "text": "Do you feel like you've had enough space to think about this on your own terms, or has it felt like the decision has been moving faster than you're comfortable with?" },
+          { "type": "script", "anchor": "missing information", "text": "Is there any information you feel like you're missing — something that, if you had it, would make this feel less uncertain?" },
+          { "type": "script", "anchor": "good hands over time", "text": "What would you need to hear from me — not today, but over time — to feel like you're in good hands?" },
+          { "type": "label", "anchor": "— step 3a softened —", "text": "Step 3A: Softened — relaxed shoulders, opened up. Continue with hesitant spouse as primary audience." },
+          { "type": "script", "anchor": "shape the rest", "text": "Thank you for sharing that with me — it really helps. [Hesitant spouse], what you just said is going to shape how I go through the rest of our conversation today. I'd like to keep checking in with you as we go, and if anything I say doesn't sit right, I want you to stop me. There's no wrong answer and no pressure to decide anything today. Can we keep going on that basis?" },
+          { "type": "label", "anchor": "— step 3b middle —", "text": "Step 3B: Middle ground (default when uncertain). Proceed gently, hesitant spouse as primary audience." },
+          { "type": "script", "anchor": "slower pace check-ins", "text": "[Enthusiastic spouse], I want to acknowledge you too — I can tell you're ready, and I appreciate your patience while we work through this together. Here's what I'd like to suggest: let's still go through the rest of our conversation, but at a slightly slower pace, and I'm going to keep pausing to check in with [hesitant spouse] along the way. If by the end it feels like the right fit for both of you, great. If not, no decision needed today. Does that work for both of you?" },
+          { "type": "label", "anchor": "— step 3c closed —", "text": "Step 3C: Still closed — arms crossed, short answers. Exit to Path C: 20-min orientation + named follow-up, leave early." },
+          { "type": "script", "anchor": "most valuable thing", "text": "Thank you both for being so honest with me — that's actually the most valuable thing that could have happened in this meeting. Here's what I'd like to suggest: rather than walk you through the full pricing and strategy presentation today, which would feel premature given where you two are, let me spend just 20 minutes giving you a quick market orientation so you both have a sense of where things stand. Then let's put a specific date on both our calendars — say three or four weeks out — and if you've had a chance to talk it through together by then and want to continue the conversation, we pick up from there. And if not, no hard feelings. Does that feel right?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Softened → continue with slowed pace. Middle ground → proceed gently, hesitant spouse primary. Still closed → exit to Path C." }
         ]
       },
       {
-        "title": "Ending Outcomes (Any Path)",
+        "title": "Path E · Exploratory Hesitation",
         "items": [
-          {
-            "type": "tip",
-            "text": "Verbal soft yes → win. Don't push paperwork. Follow up within 7 days."
-          },
-          {
-            "type": "tip",
-            "text": "Named follow-up date → win. Send calendar invite immediately."
-          },
-          {
-            "type": "tip",
-            "text": "No decision yet → don't push. Thank-you note within 2 hours, value touches every 2–3 weeks."
-          }
+          { "type": "label", "anchor": "rename the meeting", "text": "RENAME the meeting. Do NOT deliver the full 90-minute appointment. Offer a 20-minute market orientation, a soft value range, and permission to send monthly market updates. Leave warmly, no follow-up date." },
+          { "type": "tip", "anchor": "path E is different", "text": "Do NOT book a follow-up date. The monthly market update IS the follow-up. Stay consistent 12–24 months — when the real trigger arrives, they call the name that's been quietly in their inbox." },
+          { "type": "script", "anchor": "permission to invest", "text": "I'm really glad we're meeting today, and I want to check something with you before we go further. The full appointment I usually run takes about 90 minutes and covers pricing, strategy, marketing, and negotiation — it's designed for sellers who are leaning toward listing in the next few months. Based on what you've shared, it sounds like you're earlier than that — more in the exploration stage, is that fair? (Wait for confirmation, then continue.) That's completely fine — and honestly, more common than people think. Here's what I'd suggest: let me give you about 20 minutes today — a quick market snapshot for your area, a rough value range for the home based on what I've seen, and an honest answer to whatever questions you have. No pitch, no pricing strategy, no pressure. Then if down the road you decide to move forward, I'm a phone call away and we pick up from there. Does that feel right?" },
+          { "type": "tip", "anchor": "what to deliver", "text": "In the 20 minutes: short market snapshot (2–3 recent sales, current absorption, one-line read on direction); soft value range not a listing price ('homes like yours are trading in the mid-1.6s') — resist sharpening into a number; honest answers to their questions; ONE ask — permission for the monthly update." },
+          { "type": "script", "anchor": "the one ask", "text": "One small thing before I head out: I send a short monthly update on what's actually happening in your neighbourhood — recent sales, price direction, anything relevant. No pitch, just data. Would it be alright if I added you to that list? If the right moment ever arrives for you, you'll already have the context to move quickly — and if it never does, you'll just have useful information about your biggest asset." },
+          { "type": "label", "anchor": "ending outcomes", "text": "Permission for monthly update → win. Add to list, stay consistent. No permission → thank them warmly, no calendar invite, no follow-up call." }
         ]
       }
     ]
@@ -1234,38 +1077,16 @@ const TABS = [
       {
         "title": "Conclusion & Three-Step Close",
         "items": [
-          {
-            "type": "script",
-            "text": "Jane, Mike — this isn't a pitch. It's exactly what I'm going to do for you. In a market that rewards the prepared, you'll have certainty, leverage, and someone fully committed to delivering an outstanding result — together."
-          },
-          {
-            "type": "label",
-            "text": "Step 1: The Value Tie-Down"
-          },
-          {
-            "type": "script",
-            "text": "Jane, Mike — we've covered the complete blueprint — The Pinnacle Listing System that maximizes the value of your home. You've seen how we make your home irresistible, how we flood it with the right buyers, and how I protect every dollar through negotiation and appraisal."
-          },
-          {
-            "type": "label",
-            "text": "Step 2: The Process Close"
-          },
-          {
-            "type": "script",
-            "text": "Before we move to pricing and launch strategy — one important question: Based on everything you've seen, the preparation, the marketing, the negotiation — do you feel confident that this strategic process will get you the highest price in today's market?"
-          },
-          {
-            "type": "response",
-            "text": "Wait for \"Yes\" — pause — let them say it."
-          },
-          {
-            "type": "label",
-            "text": "Step 3: Pivot to CMA"
-          },
-          {
-            "type": "script",
-            "text": "Jane & Mike, we've aligned on your goals, and mapped out our plan of action. Now comes the pivotal part: pricing and launch strategy. This directly impacts your timeline, stress, and net proceeds."
-          }
+          { "type": "label", "anchor": "recap → commit → confirm", "text": "Three-paragraph arc: what we covered, what I'll deliver, do you believe it. Recap re-activates the blueprint. Commitment pivots from capability to pledge. Confirmation asks for the yes." },
+          { "type": "label", "anchor": "— step 1 recap —", "text": "Step 1: Recap the Blueprint" },
+          { "type": "script", "anchor": "complete blueprint", "text": "Jane, Mike — we've covered the complete blueprint — The Pinnacle Listing System that maximizes the value of your home. You've seen how we make your home irresistible, how we flood it with the right buyers, and how I protect every dollar through negotiation and appraisal." },
+          { "type": "label", "anchor": "— step 2 commit —", "text": "Step 2: The Commitment" },
+          { "type": "script", "anchor": "start to finish", "text": "That's the plan — start to finish, exactly what I'm going to do for you. In a market that rewards the prepared, you'll have certainty, leverage, and someone fully committed to delivering an outstanding result — together." },
+          { "type": "label", "anchor": "— step 3 confirm —", "text": "Step 3: The Process Close" },
+          { "type": "script", "anchor": "highest price today", "text": "Before we move to pricing and launch strategy — one important question: Based on everything you've seen, the preparation, the marketing, the negotiation — do you feel confident that this strategic process will get you the highest price in today's market?" },
+          { "type": "response", "anchor": "wait for yes", "text": "Wait for 'Yes' — pause — let them say it." },
+          { "type": "label", "anchor": "— pivot to CMA —", "text": "Pivot to CMA" },
+          { "type": "script", "anchor": "pivotal part", "text": "Jane & Mike, we've aligned on your goals and mapped out our plan of action. Now comes the pivotal part: pricing and launch strategy. This directly impacts your timeline, stress, and net proceeds." }
         ]
       }
     ]
