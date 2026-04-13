@@ -82,6 +82,13 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
 .bridge .ack-script{background:#eef3f8;border-left:3px solid var(--b);padding:12px 14px;font-size:.92em;line-height:1.6;color:var(--navy2);border-radius:0 6px 6px 0;margin-bottom:14px;font-style:italic}
 .bridge-btns{display:flex;gap:10px;flex-wrap:wrap}
 .bridge-btns button{flex:1;min-width:180px;padding:10px 14px;border:none;border-radius:6px;font-family:inherit;font-weight:600;cursor:pointer;font-size:.9em}
+.action-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.action-bar button{background:var(--gold);color:var(--navy);border:none;padding:7px 12px;border-radius:4px;font-family:inherit;font-weight:600;font-size:.82em;cursor:pointer}
+.action-bar button.ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.action-bar button:hover{filter:brightness(1.05)}
+.save-ind{color:var(--gold2);font-size:.78em;margin-left:8px;align-self:center}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:6px;font-size:.88em;opacity:0;transition:opacity .2s;pointer-events:none;z-index:100;border:1px solid var(--gold)}
+.toast.show{opacity:1}
 .bridge-btns .go{background:var(--gold);color:var(--navy)}
 .bridge-btns .flip{background:transparent;color:var(--navy);border:1px solid var(--line)}
 @media (min-width:640px){.route-btns{grid-template-columns:1fr 1fr 1fr}}
@@ -93,8 +100,17 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
   <div class="addr">
     <input id="addr" placeholder="Property address" style="flex:1;min-width:160px">
     <input id="dt" type="date" style="width:130px">
+    <input id="client" placeholder="Client name" style="flex:1;min-width:120px">
+    <span class="save-ind" id="saveInd"></span>
+  </div>
+  <div class="action-bar">
+    <button onclick="saveData()">💾 Save</button>
+    <button onclick="loadList()">📂 Load</button>
+    <button class="ghost" onclick="resetAll()">↺ Reset</button>
+    <button class="ghost" onclick="exportData()">⬇ Export</button>
   </div>
 </header>
+<div class="toast" id="toast"></div>
 
 <main>
 
@@ -183,7 +199,7 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
   <button class="back" onclick="go('signals')">← Back to signals</button>
   <div class="bridge">
     <h2>Blocker-split detected — one quick acknowledgment first</h2>
-    <div class="skipped">Partners named blockers from <strong>multiple paths</strong>. Primary path (by larger-blocker rule): <strong id="primaryPathName">—</strong>. You'll park the other concern explicitly before proceeding, with permission.</div>
+    <div class="skipped">Partners named blockers from <strong>multiple paths</strong>. Parking this concern before proceeding: <strong id="primaryPathName">—</strong>. You'll come back to it after resolving the primary blocker, with permission.</div>
     <div class="ack-script" id="ackScript">—</div>
     <div class="bridge-btns">
       <button class="go" onclick="openPrimary()">Continue to <span id="primaryBtnName">Path</span> →</button>
@@ -344,18 +360,36 @@ function recompute() {
   btn.disabled = false; btn.textContent = 'Review bridge →';
 }
 
+function getCheckedTextsByPath() {
+  const out = {};
+  document.querySelectorAll('.sig-opt input:checked').forEach(cb => {
+    const p = cb.dataset.p;
+    const t = cb.parentElement.textContent.trim();
+    (out[p] = out[p] || []).push(t);
+  });
+  return out;
+}
+function quoteFor(pathKey) {
+  const texts = (getCheckedTextsByPath()[pathKey]) || [];
+  if (!texts.length) return null;
+  if (texts.length === 1) return texts[0];
+  const a = texts[0], b = texts[1];
+  return a + ' — and also that ' + b.charAt(0).toLowerCase() + b.slice(1);
+}
 function openChosen() {
   if (!chosen) return;
   if (secondary) {
-    // Build bridge screen
-    document.getElementById('primaryPathName').textContent = PATH_NAMES[chosen];
+    const SLABEL = { a:'the information piece', b:'the trust piece', c:'the timing piece', d:'the readiness split', e:'the exploratory piece' };
+    // "Skipped" shows the secondary (the concern being parked), not the primary
+    document.getElementById('primaryPathName').textContent = PATH_NAMES[secondary];
     document.getElementById('primaryBtnName').textContent = PATH_NAMES[chosen].split(' · ')[0];
     document.getElementById('secondaryBtnName').textContent = PATH_NAMES[secondary].split(' · ')[0];
-    const sLabel = secondary === 'a' ? 'the information piece' :
-                   secondary === 'b' ? 'the trust piece' :
-                   secondary === 'c' ? 'the timing piece' : 'that concern';
+    const secQuote = quoteFor(secondary);
+    const priQuote = quoteFor(chosen);
+    const secPhrase = secQuote ? ('that "' + secQuote.replace(/"/g,'') + '"') : (SLABEL[secondary] || 'that concern');
+    const priPhrase = priQuote ? ('what you said about "' + priQuote.replace(/"/g,'') + '"') : (SLABEL[chosen] || 'the bigger piece');
     document.getElementById('ackScript').innerHTML =
-      'Before I dive in — I heard you mention <strong>' + sLabel + '</strong>, and I want you to know I haven\'t forgotten that. We\'ll come back to it. But let me first address the bigger piece, because if we don\'t resolve that first, the rest doesn\'t really matter. Is that okay with you?';
+      'Before I dive in — I heard you mention <strong>' + secPhrase + '</strong>, and I want you to know I haven\'t forgotten that. We\'ll come back to it. But let me first address <strong>' + priPhrase + '</strong>, because if we don\'t resolve that first, the rest doesn\'t really matter. Is that okay with you?';
     go('bridge');
   } else {
     go('path-' + chosen);
@@ -366,52 +400,132 @@ function openSecondary() { const t = secondary; secondary = chosen; chosen = t; 
 
 document.querySelectorAll('.sig-opt input').forEach(cb => cb.addEventListener('change', recompute));
 
-// ─── IndexedDB persistence (per address+date) ───────────
-let db;
-const DB='motivationFork', STORE='sessions';
-function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=e=>e.target.result.createObjectStore(STORE);r.onsuccess=e=>{db=e.target.result;res()};r.onerror=rej})}
-function dbGet(k){return new Promise((res,rej)=>{const t=db.transaction(STORE).objectStore(STORE).get(k);t.onsuccess=()=>res(t.result);t.onerror=rej})}
-function dbSet(k,v){return new Promise((res,rej)=>{const t=db.transaction(STORE,'readwrite').objectStore(STORE).put(v,k);t.onsuccess=res;t.onerror=rej})}
+// ─── IndexedDB multi-record persistence ─────────────────
+let db, currentId = null;
+const DB='motivationFork', DB_VER=2, STORE='records';
+function openDB(){return new Promise((res,rej)=>{
+  const r=indexedDB.open(DB,DB_VER);
+  r.onupgradeneeded=e=>{
+    const d=e.target.result;
+    // Drop legacy single-key store if present; create autoincrement store
+    if (d.objectStoreNames.contains('sessions')) d.deleteObjectStore('sessions');
+    if (!d.objectStoreNames.contains(STORE)) d.createObjectStore(STORE,{keyPath:'id',autoIncrement:true});
+  };
+  r.onsuccess=e=>{db=e.target.result;res()};
+  r.onerror=rej;
+})}
+const dbOp=(mode,fn)=>new Promise((res,rej)=>{const tx=db.transaction(STORE,mode);const q=fn(tx.objectStore(STORE));q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});
+const dbAdd=r=>dbOp('readwrite',s=>s.add(r));
+const dbPut=r=>dbOp('readwrite',s=>s.put(r));
+const dbGetAll=()=>dbOp('readonly',s=>s.getAll());
 
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500)}
+function showInd(msg){const el=document.getElementById('saveInd');el.textContent=msg;setTimeout(()=>el.textContent='',2500)}
+
+function collectData(){
+  const checks=[];
+  document.querySelectorAll('.sig-opt input:checked').forEach(cb=>checks.push({p:cb.dataset.p,text:cb.parentElement.textContent.trim()}));
+  const active=document.querySelector('.panel.active')?.id||'entry';
+  return {
+    addr: document.getElementById('addr').value,
+    dt: document.getElementById('dt').value,
+    client: document.getElementById('client').value,
+    active, checks, chosen, secondary
+  };
+}
+
+function restoreData(d){
+  if (!d) return;
+  document.getElementById('addr').value = d.addr || '';
+  document.getElementById('dt').value = d.dt || '';
+  document.getElementById('client').value = d.client || '';
+  // Uncheck all first
+  document.querySelectorAll('.sig-opt input').forEach(cb => { cb.checked = false; cb.parentElement.classList.remove('checked'); });
+  if (d.checks) d.checks.forEach(c=>{
+    document.querySelectorAll('.sig-opt input[data-p="'+c.p+'"]').forEach(cb=>{
+      if (cb.parentElement.textContent.trim() === c.text) cb.checked = true;
+    });
+  });
+  recompute();
+  if (d.active) go(d.active);
+}
+
+// Auto-save (debounced) updates current record if one is loaded; otherwise a first Save creates one
 let saveTimer;
 function save(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async () => {
-    if (!db) return;
-    const checks = [];
-    document.querySelectorAll('.sig-opt input:checked').forEach((cb,i) => {
-      checks.push({ p: cb.dataset.p, text: cb.parentElement.textContent.trim() });
-    });
-    const active = document.querySelector('.panel.active')?.id || 'entry';
-    await dbSet('current', {
-      addr: document.getElementById('addr').value,
-      dt: document.getElementById('dt').value,
-      active, checks, chosen, secondary,
-      savedAt: new Date().toISOString()
-    });
-  }, 300);
+    if (!db || !currentId) return; // only silent auto-save when a record exists
+    const d = collectData();
+    d.id = currentId;
+    d.savedAt = new Date().toISOString();
+    await dbPut(d);
+    showInd('Auto-saved');
+  }, 400);
 }
-async function load(){
-  const d = await dbGet('current');
-  if (!d) return;
-  if (d.addr) document.getElementById('addr').value = d.addr;
-  if (d.dt) document.getElementById('dt').value = d.dt;
-  if (d.checks) d.checks.forEach(c => {
-    document.querySelectorAll('.sig-opt input[data-p="'+c.p+'"]').forEach(cb => {
-      if (cb.parentElement.textContent.trim() === c.text && !cb.checked) cb.checked = true;
-    });
-  });
+
+async function saveData(){
+  if (!db) return;
+  const d = collectData();
+  d.savedAt = new Date().toISOString();
+  if (currentId){ d.id = currentId; await dbPut(d); }
+  else { currentId = await dbAdd(d); }
+  toast('Saved!');
+}
+
+async function loadList(){
+  const records = await dbGetAll();
+  if (!records.length){ toast('No saved records.'); return; }
+  records.sort((a,b)=> new Date(b.savedAt) - new Date(a.savedAt));
+  const choice = records.map((r,i)=>`${i+1}. ${r.addr||'No address'} — ${r.dt||'No date'} (${r.client||'No client'})`).join('\n');
+  const pick = prompt('Select a record to load:\n\n'+choice+'\n\nEnter number:');
+  const idx = parseInt(pick)-1;
+  if (isNaN(idx)||idx<0||idx>=records.length) return;
+  const rec = records[idx];
+  resetFields();
+  restoreData(rec);
+  currentId = rec.id;
+  toast('Loaded: '+(rec.addr||'record'));
+}
+
+function resetFields(){
+  document.getElementById('addr').value = '';
+  document.getElementById('dt').value = new Date().toISOString().slice(0,10);
+  document.getElementById('client').value = '';
+  document.querySelectorAll('.sig-opt input').forEach(cb => { cb.checked = false; cb.parentElement.classList.remove('checked'); });
+  chosen = null; secondary = null;
   recompute();
-  if (d.active && d.active !== 'entry') go(d.active);
+  go('entry');
 }
+
+function resetAll(){
+  if (!confirm('Clear all fields and start a new record?')) return;
+  resetFields();
+  currentId = null;
+  toast('Reset complete.');
+}
+
+function exportData(){
+  const d = collectData();
+  d.exportedAt = new Date().toISOString();
+  const addr = (d.addr||'no_address').replace(/[^a-zA-Z0-9]+/g,'_').replace(/^_|_$/g,'');
+  const dt = d.dt || new Date().toISOString().slice(0,10);
+  const blob = new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Motivation_Fork_${addr}_${dt}.json`;
+  a.click();
+  toast('Exported!');
+}
+
 document.getElementById('addr').addEventListener('input', save);
 document.getElementById('dt').addEventListener('change', save);
+document.getElementById('client').addEventListener('input', save);
 
 // init
 (async () => {
   await openDB();
   if (!document.getElementById('dt').value) document.getElementById('dt').value = new Date().toISOString().slice(0,10);
-  await load();
 })();
 </script>
 </body>

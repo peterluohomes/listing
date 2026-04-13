@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Presentation Companion</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1a3a5c; --navy-light: #254d75; --gold: #c8a45a; --gold-light: #e8d5a0;
+    --bg: #f4f3ef; --card: #fff; --text: #2a2a2a; --text-light: #666; --border: #e2e0da;
+    --action: #2e7d32; --script: #1565c0; --response: #6a1b9a; --tip: #e65100; --check: #00695c;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+  /* ══════════════════════════════════════════
+     HEADER
+     ══════════════════════════════════════════ */
+  .header { background: var(--navy); position: sticky; top: 0; z-index: 100; padding: 14px 16px 0; }
+  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 12px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: 1.2em; color: #fff; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap; }
+  .header-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .header-meta input { font-family: 'DM Sans', sans-serif; font-size: 0.82em; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 10px; border-radius: 4px; outline: none; }
+  .header-meta input::placeholder { color: rgba(255,255,255,0.45); }
+  .header-meta input:focus { border-color: var(--gold); background: rgba(255,255,255,0.18); }
+  .header-meta input.addr { width: 160px; }
+  .header-meta input.dt { width: 110px; }
+
+  /* ══════════════════════════════════════════
+     TABS
+     ══════════════════════════════════════════ */
+  .tab-bar { display: flex; gap: 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex-wrap: nowrap; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn { font-family: 'DM Sans', sans-serif; font-size: 0.75em; font-weight: 600; padding: 10px 14px; border: none; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); cursor: pointer; border-radius: 8px 8px 0 0; transition: all 0.2s; white-space: nowrap; letter-spacing: 0.3px; flex-shrink: 0; }
+  .tab-btn .tab-full { display: inline; }
+  .tab-btn .tab-num { display: none; }
+  .tab-btn .tab-name { display: none; }
+  .tab-btn:hover { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
+  .tab-btn.active { background: var(--bg); color: var(--navy); }
+
+  /* ══════════════════════════════════════════
+     CONTENT
+     ══════════════════════════════════════════ */
+  .content { max-width: 900px; margin: 0 auto; padding: 0 16px 72px; }
+  .tab-panel { display: none; padding-top: 16px; }
+  .tab-panel.active { display: block; }
+
+  /* ══════════════════════════════════════════
+     SECTIONS & CARDS
+     ══════════════════════════════════════════ */
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.1em; color: var(--navy); margin: 20px 0 10px; padding-bottom: 5px; border-bottom: 2px solid var(--gold-light); }
+  .section-title:first-child { margin-top: 0; }
+
+  .card { background: var(--card); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 8px; overflow: hidden; }
+  .card-header { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px; cursor: pointer; user-select: none; }
+  .card-header:hover { background: #fafaf8; }
+
+  .card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .card-dot.action { background: var(--action); }
+  .card-dot.script { background: var(--script); }
+  .card-dot.response { background: var(--response); }
+  .card-dot.tip { background: var(--tip); }
+  .card-dot.check { background: var(--check); }
+  .card-dot.label { background: var(--gold); }
+
+  .card-tag { font-size: 0.6em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+  .card-tag.action { background: #e8f5e9; color: var(--action); }
+  .card-tag.script { background: #e3f2fd; color: var(--script); }
+  .card-tag.response { background: #f3e5f5; color: var(--response); }
+  .card-tag.tip { background: #fff3e0; color: var(--tip); }
+  .card-tag.check { background: #e0f2f1; color: var(--check); }
+  .card-tag.label { background: #fff8e1; color: #f57f17; }
+
+  .card-text { flex: 1; font-size: 0.88em; line-height: 1.55; color: var(--text); }
+
+  .card-note-toggle { font-size: 0.68em; color: var(--text-light); border: 1px solid var(--border); padding: 3px 8px; border-radius: 4px; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.15s; margin-top: 1px; }
+  .card-note-toggle:hover { border-color: var(--navy); color: var(--navy); }
+  .card-note-toggle.has-note { border-color: var(--gold); color: #b8860b; background: #fffcf0; }
+
+  .card-note { padding: 0 12px 10px 30px; display: none; }
+  .card-note textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-family: 'DM Sans', sans-serif; font-size: 0.85em; resize: vertical; min-height: 48px; outline: none; color: var(--text); }
+  .card-note textarea:focus { border-color: var(--navy); }
+
+  .sub-card { margin-left: 24px; border-left: 2px solid var(--border); }
+
+  /* ══════════════════════════════════════════
+     TOOLBAR
+     ══════════════════════════════════════════ */
+  .toolbar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy); padding: 10px 16px; display: flex; gap: 8px; justify-content: center; align-items: center; z-index: 100; }
+  .toolbar button { font-family: 'DM Sans', sans-serif; font-size: 0.8em; font-weight: 600; padding: 8px 18px; border: none; border-radius: 5px; cursor: pointer; transition: all 0.15s; }
+  .btn-save { background: var(--gold); color: var(--navy); }
+  .btn-save:hover { background: #d4b06a; }
+  .btn-load { background: rgba(255,255,255,0.15); color: #fff; }
+  .btn-load:hover { background: rgba(255,255,255,0.25); }
+  .btn-reset { background: rgba(220,53,69,0.85); color: #fff; }
+  .btn-reset:hover { background: #dc3545; }
+  .btn-export { background: rgba(255,255,255,0.15); color: #fff; }
+  .btn-export:hover { background: rgba(255,255,255,0.25); }
+  .save-ind { font-size: 0.75em; color: var(--gold-light); }
+
+  /* ══════════════════════════════════════════
+     TOAST
+     ══════════════════════════════════════════ */
+  .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 8px 24px; border-radius: 6px; font-size: 0.85em; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 200; }
+  .toast.show { opacity: 1; }
+
+  /* ══════════════════════════════════════════
+     IPHONE PRO MAX  (≤ 430px)
+     ══════════════════════════════════════════ */
+  @media (max-width: 430px) {
+    .header { padding: 12px 12px 0; }
+    .header-top { flex-direction: column; align-items: stretch; gap: 8px; }
+    .header h1 { font-size: 1.1em; }
+    .header-meta { gap: 6px; }
+    .header-meta input.addr { flex: 1; width: auto; min-width: 0; }
+    .header-meta input.dt { width: 100px; }
+
+    .tab-bar { flex-wrap: nowrap; overflow-x: visible; gap: 2px; }
+    .tab-btn { font-size: 0.68em; padding: 7px 4px; flex: 1 1 0; min-width: 0; text-align: center; line-height: 1.25; white-space: normal; border-radius: 6px 6px 0 0; min-height: 42px; }
+    .tab-btn .tab-num, .tab-btn .tab-name { display: block; }
+    .tab-btn .tab-num { font-size: 1em; }
+    .tab-btn .tab-name { font-size: 1em; }
+    .tab-btn .tab-full { display: none; }
+
+    .content { padding: 0 10px 72px; }
+    .section-title { font-size: 1em; margin: 16px 0 8px; }
+
+    .card-header { padding: 10px; gap: 6px; }
+    .card-text { font-size: 0.84em; line-height: 1.5; }
+    .card-tag { font-size: 0.55em; padding: 2px 5px; }
+    .card-note { padding: 0 10px 10px 26px; }
+    .card-note textarea { min-height: 44px; font-size: 0.82em; }
+
+    .toolbar { padding: 8px 10px; gap: 6px; }
+    .toolbar button { padding: 8px 14px; font-size: 0.75em; }
+    .toast { bottom: 62px; font-size: 0.8em; }
+
+    /* Safe area for phones with home indicator */
+    .toolbar { padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+    .content { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  }
+
+  /* ══════════════════════════════════════════
+     TABLET — iPad Pro 13" landscape (≥ 1024px)
+     ══════════════════════════════════════════ */
+  @media (min-width: 1024px) {
+    .header { padding: 16px 32px 0; }
+    .header-top { gap: 20px; }
+    .header h1 { font-size: 1.4em; }
+    .header-meta input { font-size: 0.85em; padding: 7px 12px; }
+    .header-meta input.addr { width: 220px; }
+    .header-meta input.dt { width: 120px; }
+
+    .tab-btn { font-size: 0.82em; padding: 11px 22px; }
+
+    .content { max-width: 960px; padding: 0 32px 80px; }
+    .tab-panel { padding-top: 24px; }
+    .section-title { font-size: 1.2em; margin: 28px 0 14px; }
+
+    .card { margin-bottom: 10px; }
+    .card-header { padding: 12px 18px; gap: 10px; }
+    .card-text { font-size: 0.92em; line-height: 1.6; }
+    .card-tag { font-size: 0.65em; }
+    .card-note { padding: 0 18px 12px 40px; }
+    .card-note textarea { min-height: 56px; font-size: 0.88em; }
+
+    .toolbar button { padding: 9px 24px; font-size: 0.85em; }
+  }
+
+  /* ══════════════════════════════════════════
+     DESKTOP (≥ 1400px)
+     ══════════════════════════════════════════ */
+  @media (min-width: 1400px) {
+    .header { padding: 18px 48px 0; }
+    .header h1 { font-size: 1.5em; }
+    .header-meta input.addr { width: 260px; }
+
+    .content { max-width: 1060px; padding: 0 48px 80px; }
+    .section-title { font-size: 1.25em; }
+
+    .card-header { padding: 14px 20px; }
+    .card-text { font-size: 0.95em; }
+    .card-note textarea { min-height: 60px; }
+  }
+
+  /* ══════════════════════════════════════════
+     PRINT
+     ══════════════════════════════════════════ */
+  @media print {
+    body { background: #fff; }
+    .header { position: static; }
+    .toolbar { display: none !important; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .tab-panel:first-child { page-break-before: auto; }
+    .card-note { display: block !important; }
+  }
+/* ── Tab 1.5 sub-tab bar ── */
+.subtab-bar{display:none;background:#eef3f8;border-bottom:1px solid var(--line,#e2e0da);padding:6px 8px;gap:6px;flex-wrap:wrap;position:sticky;top:var(--tabbar-h,96px);z-index:40}
+.subtab-bar.show{display:flex}
+.subtab-btn{background:#fff;border:1px solid #d4d1c9;color:#1a3a5c;font-family:inherit;font-size:.78em;font-weight:600;padding:5px 10px;border-radius:14px;cursor:pointer}
+.subtab-btn.active{background:#1a3a5c;color:#fff;border-color:#1a3a5c}
+.subtab-btn.bridge{border-color:#6a1b9a;color:#6a1b9a}
+.subtab-btn.bridge.active{background:#6a1b9a;color:#fff}
+.sub-panel{display:none}.sub-panel.active{display:block}
+/* Fork interactive (Entry sub-tab) */
+.fork-scale{background:#fff;border-radius:10px;padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-top:4px solid #c8a45a}
+.fork-scale h3{font-family:'Playfair Display',serif;color:#1a3a5c;font-size:1.05em;margin-bottom:10px}
+.fork-scale blockquote{background:#eef3f8;border-left:3px solid #1565c0;padding:10px 12px;font-size:.9em;color:#1a3a5c;border-radius:0 6px 6px 0}
+.route-btns{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+@media(min-width:640px){.route-btns{grid-template-columns:1fr 1fr 1fr}}
+.route-btn{background:#fff;border:2px solid #e2e0da;border-radius:8px;padding:12px 14px;cursor:pointer;text-align:left;font-family:inherit}
+.route-btn .t{font-weight:600;color:#1a3a5c;margin-bottom:3px}
+.route-btn .s{font-size:.8em;color:#666;line-height:1.4}
+.route-btn.primary{border-color:#2f7d52;background:#f1f8f2}
+.route-btn.mid{border-color:#e65100}
+.route-btn.split{border-color:#6a1b9a;background:#f9f3fc}
+.sig-block{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.sig-block .q{font-style:italic;color:#254d75;background:#eef3f8;border-left:3px solid #1565c0;padding:10px 12px;font-size:.88em;border-radius:0 6px 6px 0;margin-bottom:12px}
+.sig-group{margin-bottom:12px;padding:10px;border-radius:8px;border:1px solid #e2e0da}
+.sig-group.a{border-left:4px solid #2e7d32}.sig-group.b{border-left:4px solid #1565c0}.sig-group.c{border-left:4px solid #e65100}.sig-group.d{border-left:4px solid #6a1b9a}.sig-group.e{border-left:4px solid #00695c}
+.sig-group h4{font-family:'Playfair Display',serif;font-size:.92em;color:#1a3a5c;margin-bottom:6px;display:flex;justify-content:space-between;align-items:baseline}
+.sig-group h4 .pill{font-family:'DM Sans',sans-serif;font-size:.65em;font-weight:600;padding:2px 7px;border-radius:10px;color:#fff}
+.sig-group.a .pill{background:#2e7d32}.sig-group.b .pill{background:#1565c0}.sig-group.c .pill{background:#e65100}.sig-group.d .pill{background:#6a1b9a}.sig-group.e .pill{background:#00695c}
+.sig-opt{display:block;padding:5px 3px;font-size:.86em;line-height:1.4;cursor:pointer;border-radius:4px}
+.sig-opt input{margin-right:8px}.sig-opt.checked{background:#fffcf0}
+.route-status{background:#1a3a5c;color:#fff;padding:10px 12px;border-radius:6px;margin-bottom:12px;font-size:.85em;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.route-status .label{color:#e8d5a0;font-weight:600}
+.route-status .go{background:#c8a45a;color:#1a3a5c;border:none;padding:7px 12px;border-radius:4px;font-weight:600;font-family:inherit;cursor:pointer;font-size:.85em}
+.route-status .go:disabled{background:#555;color:#999;cursor:not-allowed}
+.bridge-card{background:#fff;border-radius:10px;padding:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);border-top:4px solid #6a1b9a}
+.bridge-card h3{font-family:'Playfair Display',serif;color:#1a3a5c;font-size:1.05em;margin-bottom:10px}
+.bridge-card .skipped{background:#f9f3fc;border-left:3px solid #6a1b9a;padding:10px 12px;font-size:.85em;margin-bottom:10px;border-radius:0 6px 6px 0}
+.bridge-card .ack{background:#eef3f8;border-left:3px solid #1565c0;padding:10px 12px;font-size:.9em;color:#254d75;border-radius:0 6px 6px 0;margin-bottom:12px;font-style:italic}
+.bridge-btns{display:flex;gap:8px;flex-wrap:wrap}
+.bridge-btns button{flex:1;min-width:160px;padding:9px 12px;border:none;border-radius:6px;font-family:inherit;font-weight:600;cursor:pointer;font-size:.88em}
+.bridge-btns .go{background:#c8a45a;color:#1a3a5c}
+.bridge-btns .flip{background:transparent;color:#1a3a5c;border:1px solid #e2e0da}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>Listing Presentation Companion</h1>
+    <div class="header-meta">
+      <input type="text" class="addr" id="field-address" placeholder="Property address">
+      <input type="text" class="dt" id="field-date" placeholder="yyyy-mm-dd">
+      <input type="text" class="addr" id="field-client" placeholder="Client name(s)">
+    </div>
+  </div>
+  <div class="tab-bar" id="tabBar"></div>
+  <div class="subtab-bar" id="subtabBar15"></div>
+</div>
+
+<div class="content" id="content"></div>
+
+<div class="toolbar">
+  <button class="btn-save" onclick="saveData()">Save</button>
+  <button class="btn-load" onclick="loadList()">Load</button>
+  <button class="btn-reset" onclick="resetAll()">Reset</button>
+  <button class="btn-export" onclick="exportData()">Export</button>
+  <span class="save-ind" id="saveInd"></span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// SCRIPT DATA
+// ═══════════════════════════════════════════════════════════
+const TABS = [
+  {
+    "label": "1 · Arrival & Walk-Through",
+    "sections": [
+      {
+        "title": "Part 1: Arrival",
+        "items": [
+          {
+            "type": "label",
+            "text": "1. Greeting"
+          },
+          {
+            "type": "action",
+            "text": "Firm handshake, eye contact, genuine smile. Pause at the door."
+          },
+          {
+            "type": "script",
+            "text": "Thanks for having me. I know prep takes effort — I really appreciate the time."
+          },
+          {
+            "type": "action",
+            "text": "Stop walking. Look at a specific feature (landscaping, door, entryway)."
+          },
+          {
+            "type": "script",
+            "text": "Before we go in — I love this front porch. It has real charm. How do you typically use it?"
+          },
+          {
+            "type": "response",
+            "text": "Wait for their answer. Support it: \"I can tell. You have done a great job with it.\""
+          },
+          {
+            "type": "label",
+            "text": "2. Permission"
+          },
+          {
+            "type": "script",
+            "text": "Do you mind if I set my bag down right here?"
+          },
+          {
+            "type": "label",
+            "text": "3. The Two Lenses Method"
+          },
+          {
+            "type": "action",
+            "text": "Stand still. Do not start the tour yet."
+          },
+          {
+            "type": "script",
+            "text": "Before we walk through, I want to explain the two angles I'll be looking at your home from. First, I'll see it the way YOU do — as a place full of memories and meaning. Then I'll look at it the way the MARKET does — as a product buyers are comparing against others. My job is to protect both — the home you've loved and the equity you've built."
+          }
+        ]
+      },
+      {
+        "title": "Part 2: Walk-Through",
+        "items": [
+          {
+            "type": "label",
+            "text": "0. Tour Transition"
+          },
+          {
+            "type": "script",
+            "text": "Great — please lead the way! Show me what you fell in love with. That's exactly what buyers need to hear."
+          },
+          {
+            "type": "script",
+            "text": "I will take notes so I do not miss any special details."
+          },
+          {
+            "type": "label",
+            "text": "1. The Entrance (First 90 Seconds)"
+          },
+          {
+            "type": "script",
+            "text": "Wow, look at this natural light. What time of day is the light best in here?"
+          },
+          {
+            "type": "script",
+            "text": "When you bought this house, what was the one thing that made you say Yes?"
+          },
+          {
+            "type": "script",
+            "text": "The windows and doors feel solid. What upgrades have you done here?"
+          },
+          {
+            "type": "script",
+            "text": "Quick question — when friends visit, what do they usually notice first?"
+          },
+          {
+            "type": "response",
+            "text": "After they answer: \"Perfect. That is exactly what every buyer will feel walking in.\""
+          },
+          {
+            "type": "tip",
+            "text": "Silently note curb-appeal items for your prep list: front door paint, porch light, house numbers, entry mat, seasonal planters."
+          },
+          {
+            "type": "label",
+            "text": "2. Living Area"
+          },
+          {
+            "type": "script",
+            "text": "This room pulls you in. Tell me your favorite memory here — holiday mornings, game nights?"
+          },
+          {
+            "type": "response",
+            "text": "After they share: \"That feeling is what sells the home. Buyers remember stories, not square footage.\""
+          },
+          {
+            "type": "script",
+            "text": "The light here is beautiful. What time of day do you love it most? That is exactly when we will bring in the photographer."
+          },
+          {
+            "type": "script",
+            "text": "How attached are you to the current furniture layout? Sometimes a small rearrangement opens the room up dramatically on camera — I can show you exactly what I mean closer to photo day."
+          },
+          {
+            "type": "script",
+            "text": "One thing I often ask sellers — how do you feel about packing away roughly half the items on shelves, counters, and walls before we shoot photos? It sounds like a lot, but it's one of the highest-return moves we can make. No wrong answer — I just want to know where you sit."
+          },
+          {
+            "type": "label",
+            "text": "3. Kitchen (Most Important Room)"
+          },
+          {
+            "type": "script",
+            "text": "What do guests comment about your kitchen?"
+          },
+          {
+            "type": "script",
+            "text": "Great storage. What storage solutions do you have inside the cabinets? Buyers love those details."
+          },
+          {
+            "type": "script",
+            "text": "Appliances look well-maintained. What do you know about the appliances — age, warranties? Buyers always ask."
+          },
+          {
+            "type": "script",
+            "text": "If you could change one thing about this kitchen, what would it be?"
+          },
+          {
+            "type": "tip",
+            "text": "Clear counters make the kitchen look twice as big on camera. Note which small appliances are out."
+          },
+          {
+            "type": "label",
+            "text": "4. Bedrooms — Main Bedroom"
+          },
+          {
+            "type": "script",
+            "text": "This feels peaceful. How does this space help you recharge?"
+          },
+          {
+            "type": "script",
+            "text": "This closet has great depth. What would help it photograph even bigger?"
+          },
+          {
+            "type": "label",
+            "text": "4. Bedrooms — Other Bedrooms"
+          },
+          {
+            "type": "script",
+            "text": "This room is flexible. How has it served you best? Office, guest room, gym? Knowing that helps me target the right buyer."
+          },
+          {
+            "type": "script",
+            "text": "Do these windows open easily? Let us smooth out this latch — we want buyers focusing on the view, not the handle."
+          },
+          {
+            "type": "script",
+            "text": "Quick question while we're upstairs — when buyers come through for showings, homes always present best when the family steps out for the appointment. Are you and the kids (and any pets) able to do that on short notice? I'll build the showing schedule around whatever works for your routine."
+          },
+          {
+            "type": "label",
+            "text": "5. Bathrooms"
+          },
+          {
+            "type": "script",
+            "text": "The tile and fixtures look fresh. Updated bathrooms add a lot of value."
+          },
+          {
+            "type": "script",
+            "text": "For the photos, we will want that clean spa look — it gets way more clicks. I will send you a quick checklist; most sellers knock it out in an hour."
+          },
+          {
+            "type": "tip",
+            "text": "Note any small deferred items silently: caulk lines, slow drains, loose towel bars, burnt-out bulbs."
+          },
+          {
+            "type": "label",
+            "text": "6. Basement"
+          },
+          {
+            "type": "script",
+            "text": "This space feels dry and solid. What systems do you have in place to keep this space dry?"
+          },
+          {
+            "type": "script",
+            "text": "What was your dream for this space before life took you in a new direction? Potential is just as valuable as finished space."
+          },
+          {
+            "type": "script",
+            "text": "The electrical panel looks modern. What electrical upgrades have you done — EV charger, panel, outlets?"
+          },
+          {
+            "type": "label",
+            "text": "7. Garage"
+          },
+          {
+            "type": "script",
+            "text": "How do you use your garage — storage, workshop, parking? Buyers always want to know."
+          },
+          {
+            "type": "label",
+            "text": "8. Exterior"
+          },
+          {
+            "type": "script",
+            "text": "The front yard is welcoming. What comes up throughout the seasons?"
+          },
+          {
+            "type": "script",
+            "text": "The backyard feels like part of the house. How do you use this backyard on a summer evening?"
+          },
+          {
+            "type": "script",
+            "text": "The roof looks good. What do you know about the roof — age, repairs? Newer roofs save sellers thousands in negotiations."
+          },
+          {
+            "type": "script",
+            "text": "What's your favorite thing about the neighborhood that someone driving by wouldn't know?"
+          },
+          {
+            "type": "label",
+            "text": "9. Mechanicals"
+          },
+          {
+            "type": "script",
+            "text": "Roughly how old are the furnace, A/C, and water heater?"
+          },
+          {
+            "type": "response",
+            "text": "After they answer: \"This proves you have taken great care of the home. Buyers pay more for peace of mind.\""
+          },
+          {
+            "type": "script",
+            "text": "Do you happen to have service records or receipts? Having them in a tidy folder during showings builds buyer confidence fast."
+          }
+        ]
+      },
+      {
+        "title": "Part 3: Preparation Plan",
+        "items": [
+          {
+            "type": "action",
+            "text": "Stop near the back door or hallway — still standing, still inside the home. 2–3 minutes max. Frame as planning, not grading."
+          },
+          {
+            "type": "script",
+            "text": "Before we head back and sit down, let me ask you a few quick planning questions while we're still standing in the home. There are no right or wrong answers — I just need to understand where you sit so the plan I build for you actually fits your life. Some sellers want to do a lot before listing, some want to do as little as possible, and both can absolutely work."
+          },
+          {
+            "type": "label",
+            "text": "Q1 — Time & Budget"
+          },
+          {
+            "type": "script",
+            "text": "How much time and budget are you comfortable putting into prep before we go live? Some sellers invest a little upfront to maximize the sale price; others prefer to list as-is and price accordingly. Where do you sit on that spectrum?"
+          },
+          {
+            "type": "label",
+            "text": "Q2 — Paint"
+          },
+          {
+            "type": "script",
+            "text": "Are you open to a fresh coat of neutral paint in one or two key rooms if I felt it would meaningfully move the price? I'll only flag walls where the color is bold enough to narrow the buyer pool — nothing cosmetic for the sake of it."
+          },
+          {
+            "type": "label",
+            "text": "Q3 — Stager Consult"
+          },
+          {
+            "type": "script",
+            "text": "I work with a stager who can come in and provide a \"Priority One\" list — just the highest-impact changes, no full staging required. Would you be open to that consultation? It's complimentary as part of my service."
+          },
+          {
+            "type": "label",
+            "text": "Q4 — Pre-Listing Inspection"
+          },
+          {
+            "type": "script",
+            "text": "Some sellers like to get ahead of any surprises by doing a pre-listing inspection. Is that something you'd consider, or would you rather handle issues if and when they come up?"
+          },
+          {
+            "type": "label",
+            "text": "Q5 — Off-Limits"
+          },
+          {
+            "type": "script",
+            "text": "Last one — is there anything in the home you'd prefer not to change, move, or touch? I want to know now so I can plan around it."
+          },
+          {
+            "type": "response",
+            "text": "Listen. Take notes. Do not push back on any \"no\" — just acknowledge and capture. Their appetite answers shape the prep plan you'll deliver after the Price Presentation."
+          },
+          {
+            "type": "tip",
+            "text": "If time is tight, Questions 1, 3, and 5 are the non-negotiables. Questions 2 and 4 can be trimmed on the fly."
+          },
+          {
+            "type": "action",
+            "text": "Close the pause with one forward-looking sentence. Do not open your notes. Do not list items. Plant the seed that a plan exists and will be built around their answers."
+          },
+          {
+            "type": "script",
+            "text": "This is really helpful — thank you. Based on everything you just shared, I have a clear picture of what you're open to. Once we've agreed on strategy and price at the table, I'll put together a short prep plan built around your answers — so you'll know exactly what moves the needle and what doesn't. Nothing wasted, nothing imposed. Shall we head back inside?"
+          }
+        ]
+      },
+      {
+        "title": "Part 4: Wrap-Up",
+        "items": [
+          {
+            "type": "label",
+            "text": "1. Digging Deeper"
+          },
+          {
+            "type": "script",
+            "text": "The feeling I'm getting as we walk through is really special — and that emotion is going to help sell this home. And to get the optimal price, we need to back it up with facts — the things buyers can't see. So let me ask you this: over the years, have you made any major upgrades to the windows, insulation, or the plumbing and electrical systems? These are significant value-adders during appraisal."
+          },
+          {
+            "type": "response",
+            "text": "Listen and acknowledge — \"That's significant,\" \"That's going to help a lot.\""
+          },
+          {
+            "type": "script",
+            "text": "That's really helpful — those hard metrics help the bank match our price. Now let me ask this: if you were going to stay another few years, what would have been your next renovation project?"
+          },
+          {
+            "type": "script",
+            "text": "And finally, a more personal question on behalf of whoever ends up calling this place home: when you move, what's the one thing you're going to miss the most?"
+          },
+          {
+            "type": "response",
+            "text": "Listen — this is usually a powerful, emotional moment."
+          },
+          {
+            "type": "label",
+            "text": "Summary & Motivation"
+          },
+          {
+            "type": "script",
+            "text": "Thank you so much for the tour and for sharing these meaningful stories. Honestly, I'm very impressed with how beautifully you've loved and cared for this home."
+          },
+          {
+            "type": "script",
+            "text": "Before we get into the market data and pricing strategy, I'd like a quick sense of where you stand. On a scale of 1 to 10 — where 10 means \"we're confident and ready to take photos and list right now,\" and 1 means \"we're still hesitating and haven't fully decided to sell\" — where would you put yourselves today?"
+          },
+          {
+            "type": "response",
+            "text": "Pause and listen."
+          },
+          {
+            "type": "tip",
+            "text": "IF 8–10: \"Perfect! That tells me you're ready to move decisively. Thank you for that clarity — it really helps me serve you best.\""
+          },
+          {
+            "type": "tip",
+            "text": "IF 1–7: \"I completely understand. Selling is a big milestone. What's the main thing holding you back from feeling fully ready right now?\" (Then route to Tab 1.5 Motivation Fallback.)"
+          },
+          {
+            "type": "script",
+            "text": "Thank you again for opening up and for showing me your wonderful home. Now I'd like to sit down with you and talk about the best path forward to achieve the strongest possible outcome. Shall we move to the dining table?"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "1.5 · Motivation Fallback",
+    "sections": [
+      {
+        "title": "Entry · The Readiness Scale",
+        "items": [
+          { "type": "label", "anchor": "1-to-10 scale", "text": "Triggered by the 1-to-10 motivation question at the end of the Walk-Through. The answer routes you down this tree." },
+          { "type": "script", "anchor": "scale 1 to 10", "text": "Before we get into the market data and pricing strategy, I'd like a quick sense of where you stand. On a scale of 1 to 10 — where 10 means 'we're confident and ready to take photos and list right now,' and 1 means 'we're still hesitating and haven't fully decided to sell' — where would you put yourselves today? (Pause and listen to both partners, separately if they hesitate.)" },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 at the walk-through. The fork decides how to invest the next 90 minutes, not whether to ask for a signature today." },
+          { "type": "label", "anchor": "— routing —", "text": "Three entry routes" },
+          { "type": "action", "anchor": "both 8–10", "text": "Both aligned & ready → go to Default path. Thank them for the clarity, transition to dining table, open Discovery." },
+          { "type": "action", "anchor": "both 1–7", "text": "Shared hesitation → ask the follow-up: 'I completely understand. Selling is a big milestone. What's the main thing holding you back from feeling fully ready right now?' Classify their answer, route to Path A / B / C / D / E." },
+          { "type": "action", "anchor": "split / divergent", "text": "Scores differ, OR one leans in while the other leans back, OR one answers and the other looks at the floor → go directly to Path D. Do NOT ask the follow-up first." },
+          { "type": "label", "anchor": "— signal classification —", "text": "If Both 1–7, classify the follow-up answer into a path" },
+          { "type": "tip", "anchor": "Path A signals", "text": "Informational: 'we don't really know the market,' 'not sure what our home is worth,' 'haven't thought through timing,' 'don't know what we don't know.'" },
+          { "type": "tip", "anchor": "Path B signals", "text": "Relational: 'interviewing a few agents,' 'last agent was terrible,' 'bad experience with realtors,' 'not sure who to trust,' 'friend is also a realtor and we feel obligated.'" },
+          { "type": "tip", "anchor": "Path C signals", "text": "Circumstantial: 'need to talk to accountant,' 'waiting for retirement in March,' 'need to find our next place first,' 'waiting to see what happens with the market,' 'kids finish school in June.'" },
+          { "type": "tip", "anchor": "Path D signals", "text": "Split revealed in the answer: 'my wife/husband is ready — I'm not,' 'she's more ready than I am,' 'honestly, this is more her idea than mine.' Also: one partner answers while the other stays silent, or body language disagreement (crossed arms, leaning away, short nods)." },
+          { "type": "tip", "anchor": "Path E signals", "text": "Exploratory: 'just curious what it's worth,' 'thinking about selling in a couple of years,' 'neighbour just sold and it got us wondering.' Motivation typically 1–3, no specific blocker when asked — because nothing is holding them back. They have no near-term trigger." },
+          { "type": "label", "anchor": "— multi-path —", "text": "When two paths match" },
+          { "type": "tip", "anchor": "larger blocker rule", "text": "Matches two means: the seller names signals from two different paths in the same breath. Larger blocker means: if unresolved, which one would still kill the deal? Rough difficulty order (easier → harder): Path A < Path C < Path B < Path D. When two match, pick the one further right on that spectrum. Path E sits outside — it's a different kind of meeting, not a harder version." },
+          { "type": "tip", "anchor": "split-revealed wins", "text": "If Path D triggers alongside any other path, Path D wins. A hidden readiness split must be resolved before any blocker can be meaningfully addressed." },
+          { "type": "tip", "anchor": "exploratory wins", "text": "If Path E triggers alongside any non-D path, Path E wins. Exploratory is a different meeting frame entirely — don't run the full 90 minutes." },
+          { "type": "script", "anchor": "acknowledge the skipped", "text": "Before I dive in — I heard you mention [the information piece / the trust piece / the timing piece], and I want you to know I haven't forgotten that. We'll come back to it. But let me first address the bigger piece, because if we don't resolve that first, the rest doesn't really matter. Is that okay with you?" },
+          { "type": "tip", "anchor": "listen for redirect", "text": "If the skipped spouse says 'actually, I'd rather start with mine' — you just learned their concern is bigger to them than it looked. Flip the primary. Free intel you only get by asking." }
+        ]
+      },
+      {
+        "title": "Default · Both 8–10",
+        "items": [
+          { "type": "label", "anchor": "proceed normally", "text": "Aligned & ready. Thank them for the clarity, transition to the dining table, and open the Discovery phase." },
+          { "type": "script", "anchor": "ready to move decisively", "text": "Perfect — that tells me you're ready to move decisively. Thank you for that clarity — it really helps me serve you best." },
+          { "type": "script", "anchor": "dining table", "text": "Thank you again for opening up and for showing me your wonderful home. Now I'd like to sit down with you and talk about the best path forward to achieve the strongest possible outcome. Shall we move to the dining table?" },
+          { "type": "action", "anchor": "— seated —", "text": "Once at the dining table, open Discovery with the Agenda sequence (also shown on Tab 2)." },
+          { "type": "script", "anchor": "clear customized plan", "text": "Jane, Mike — before we dive in, I promise: by the time we finish today, you'll have a clear, customized plan to get your home sold for the absolute maximum the market will pay — with minimal stress." },
+          { "type": "script", "anchor": "multiple opinions", "text": "Quick question before we start — are you getting multiple opinions on listing your home? (If yes: 'Smart sellers often do. What matters most to you in choosing who to work with?' If no: 'Appreciate the trust. I'll make sure you feel confident we're the right fit.')" },
+          { "type": "script", "anchor": "3-step roadmap", "text": "To make sure we cover everything and protect your time, here's our simple 3-step roadmap: (1) Understand your situation and goals. (2) Build your tailored marketing plan. (3) Comparative Market Analysis and pricing strategy." },
+          { "type": "script", "anchor": "may I ask", "text": "The first step is the foundation — the more I understand your unique situation, the better I can deliver exactly what you're looking for. With your permission, may I ask a few questions?" }
+        ]
+      },
+      {
+        "title": "Path A · Informational Hesitation",
+        "items": [
+          { "type": "label", "anchor": "proceed, reframe", "text": "PROCEED to the full appointment. Reframe internal goal from 'win the listing today' to 'earn the right to come back when they're ready.'" },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today." },
+          { "type": "script", "anchor": "informed not rushed", "text": "That makes complete sense, and honestly, I'd rather you feel informed than rushed. Here's what I'd like to suggest: let's still use our time today the way we planned — I'll walk you through the market, the strategy, and the numbers — but think of it as a conversation, not a pitch. No decision needed at the end. By the time we finish, you'll know exactly where the market is, what your home is worth, and what a great sale would look like for you. Then you decide what makes sense, in your own time. Sound fair?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Verbal soft yes → follow up within 7 days. Named follow-up date → send calendar invite immediately. No decision yet → don't push; thank-you note within 2 hours, value touches every 2–3 weeks." }
+        ]
+      },
+      {
+        "title": "Path B · Relational Hesitation",
+        "items": [
+          { "type": "label", "anchor": "proceed, rebalance", "text": "PROCEED to the full appointment but REBALANCE it. Expand Discovery and POA, compress Price Presentation. Focus on earning trust, not naming a price." },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today." },
+          { "type": "script", "anchor": "process not promises", "text": "I really appreciate you telling me that. Honestly, I'd rather know now than guess. Here's what I'd like to do: let's still go through our conversation, but I'm going to spend a little more time understanding what went wrong last time, and showing you exactly how my process works day by day — because the difference between a good agent and a frustrating one is almost always process, not promises. I'll keep the pricing conversation short today. If you decide I'm someone you'd want to work with, we can dig into numbers in a second meeting. Sound fair?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Verbal soft yes → follow up within 7 days. Named follow-up date → send calendar invite. No decision yet → thank-you note within 2 hours, value touches every 2–3 weeks." }
+        ]
+      },
+      {
+        "title": "Path C · Circumstantial Hesitation",
+        "items": [
+          { "type": "label", "anchor": "pivot, 20-min orient", "text": "PIVOT to a 20-minute market orientation. Light Discovery (why/where/when only), 2–3 comps, book a named follow-up date, leave early." },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today." },
+          { "type": "script", "anchor": "20 great minutes", "text": "Thank you for being upfront about that — it actually really helps me. Here's what I'd suggest: instead of walking you through the full pricing and strategy presentation today, which would probably feel premature given where you are, let me spend just 20 minutes giving you a quick market orientation so you have a sense of where things stand. Then let's put a specific date on both our calendars — say, two weeks after your situation resolves — for me to come back and do the full conversation when it's actually useful. I'd rather give you 20 great minutes today than 90 wasted ones. Does that feel right?" },
+          { "type": "script", "anchor": "offer POA optional", "text": "I have a full plan of action I'd love to walk you through — how I market a home, what the timeline looks like day by day, how showings and offers work. But I'm also very aware that you're not in a position to act on any of it until [their circumstance resolves]. So I'm happy to go through it now if you're curious, or I can save it for when we meet again on [follow-up date] and it'll actually be actionable. What would feel more useful to you?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Named follow-up date is the primary win on this path. Verbal soft yes without a date → follow up within 7 days." }
+        ]
+      },
+      {
+        "title": "Path D · Spousal Split",
+        "items": [
+          { "type": "label", "anchor": "stop, understand", "text": "STOP the presentation track. Direct, gentle conversation with the lower-scoring partner while the higher-scoring partner listens. Don't persuade — understand." },
+          { "type": "tip", "anchor": "hard rule", "text": "Never attempt to close a seller at motivation 1–5 today. Softening ≠ agreement. It looks like relaxed shoulders, more eye contact, or a sentence starting with 'well, I guess what I really want is…'" },
+          { "type": "label", "anchor": "— step 1 opening —", "text": "Step 1: Opening" },
+          { "type": "script", "anchor": "different places", "text": "I'm noticing you two might be in slightly different places on this, and that's actually really common — I see it in most of the homes I visit. Can I ask you directly, [name of hesitant spouse]: what would need to be true for you to feel like this was the right moment? I'm not asking you to agree with anything today. I'm just trying to understand what matters most to you, because if I'm going to work with your family, I need to be working for both of you, not just one." },
+          { "type": "label", "anchor": "— step 2 deepen —", "text": "Step 2: Follow-up questions for the hesitant spouse" },
+          { "type": "script", "anchor": "tell me more", "text": "Can you tell me a little more about that? I want to make sure I really understand what's weighing on you." },
+          { "type": "script", "anchor": "how long", "text": "How long has that been on your mind — is this something recent, or have you been sitting with it for a while?" },
+          { "type": "script", "anchor": "if resolved tomorrow", "text": "If that one thing were resolved tomorrow, would you feel differently about the timing — or is there something else underneath it?" },
+          { "type": "script", "anchor": "picture going well", "text": "When you picture this going well — not the sale itself, but the whole experience from start to finish — what does that look like for you?" },
+          { "type": "script", "anchor": "worst version", "text": "What would the worst version of this process look like? What are you most trying to avoid?" },
+          { "type": "script", "anchor": "previous agent stuck", "text": "Is there something a previous agent or someone in your life said about selling that stuck with you — good or bad?" },
+          { "type": "script", "anchor": "enough space", "text": "Do you feel like you've had enough space to think about this on your own terms, or has it felt like the decision has been moving faster than you're comfortable with?" },
+          { "type": "script", "anchor": "missing information", "text": "Is there any information you feel like you're missing — something that, if you had it, would make this feel less uncertain?" },
+          { "type": "script", "anchor": "good hands over time", "text": "What would you need to hear from me — not today, but over time — to feel like you're in good hands?" },
+          { "type": "label", "anchor": "— step 3a softened —", "text": "Step 3A: Softened — relaxed shoulders, opened up. Continue with hesitant spouse as primary audience." },
+          { "type": "script", "anchor": "shape the rest", "text": "Thank you for sharing that with me — it really helps. [Hesitant spouse], what you just said is going to shape how I go through the rest of our conversation today. I'd like to keep checking in with you as we go, and if anything I say doesn't sit right, I want you to stop me. There's no wrong answer and no pressure to decide anything today. Can we keep going on that basis?" },
+          { "type": "label", "anchor": "— step 3b middle —", "text": "Step 3B: Middle ground (default when uncertain). Proceed gently, hesitant spouse as primary audience." },
+          { "type": "script", "anchor": "slower pace check-ins", "text": "[Enthusiastic spouse], I want to acknowledge you too — I can tell you're ready, and I appreciate your patience while we work through this together. Here's what I'd like to suggest: let's still go through the rest of our conversation, but at a slightly slower pace, and I'm going to keep pausing to check in with [hesitant spouse] along the way. If by the end it feels like the right fit for both of you, great. If not, no decision needed today. Does that work for both of you?" },
+          { "type": "label", "anchor": "— step 3c closed —", "text": "Step 3C: Still closed — arms crossed, short answers. Exit to Path C: 20-min orientation + named follow-up, leave early." },
+          { "type": "script", "anchor": "most valuable thing", "text": "Thank you both for being so honest with me — that's actually the most valuable thing that could have happened in this meeting. Here's what I'd like to suggest: rather than walk you through the full pricing and strategy presentation today, which would feel premature given where you two are, let me spend just 20 minutes giving you a quick market orientation so you both have a sense of where things stand. Then let's put a specific date on both our calendars — say three or four weeks out — and if you've had a chance to talk it through together by then and want to continue the conversation, we pick up from there. And if not, no hard feelings. Does that feel right?" },
+          { "type": "label", "anchor": "ending outcomes", "text": "Softened → continue with slowed pace. Middle ground → proceed gently, hesitant spouse primary. Still closed → exit to Path C." }
+        ]
+      },
+      {
+        "title": "Path E · Exploratory Hesitation",
+        "items": [
+          { "type": "label", "anchor": "rename the meeting", "text": "RENAME the meeting. Do NOT deliver the full 90-minute appointment. Offer a 20-minute market orientation, a soft value range, and permission to send monthly market updates. Leave warmly, no follow-up date." },
+          { "type": "tip", "anchor": "path E is different", "text": "Do NOT book a follow-up date. The monthly market update IS the follow-up. Stay consistent 12–24 months — when the real trigger arrives, they call the name that's been quietly in their inbox." },
+          { "type": "script", "anchor": "permission to invest", "text": "I'm really glad we're meeting today, and I want to check something with you before we go further. The full appointment I usually run takes about 90 minutes and covers pricing, strategy, marketing, and negotiation — it's designed for sellers who are leaning toward listing in the next few months. Based on what you've shared, it sounds like you're earlier than that — more in the exploration stage, is that fair? (Wait for confirmation, then continue.) That's completely fine — and honestly, more common than people think. Here's what I'd suggest: let me give you about 20 minutes today — a quick market snapshot for your area, a rough value range for the home based on what I've seen, and an honest answer to whatever questions you have. No pitch, no pricing strategy, no pressure. Then if down the road you decide to move forward, I'm a phone call away and we pick up from there. Does that feel right?" },
+          { "type": "tip", "anchor": "what to deliver", "text": "In the 20 minutes: short market snapshot (2–3 recent sales, current absorption, one-line read on direction); soft value range not a listing price ('homes like yours are trading in the mid-1.6s') — resist sharpening into a number; honest answers to their questions; ONE ask — permission for the monthly update." },
+          { "type": "script", "anchor": "the one ask", "text": "One small thing before I head out: I send a short monthly update on what's actually happening in your neighbourhood — recent sales, price direction, anything relevant. No pitch, just data. Would it be alright if I added you to that list? If the right moment ever arrives for you, you'll already have the context to move quickly — and if it never does, you'll just have useful information about your biggest asset." },
+          { "type": "label", "anchor": "ending outcomes", "text": "Permission for monthly update → win. Add to list, stay consistent. No permission → thank them warmly, no calendar invite, no follow-up call." }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "2 · Discovery",
+    "sections": [
+      {
+        "title": "The Agenda (Sitting Down)",
+        "items": [
+          {
+            "type": "tip",
+            "text": "Goal: Establish authority, reduce anxiety, surface competition early, and ask permission to get personal."
+          },
+          {
+            "type": "script",
+            "text": "Jane, Mike… Before we dive in, I promise: By the time we finish today, you'll have a clear, customized plan to get your home sold for the absolute maximum the market will pay — with minimal stress."
+          },
+          {
+            "type": "script",
+            "text": "Quick question before we start — are you getting multiple opinions on listing your home?"
+          },
+          {
+            "type": "response",
+            "text": "If yes: \"Great. Smart sellers often do. What matters most to you in choosing who to work with?\" (Note their answer — address it throughout.)"
+          },
+          {
+            "type": "response",
+            "text": "If no: \"Appreciate the trust. I'll make sure you feel confident we're the right fit.\""
+          },
+          {
+            "type": "script",
+            "text": "To make sure we cover everything and protect your time, here's our simple 3-step roadmap: 1) Understand your situation and goals  •  2) Build your tailored marketing plan  •  3) Comparative Market Analysis and pricing strategy."
+          },
+          {
+            "type": "script",
+            "text": "The first step is the foundation — the more I understand your unique situation, the better I can deliver exactly what you're looking for. With your permission, may I ask a few questions?"
+          }
+        ]
+      },
+      {
+        "title": "Discovery Part 1: Why / Where / When",
+        "items": [
+          {
+            "type": "tip",
+            "text": "Goal: Deep dive into motivation and timeline using empathetic listening. Technique: Mirror, echo, reflect. Let them talk 80% of the time."
+          },
+          {
+            "type": "label",
+            "text": "Step 1 — WHY"
+          },
+          {
+            "type": "script",
+            "text": "Thank you. Let's start with the big picture — what's bringing you to the point of thinking about selling right now?"
+          },
+          {
+            "type": "response",
+            "text": "If Positive (Upsizing/Relocation/New chapter): \"That's exciting! What are you looking forward to most about this change? My job is to make this easy so you can focus on what's next.\""
+          },
+          {
+            "type": "response",
+            "text": "If Difficult (Divorce/Debt/Probate/Health): \"Thank you for sharing — I know that's not easy. This stays completely confidential, and I've helped many families in similar situations move forward quickly and discreetly.\""
+          },
+          {
+            "type": "script",
+            "text": "(Go deeper) What makes now the right time? What's changed recently?"
+          },
+          {
+            "type": "script",
+            "text": "If everything goes perfectly, what does this move really allow you to do next?"
+          },
+          {
+            "type": "label",
+            "text": "Step 2 — WHERE"
+          },
+          {
+            "type": "script",
+            "text": "(Bridge from their motivation) That makes total sense. So where does this journey take you next — have you started looking for your next place, or found something already?"
+          },
+          {
+            "type": "response",
+            "text": "If they've found something: \"That's exciting — tell me about it! What do you love most? Do you already have an accepted offer or a firm closing date?\""
+          },
+          {
+            "type": "response",
+            "text": "If still looking: \"What are you looking for in your next home? And roughly, what price range are you targeting?\" (Helps reverse-engineer needed sale price.)"
+          },
+          {
+            "type": "script",
+            "text": "(Reflect back) \"So you're moving to [location/type] because [their reason] — that sounds like a great fit for what you described.\""
+          },
+          {
+            "type": "label",
+            "text": "Step 3 — WHEN"
+          },
+          {
+            "type": "tip",
+            "text": "Choose 2–3 questions based on their situation."
+          },
+          {
+            "type": "script",
+            "text": "[Primary] To keep you safe financially — does this home need to sell before you can buy the next one?"
+          },
+          {
+            "type": "script",
+            "text": "[Primary] In your ideal scenario, what's the perfect move-out date? Any must-hit deadlines — job start, school, lease ending?"
+          },
+          {
+            "type": "script",
+            "text": "[If needed] If we get a strong offer tomorrow, what's the earliest you'd be ready to hand over keys?"
+          },
+          {
+            "type": "script",
+            "text": "[If needed] Would you need flexibility — like staying a few extra days after closing?"
+          }
+        ]
+      },
+      {
+        "title": "Discovery Part 2: Priorities / Concerns / Decision-Making / Communication",
+        "items": [
+          {
+            "type": "tip",
+            "text": "Goal: Define priorities, surface concerns, understand decision-making style, and set communication preferences."
+          },
+          {
+            "type": "label",
+            "text": "Step 1 — Priorities"
+          },
+          {
+            "type": "script",
+            "text": "That gives me a clear picture — thank you. When it comes to selling, what's most important to you? Some people tell me \"the absolute highest price possible\"… others want a quick sale so they can move on… and some just want it to be as low-stress as possible. What feels most important for you?"
+          },
+          {
+            "type": "response",
+            "text": "If they say \"everything\": \"That's very common. If you had to rank them — price, timing, and convenience — how would you order them?\""
+          },
+          {
+            "type": "script",
+            "text": "When this is all done, what would make you feel like it was a complete success?"
+          },
+          {
+            "type": "label",
+            "text": "Step 2 — Concerns"
+          },
+          {
+            "type": "script",
+            "text": "Price gets the headlines, but the terms are what keep you safe. Besides price, do you have any deal-breakers? Specific dates? Fixtures you want to keep?"
+          },
+          {
+            "type": "script",
+            "text": "I want to take the weight off your shoulders. If you could eliminate one specific worry from this process right now, what would it be?"
+          },
+          {
+            "type": "response",
+            "text": "If they hesitate, offer examples: \"Is it strangers walking through your home? The negotiation? Or just the uncertainty of not knowing the timeline?\""
+          },
+          {
+            "type": "response",
+            "text": "After they answer: \"Perfect. That's exactly what we'll manage together.\""
+          },
+          {
+            "type": "label",
+            "text": "Step 3 — Decision-Making"
+          },
+          {
+            "type": "script",
+            "text": "One quick question to help me communicate well — who else is involved in this decision? Is it just the two of you, or is there anyone else whose input matters — a family member, an accountant, anyone you'll want to run things by?"
+          },
+          {
+            "type": "response",
+            "text": "If yes: \"Got it — thank you for letting me know. Would it help if I prepared a short summary you can share with them, so they have the same information you have? I'd rather they hear it from the source than second-hand.\""
+          },
+          {
+            "type": "script",
+            "text": "To help me tailor this process — when was the last time you sold a home?"
+          },
+          {
+            "type": "response",
+            "text": "If recent (1–5 years): \"How was that experience? What worked well, and what was missing that you really need this time?\""
+          },
+          {
+            "type": "response",
+            "text": "If long ago (10+ years): \"A lot has changed since then — especially with technology and buyer behavior. I'll guide you through every step so nothing catches you off guard.\""
+          },
+          {
+            "type": "response",
+            "text": "If first time: \"That's exciting — you're in good hands. I'll walk you through every step so you never feel lost or unsure.\""
+          },
+          {
+            "type": "script",
+            "text": "That's really helpful context. I will make sure you always know what's happening. When all is said and done, what's the one thing that will make you feel truly taken care of?"
+          },
+          {
+            "type": "label",
+            "text": "Step 4 — Communication"
+          },
+          {
+            "type": "script",
+            "text": "For communication — what works best: text, email, or call? And how often for updates: weekly, only when there's news, or something else?"
+          }
+        ]
+      },
+      {
+        "title": "Discovery Part 3: The Recap",
+        "items": [
+          {
+            "type": "tip",
+            "text": "Goal: Prove you listened and create a seamless transition to your solution."
+          },
+          {
+            "type": "script",
+            "text": "Just to make sure I've got everything straight…"
+          },
+          {
+            "type": "script",
+            "text": "It sounds like the main reason you're selling is [motivation], you're hoping to [next plans], ideally around [timeline]. Your top priorities are [priorities in order], and you want to make sure [key concerns] are handled well. You're looking for an agent who [what they said matters]."
+          },
+          {
+            "type": "script",
+            "text": "Did I miss anything or get anything wrong? I want to be sure I'm seeing it exactly the way you do."
+          },
+          {
+            "type": "response",
+            "text": "They confirm."
+          },
+          {
+            "type": "script",
+            "text": "Perfect. My job now is to protect your equity and deliver exactly what you've described."
+          },
+          {
+            "type": "script",
+            "text": "Last question — just between us: I want to understand both ends of your range. What's the dream price you're quietly hoping for… and on the other side, is there a floor — a number below which this sale would feel uncomfortable or wouldn't work for your next chapter? Even a ballpark on either end helps me enormously."
+          },
+          {
+            "type": "tip",
+            "text": "If commission question arises: \"Excellent question — we'll go through every cost line-by-line in Step 3 so you see exactly what you keep. For now, knowing your target helps me build the strongest pricing strategy possible.\""
+          },
+          {
+            "type": "action",
+            "text": "Transition to Tailored Plan →"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "3 · Plan of Action",
+    "sections": [
+      {
+        "title": "Transition from Discovery",
+        "items": [
+          {
+            "type": "script",
+            "text": "Jane and Mike, that was a great conversation. I now have a crystal-clear picture of your priorities and what matters most to you."
+          },
+          {
+            "type": "script",
+            "text": "To get you top dollar right now, we have to face the ground reality of this market. Current TRREB numbers show an absorption rate around 14%. That means for every 100 homes listed, 86 will sit, lose their freshness, and eventually sell for less. Hope is not a strategy. In this environment, 'average' is a liability."
+          },
+          {
+            "type": "script",
+            "text": "Most agents provide the 'inventory,' but my goal is to ensure you provide the 'sale' by positioning you in that top 14% from day one — using a strategy that creates attention and competition where other listings just sit quietly."
+          },
+          {
+            "type": "script",
+            "text": "You're not just selling a house. You're unlocking the full value of your home to power your next chapter. Ready to see the exact blueprint? Over the next few minutes, we'll build it together. Feel free to stop me anytime to adjust or ask questions. Fair enough?"
+          },
+          {
+            "type": "response",
+            "text": "Wait for yes."
+          }
+        ]
+      },
+      {
+        "title": "Pinnacle Listing System — Your Blueprint",
+        "items": [
+          {
+            "type": "script",
+            "text": "I refuse to leave your maximum value to chance. We follow a disciplined, proven system built on three strategic pillars that deliver the highest possible price and the strongest terms."
+          },
+          {
+            "type": "label",
+            "text": "🥇 Pillar 1 — Prepare Your Home for Maximum Appeal"
+          },
+          {
+            "type": "script",
+            "text": "We make your home look and feel irresistible so buyers fall in love and compete with strong offers."
+          },
+          {
+            "type": "script",
+            "text": "We start with small changes that make a big difference: a designer consultation to spot little details that shift how buyers feel the moment they walk in, and — if it fits your property — professional staging to turn rooms into lifestyle dreams."
+          },
+          {
+            "type": "script",
+            "text": "I also provide a one-year home warranty at my cost — because in a low-absorption market, buyers are often held back by the fear of hidden costs. This removes that hurdle and gives them the confidence to choose your home over the competition."
+          },
+          {
+            "type": "script",
+            "text": "Every buyer and buyer's agent will clearly see what makes your home special through in-home highlight cards, agent pre-showing sheets, and take-home brochures that keep your property top-of-mind."
+          },
+          {
+            "type": "script",
+            "text": "Every showing follows the same welcoming protocol: soft background music, a light citrus scent, perfect lighting — we're engineering an emotional connection, not just opening doors."
+          },
+          {
+            "type": "script",
+            "text": "And we capture everything with professional photography — including stunning twilight shots — plus virtual tours, video walkthroughs, and drone views when they add value. These visuals are what stop the scroll and drive showings."
+          },
+          {
+            "type": "check",
+            "text": "CHECK-IN: Jane & Mike, can you see how these small details add up to a stronger first impression — and a stronger price?"
+          },
+          {
+            "type": "label",
+            "text": "🥈 Pillar 2 — Market to the Maximum Number of Buyers"
+          },
+          {
+            "type": "script",
+            "text": "We expose your home everywhere and create real buyer competition."
+          },
+          {
+            "type": "script",
+            "text": "We launch with a structured proactive plan across two dozen channels — digital, social, broker networks — and I personally reach out by phone, text, and email to agents who have active qualified buyers right now. We target the hottest, most motivated buyers first."
+          },
+          {
+            "type": "script",
+            "text": "My brokerage offers 24/7 instant appointment scheduling because in a market where 86% of homes fail to sell, we cannot afford to miss a single motivated buyer just because an agent didn't pick up the phone."
+          },
+          {
+            "type": "script",
+            "text": "Every showing is tracked by a digital lockbox with a unique access code for each visit, so you always know exactly who entered your home. After each visit, I collect agent feedback within 48 hours and turn it into a clear weekly intelligence report."
+          },
+          {
+            "type": "check",
+            "text": "CHECK-IN: Jane & Mike, that's how we flood your home with the right buyers. Does this feel like the kind of exposure your home deserves?"
+          },
+          {
+            "type": "label",
+            "text": "🥉 Pillar 3 — Negotiate the Highest Price and Best Terms"
+          },
+          {
+            "type": "script",
+            "text": "We follow a proven three-phase negotiation process that builds maximum leverage and protects your proceeds."
+          },
+          {
+            "type": "script",
+            "text": "First, we position strongly: I learn what each buyer really wants and where their pressure points are, then use timing and competition to create early leverage."
+          },
+          {
+            "type": "script",
+            "text": "In the exchange phase, every counter is firm — we never give without getting. My goal isn't just to find a buyer; it's to find that buyer's absolute ceiling. We negotiate on more than just the price — we fight for the terms, dates, and certainties that ensure this deal actually crosses the finish line."
+          },
+          {
+            "type": "label",
+            "text": "The Final Safety Net — Protecting the Appraisal"
+          },
+          {
+            "type": "script",
+            "text": "After we win at the negotiating table, there is still one final hurdle most agents ignore: the bank's appraisal. We never leave your final sale price exposed to that risk. I personally attend the appraisal to protect our contract price. No surprises, no last-minute reductions."
+          },
+          {
+            "type": "check",
+            "text": "CHECK-IN: Jane & Mike, this is how we protect every dollar. Are you comfortable with this level of negotiation and protection working for you?"
+          }
+        ]
+      },
+      {
+        "title": "Conclusion & Three-Step Close",
+        "items": [
+          { "type": "label", "anchor": "recap → commit → confirm", "text": "Three-paragraph arc: what we covered, what I'll deliver, do you believe it. Recap re-activates the blueprint. Commitment pivots from capability to pledge. Confirmation asks for the yes." },
+          { "type": "label", "anchor": "— step 1 recap —", "text": "Step 1: Recap the Blueprint" },
+          { "type": "script", "anchor": "complete blueprint", "text": "Jane, Mike — we've covered the complete blueprint — The Pinnacle Listing System that maximizes the value of your home. You've seen how we make your home irresistible, how we flood it with the right buyers, and how I protect every dollar through negotiation and appraisal." },
+          { "type": "label", "anchor": "— step 2 commit —", "text": "Step 2: The Commitment" },
+          { "type": "script", "anchor": "start to finish", "text": "That's the plan — start to finish, exactly what I'm going to do for you. In a market that rewards the prepared, you'll have certainty, leverage, and someone fully committed to delivering an outstanding result — together." },
+          { "type": "label", "anchor": "— step 3 confirm —", "text": "Step 3: The Process Close" },
+          { "type": "script", "anchor": "highest price today", "text": "Before we move to pricing and launch strategy — one important question: Based on everything you've seen, the preparation, the marketing, the negotiation — do you feel confident that this strategic process will get you the highest price in today's market?" },
+          { "type": "response", "anchor": "wait for yes", "text": "Wait for 'Yes' — pause — let them say it." },
+          { "type": "label", "anchor": "— pivot to CMA —", "text": "Pivot to CMA" },
+          { "type": "script", "anchor": "pivotal part", "text": "Jane & Mike, we've aligned on your goals and mapped out our plan of action. Now comes the pivotal part: pricing and launch strategy. This directly impacts your timeline, stress, and net proceeds." }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "4 · Price Presentation",
+    "sections": [
+      {
+        "title": "Opener — Frame the Conversation",
+        "items": [
+          {
+            "type": "script",
+            "text": "Jane & Mike, we've aligned on your goals, and mapped out our plan of action. Now comes the pivotal part: pricing and launch strategy. This directly impacts your timeline, stress, and net proceeds."
+          },
+          {
+            "type": "script",
+            "text": "You mentioned your top priorities are [recap clearly, e.g., 'maximizing net proceeds with a quick, low-hassle sale']. Everything I'm sharing today is tailored to achieve exactly that."
+          },
+          {
+            "type": "script",
+            "text": "My recommendations are grounded in fresh market data, proven buyer behavior, and what's succeeding right now — I pulled the latest numbers this morning. We're working with real-time insights. Sound good?"
+          },
+          {
+            "type": "response",
+            "text": "Pause for clear 'yes' — nod and proceed only after agreement."
+          }
+        ]
+      },
+      {
+        "title": "Part 1: Current Market Snapshot",
+        "items": [
+          {
+            "type": "script",
+            "text": "Quick view of buyer activity in our area:"
+          },
+          {
+            "type": "script",
+            "text": "Last 30 days — 571 homes on market, 81 homes sold. That means for every 100 homes on the market, 14 sold, and 86 are not sold."
+          },
+          {
+            "type": "script",
+            "text": "Key trend: Sharply priced homes get multiple offers in the first 1-2 weeks. Overpriced homes linger, accumulate reductions, and often net less after holding costs and concessions."
+          },
+          {
+            "type": "script",
+            "text": "Pricing isn't about what the home is 'worth' to us — it's about what sparks maximum buyer response from day one. Get that right, and you control the process."
+          }
+        ]
+      },
+      {
+        "title": "Part 2: Recent Sold Comparables",
+        "items": [
+          {
+            "type": "script",
+            "text": "The best value indicator is what qualified buyers have recently paid — not estimates or wishes."
+          },
+          {
+            "type": "tip",
+            "text": "Display 4-6 relevant sold comps on one clean slide."
+          },
+          {
+            "type": "script",
+            "text": "These 5 properties represent the most relevant value indicators."
+          },
+          {
+            "type": "script",
+            "text": "Highlight 2-3: This one sold for 1.7m in 30 days — similar in beds/baths/size, but yours edges it with [e.g., updated kitchen, superior lot/condition]."
+          },
+          {
+            "type": "script",
+            "text": "These solds define the proven buyer-accepted range today — a solid floor and ceiling."
+          },
+          {
+            "type": "tip",
+            "text": "Credibility boost: My listings this year averaged 103% of list price vs. the market's 96% — thanks to strategic pricing upfront."
+          }
+        ]
+      },
+      {
+        "title": "Part 3: Active Competition",
+        "items": [
+          {
+            "type": "script",
+            "text": "These are the homes buyers will compare yours to at launch."
+          },
+          {
+            "type": "tip",
+            "text": "Show 4-6 key actives/pendings."
+          },
+          {
+            "type": "script",
+            "text": "Solds show what's possible; actives reveal direct rivals. Priced right, your advantages in [2-3 specifics] make it the standout choice."
+          }
+        ]
+      },
+      {
+        "title": "Part 4: Guided Discovery",
+        "items": [
+          {
+            "type": "script",
+            "text": "Jane & Mike, let's think like buyers for a moment. From these solds and actives, which homes does yours compete most with? Where are your clear edges? Any buyer-perceived trade-offs?"
+          },
+          {
+            "type": "response",
+            "text": "Spot on — buyers will see those strengths as well. Pricing to showcase them builds instant momentum."
+          }
+        ]
+      },
+      {
+        "title": "Part 5: Buyer Behavior",
+        "items": [
+          {
+            "type": "script",
+            "text": "Most sellers overlook this: Buyer energy peaks early."
+          },
+          {
+            "type": "script",
+            "text": "Weeks 1-2: 70-80% of showings, strongest competition, best offers."
+          },
+          {
+            "type": "script",
+            "text": "After 30 days: Listings go 'stale,' fewer buyers, weaker leverage."
+          },
+          {
+            "type": "script",
+            "text": "Even 5% over market often backfires — lost buzz, reductions, extra costs, lower net. Data proves competitively priced homes sell faster and net more."
+          },
+          {
+            "type": "tip",
+            "text": "Add pricing pyramid visual if possible: Lower pricing draws 60-90% more buyers, creating competition that drives the final price up."
+          }
+        ]
+      },
+      {
+        "title": "Part 6: Three Proven Pricing Strategies",
+        "items": [
+          {
+            "type": "script",
+            "text": "It really comes down to this: How quickly do you want certainty and a smooth, low-stress process — and how much uncertainty or extra hassle are you willing to accept in exchange for the possibility of a slightly higher return?"
+          },
+          {
+            "type": "label",
+            "text": "Momentum-Driven"
+          },
+          {
+            "type": "script",
+            "text": "List below market → Ignites urgency, multiple offers, highest chance of bidding war pushing above range. Best for speed + max net."
+          },
+          {
+            "type": "label",
+            "text": "Market-Aligned"
+          },
+          {
+            "type": "script",
+            "text": "List at fair market value → Steady interest, solid offers in 2-4 weeks, low reduction risk."
+          },
+          {
+            "type": "label",
+            "text": "Test-the-Market"
+          },
+          {
+            "type": "script",
+            "text": "List above solds → Longer timeline, higher stagnation/reduction risk. Suited only for unique homes or flexible timelines."
+          },
+          {
+            "type": "script",
+            "text": "Jane & Mike, based on your priorities of [recap], which strategy resonates most?"
+          }
+        ]
+      },
+      {
+        "title": "Part 7: Data-Driven Recommendation",
+        "items": [
+          {
+            "type": "script",
+            "text": "Factoring sold data, competition, trends, your home's strengths, and your priorities — the supported range is 1.7m to 1.8m."
+          },
+          {
+            "type": "script",
+            "text": "My recommendation: List at 1.59m with the Momentum-Driven approach. This maximizes Week 1 traffic, draws multiple buyers, and positions us for the upper end (or higher) without reductions or added stress."
+          },
+          {
+            "type": "tip",
+            "text": "Similar launches I've done netted clients $31,000 more on average vs. starting high and reducing."
+          }
+        ]
+      },
+      {
+        "title": "Part 8: Assumptive Close",
+        "items": [
+          {
+            "type": "script",
+            "text": "Jane & Mike, looking at the data and your goals — how does this price and strategy feel?"
+          },
+          {
+            "type": "script",
+            "text": "Since this is clearly the smartest path to maximizing your net proceeds and getting you moved on your timeline, let's get to work. This agreement puts the plan in motion immediately. I'll handle the heavy lifting so you can stay focused on your move."
+          },
+          {
+            "type": "script",
+            "text": "Let's finish this paperwork and we start to get you that top-dollar result."
+          },
+          {
+            "type": "action",
+            "text": "Hand pen, smile, pause confidently."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "5 · The Close",
+    "sections": [
+      {
+        "title": "Choosing the Right Close",
+        "items": [
+          {
+            "type": "tip",
+            "text": "The 1-to-10 motivation score from the Walk-Through tells you which close to use. Matching the close to the seller's readiness is the difference between a signature and \"we'll think about it.\""
+          },
+          {
+            "type": "label",
+            "text": "Score 8–10 → Assumptive Close"
+          },
+          {
+            "type": "label",
+            "text": "Score 6–7 → Direct-Ask Close"
+          },
+          {
+            "type": "label",
+            "text": "Score 1–5 → Schedule Follow-Up Close (do NOT ask for a signature today)"
+          }
+        ]
+      },
+      {
+        "title": "Assumptive Close (Score 8–10)",
+        "items": [
+          {
+            "type": "action",
+            "text": "Sit back slightly. Relaxed posture. Tone: describing something already decided, not making a request."
+          },
+          {
+            "type": "script",
+            "text": "Jane, Mike — this is clearly the smartest path to maximizing your net proceeds and getting you moved on your timeline. This agreement puts everything we just talked through into motion immediately, and I'll handle the heavy lifting so you can stay focused on your next chapter. Let's get your name on this and start working toward the result we just mapped out together."
+          },
+          {
+            "type": "action",
+            "text": "Slide agreement across. Pen on top, facing them. Eye contact. Smile. Go completely silent."
+          },
+          {
+            "type": "tip",
+            "text": "Count to ten. Do not fill the silence — the silence is doing the work. If they ask a clarifying question, answer in one sentence and return to silence."
+          },
+          {
+            "type": "label",
+            "text": "Soft-Landing Script (If Hesitation)"
+          },
+          {
+            "type": "action",
+            "text": "Do NOT withdraw the pen or agreement. Keep everything in place. Lean slightly forward, warm tone."
+          },
+          {
+            "type": "script",
+            "text": "Of course — take whatever time you need. Let me ask: what's the one piece you'd most like to think through? Let's talk about that one right now, together, so nothing's hanging over you tonight."
+          },
+          {
+            "type": "response",
+            "text": "Whatever they name becomes your objection to handle. Keep conversation at the table. After addressing, return to Assumptive Close one more time. Do not attempt a third time."
+          }
+        ]
+      },
+      {
+        "title": "Direct-Ask Close (Score 6–7)",
+        "items": [
+          {
+            "type": "action",
+            "text": "Lean in slightly. Calm, confident, patient — not urgent."
+          },
+          {
+            "type": "script",
+            "text": "Jane, Mike — we've covered a lot of ground today, and I want to be straightforward with you. Based on everything we've talked through — your goals, the plan, the pricing strategy — do you feel ready to move forward with me today and get this plan in motion?"
+          },
+          {
+            "type": "action",
+            "text": "Stop talking. Maintain eye contact. Let them answer without interruption."
+          },
+          {
+            "type": "tip",
+            "text": "If yes — transition to paperwork. If they hedge (\"almost\" / \"probably\" / \"we just need to…\"), treat as soft no — move to Soft-Landing Script."
+          }
+        ]
+      },
+      {
+        "title": "Schedule Follow-Up Close (Score 1–5)",
+        "items": [
+          {
+            "type": "action",
+            "text": "Do NOT ask for a signature. Attempting a close on an unready seller damages trust and often kills the listing."
+          },
+          {
+            "type": "script",
+            "text": "Jane, Mike — I can tell this is a big decision, and I want you to feel completely ready before we move forward. There's no rush from my side. Here's what I'd like to suggest: take the next few days to sit with everything we discussed. I'll send you a written summary tonight so you have it in front of you. And let's put a specific time on the calendar right now — say, Thursday evening — for me to come back and answer whatever questions have come up. Does Thursday work, or would earlier in the week be better?"
+          },
+          {
+            "type": "tip",
+            "text": "Follow-up meeting MUST be scheduled before you stand up. \"I'll call you next week\" is not a close — it's a goodbye. Text the calendar invite before you leave the driveway."
+          },
+          {
+            "type": "response",
+            "text": "If they refuse a specific time, that's data. Ask warmly: \"Is there something specific holding you back that we haven't talked about yet? I'd rather know now so I can help.\""
+          }
+        ]
+      },
+      {
+        "title": "Paperwork Walk-Through (After a Yes)",
+        "items": [
+          {
+            "type": "action",
+            "text": "Move smoothly into paperwork without celebration. Celebrating a yes before the ink is dry triggers buyer's remorse. Stay calm, matter-of-fact."
+          },
+          {
+            "type": "script",
+            "text": "Perfect — thank you for the trust. Let me walk you through each document briefly so you know exactly what you're signing. Nothing here will surprise you, and I'll pause on anything you want to look at more closely."
+          },
+          {
+            "type": "label",
+            "text": "Documents in order"
+          },
+          {
+            "type": "tip",
+            "text": "1. Listing Agreement (term, commission, price, exclusions) — point to each line  •  2. RECO Information Guide  •  3. Form 244  •  4. Form 801 if applicable  •  5. FINTRAC ID  •  6. Schedule A / seller protection clauses  •  7. MLS data input form"
+          },
+          {
+            "type": "tip",
+            "text": "Pause after each signature and say \"thank you\" once, quietly. Slow, calm paperwork handling builds confidence for the next 30–60 days."
+          }
+        ]
+      },
+      {
+        "title": "Transition to Launch Prep",
+        "items": [
+          {
+            "type": "action",
+            "text": "Take a brief pause — pour water, stack papers — then shift into Launch Prep naturally. Do not leave the table yet."
+          },
+          {
+            "type": "script",
+            "text": "Alright — we're officially partners on this. Before I head out tonight, I want to spend just a few more minutes walking you through what happens over the next seven days, and share the short prep plan I promised you during our walk-through. It won't take long, and you'll leave with a clear picture of exactly what's next. Sound good?"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "6 · Objection Bank",
+    "sections": [
+      {
+        "title": "Core Principles",
+        "items": [
+          {
+            "type": "tip",
+            "text": "Never argue. Acknowledge first, reframe second, redirect third. Any response starting with \"but\" or \"actually\" loses the room."
+          },
+          {
+            "type": "tip",
+            "text": "Slow down when challenged. A three-second pause before answering signals confidence. Speed reads as defensiveness."
+          },
+          {
+            "type": "tip",
+            "text": "One answer at a time. Stacking responses reads as desperation. If the objection is a question in disguise, answer it and ask if it helped before moving on."
+          },
+          {
+            "type": "tip",
+            "text": "After handling any objection, return to the exact place in the script you were before. Do not restart from the top."
+          }
+        ]
+      },
+      {
+        "title": "1. Can you cut your commission?",
+        "items": [
+          {
+            "type": "label",
+            "text": "What they actually mean"
+          },
+          {
+            "type": "tip",
+            "text": "Testing whether you believe in your own value, or under pressure on net proceeds. Cutting commission confirms the fear that agents are overpriced."
+          },
+          {
+            "type": "label",
+            "text": "PRIMARY"
+          },
+          {
+            "type": "script",
+            "text": "That's a fair question, and I respect you for asking it directly. Here's how I think about it: my commission is not a cost — it's the investment that funds the entire Pinnacle Listing System we just walked through. The staging consultation, the professional photography and twilight shots, the 24/7 appointment scheduling, the 48-hour feedback loop, the one-year home warranty at my cost — all of that comes out of my commission, not on top of it. If I cut my fee, the first things that disappear are the exact tools that put you in the top 14% instead of the 86% that sit. I'd rather earn every dollar by netting you more than you'd save by discounting me."
+          },
+          {
+            "type": "label",
+            "text": "FALLBACK"
+          },
+          {
+            "type": "script",
+            "text": "Let me ask you this: if I could show you, in writing, that my listings this year averaged 103% of list price versus the market's 96% — would you rather save 1% on commission, or make 7% more on the sale price? That's the math that actually matters to your net proceeds."
+          },
+          {
+            "type": "tip",
+            "text": "Never apologize for your commission. Never counter-offer on the spot."
+          }
+        ]
+      },
+      {
+        "title": "2. Zillow / HouseSigma says it's worth more",
+        "items": [
+          {
+            "type": "label",
+            "text": "What they actually mean"
+          },
+          {
+            "type": "tip",
+            "text": "Anchored to an algorithmic number. The real question is whether you can replace that anchor without making them feel foolish for trusting it."
+          },
+          {
+            "type": "label",
+            "text": "PRIMARY"
+          },
+          {
+            "type": "script",
+            "text": "I'm glad you mentioned that — almost every seller I work with looks at those estimates, and it's smart to gather data. Here's what HouseSigma and Zillow actually do: they average recent sales in a wide radius and apply a formula. They cannot see your updated kitchen, your south-facing backyard, the condition of your roof, or what's happening this week with buyer urgency. That's why their estimates are often off by 5 to 15 percent in either direction. The comps I'm showing you today are hand-picked, walked by me personally where possible, and reflect what qualified buyers actually paid in the last 30 days — not what an algorithm guessed six months ago."
+          },
+          {
+            "type": "label",
+            "text": "FALLBACK"
+          },
+          {
+            "type": "script",
+            "text": "Can I show you something? Let's pull up HouseSigma's estimate for three of the sold comps on my list right now. You'll see their estimate versus what the home actually sold for. That gap is exactly why we can't price your home off an algorithm — the stakes are too high."
+          },
+          {
+            "type": "tip",
+            "text": "Never insult the tool. Respect it, then out-evidence it."
+          }
+        ]
+      },
+      {
+        "title": "3. Our neighbour got X last year",
+        "items": [
+          {
+            "type": "label",
+            "text": "What they actually mean"
+          },
+          {
+            "type": "tip",
+            "text": "Anchored to a peak-market number from a different moment in the cycle. Often genuine hurt — feeling they missed the window."
+          },
+          {
+            "type": "label",
+            "text": "PRIMARY"
+          },
+          {
+            "type": "script",
+            "text": "I hear that a lot, and I understand completely — it's painful to watch a neighbour get a number you feel you deserve too. Here's the honest truth: last spring was a different market. Interest rates were different, buyer urgency was different, and absorption was running closer to 30 percent instead of today's 14 percent. Your neighbour's sale is a historical data point, not a current comparable. What we can do is look at what's actually sold in the last 30 days — because those are the buyers you're competing for today, not the buyers from last year."
+          },
+          {
+            "type": "label",
+            "text": "FALLBACK"
+          },
+          {
+            "type": "script",
+            "text": "Let me ask you something — and I mean this gently: if I priced your home at your neighbour's number and it sat for 90 days with no offers, and then we had to reduce it twice and eventually sold for 8 percent less than today's realistic price, would that feel like a win? Because that's what happens in 86 percent of homes that get priced on last year's comps. I'd rather start you where today's buyers are actually shopping."
+          },
+          {
+            "type": "tip",
+            "text": "Acknowledge the neighbour was a good sale. Then separate \"then\" from \"now\" with hard numbers."
+          }
+        ]
+      },
+      {
+        "title": "4. Another agent said they could get us more",
+        "items": [
+          {
+            "type": "label",
+            "text": "What they actually mean"
+          },
+          {
+            "type": "tip",
+            "text": "Classic buying-the-listing tactic. Seller knows it might be. Matching destroys credibility; dismissing the other agent destroys warmth."
+          },
+          {
+            "type": "label",
+            "text": "PRIMARY"
+          },
+          {
+            "type": "script",
+            "text": "I appreciate you telling me that, and I'm not going to say anything negative about that agent — they may be excellent at what they do. But I want to be straight with you about something the industry calls \"buying the listing.\" Some agents name a high number to win the paperwork, knowing they'll come back in three weeks asking for a price reduction. It's not dishonest exactly — it's just how some agents compete. My job is to give you the number that actually gets your home sold for the most the market will pay, not the number that makes you feel best tonight. If another agent's number is right, my pricing analysis will show it. Would you like me to walk you through the comps one more time so you can judge for yourself?"
+          },
+          {
+            "type": "label",
+            "text": "FALLBACK"
+          },
+          {
+            "type": "script",
+            "text": "Here's a question I'd ask every agent who quotes you a price: \"What was the list-to-sold ratio on your last ten listings, and how many required a price reduction?\" That answer tells you everything. My ratio is 103 percent, and I can show you the data. Ask the other agent the same question — whatever they say will tell you which number to trust."
+          },
+          {
+            "type": "tip",
+            "text": "Stay warm toward the competitor. Let the data do the attacking."
+          }
+        ]
+      },
+      {
+        "title": "5. We want to think about it",
+        "items": [
+          {
+            "type": "label",
+            "text": "What they actually mean"
+          },
+          {
+            "type": "tip",
+            "text": "Something specific is unresolved. Once they walk out, the concern calcifies overnight. Make it safe to name right now, without making them feel trapped."
+          },
+          {
+            "type": "label",
+            "text": "PRIMARY"
+          },
+          {
+            "type": "script",
+            "text": "Of course — this is a big decision and I'd never want you to feel rushed. Let me ask one thing though: when smart people say \"let's think about it,\" there's almost always one specific piece that's creating pause — maybe the price, maybe the timeline, maybe something I said that didn't sit right. If you're willing to share what that one piece is, I'd rather talk it through while we're all sitting here together than have it hang over you tonight. What's the biggest thing on your mind?"
+          },
+          {
+            "type": "label",
+            "text": "FALLBACK"
+          },
+          {
+            "type": "script",
+            "text": "I completely understand. Here's what I'd suggest: let's book a specific time right now — Thursday evening, say — for me to come back and answer whatever questions have come up. That way you're not stuck playing phone tag, and I'm committed to your timeline. Does Thursday work, or would earlier be better?"
+          },
+          {
+            "type": "tip",
+            "text": "Most common objection and the most dangerous. Never push for a signature after this line — but never leave without surfacing the real concern OR booking the specific follow-up."
+          }
+        ]
+      },
+      {
+        "title": "6. Let's list higher and come down if we have to",
+        "items": [
+          {
+            "type": "label",
+            "text": "What they actually mean"
+          },
+          {
+            "type": "tip",
+            "text": "Protecting against fear of leaving money on the table. \"Trying\" feels low-risk to them. They don't yet understand the first two weeks ARE the game."
+          },
+          {
+            "type": "label",
+            "text": "PRIMARY"
+          },
+          {
+            "type": "script",
+            "text": "I hear this almost every appointment, and I want to show you something that changes most sellers' minds. The first 14 days of a listing are when 70 to 80 percent of your showings happen — it's when the most motivated buyers in the market come through, and it's when a bidding war is still possible. If we list high and it doesn't move, those buyers have already moved on by the time we reduce. When the reduction hits the system, the home is flagged as \"stale,\" the remaining buyers smell blood, and they come in low. The data is brutal: homes that start high and reduce sell for an average of 4 to 8 percent below homes priced right from day one. \"Trying\" a high price isn't free — it costs you the exact window where you have the most leverage."
+          },
+          {
+            "type": "label",
+            "text": "FALLBACK"
+          },
+          {
+            "type": "script",
+            "text": "Let me put it this way: would you rather have one serious buyer in three weeks after a price cut, or five serious buyers in the first weekend competing against each other? Because that's literally the choice we're making with price strategy. The pyramid visual I showed you earlier is exactly this — lower pricing draws 60 to 90 percent more buyers, and those buyers push the final price up, not down."
+          },
+          {
+            "type": "tip",
+            "text": "Reference the pricing pyramid from Price Presentation. They already know this — you're reminding them at the moment they're tempted to forget it."
+          }
+        ]
+      },
+      {
+        "title": "7. Why full commission in this market?",
+        "items": [
+          {
+            "type": "label",
+            "text": "What they actually mean"
+          },
+          {
+            "type": "tip",
+            "text": "Slow market anxiety is real. Not attacking you personally — looking for a way to reduce exposure. Deserves a market-based answer, not a value stack."
+          },
+          {
+            "type": "label",
+            "text": "PRIMARY"
+          },
+          {
+            "type": "script",
+            "text": "That's exactly the right question to ask in this market, and I'll give you the honest answer: a slow market is precisely when full commission matters most. In a hot market, anyone can sell a home — you put a sign on the lawn and three offers show up. Today, with 86 percent of homes sitting, selling a home is active work. It's the phone calls to agents with buyers, the proactive outreach, the intelligence reports, the price strategy adjustments, the negotiation when offers finally come. That's what my commission funds. A discount agent in a hot market might cost you nothing. A discount agent in this market often costs you 5 to 10 percent on the final sale price — which is ten times what you'd save on commission."
+          },
+          {
+            "type": "label",
+            "text": "FALLBACK"
+          },
+          {
+            "type": "script",
+            "text": "Here's a thought experiment: if full commission gets you a top-14-percent result and discount commission gets you an 86-percent result, the math isn't about the fee — it's about which outcome you're paying for. I charge what I charge because my results are what they are. If my results were average, I'd charge less."
+          },
+          {
+            "type": "tip",
+            "text": "The Close is where deferred objections accumulate. If a seller hedged earlier and you moved past it too quickly, it resurfaces at signature. Treat any new objection at the Close as a recycled one: \"When did I first hear this today, and did I really handle it?\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "7 · Launch Prep",
+    "sections": [
+      {
+        "title": "1. Framing the Conversation",
+        "items": [
+          {
+            "type": "action",
+            "text": "Sit at the same table. Open your notes — but keep them slightly turned toward the seller so it feels collaborative."
+          },
+          {
+            "type": "script",
+            "text": "Now that we're partners on this, I want to share the short prep list I made during our walk-through. Every home I list goes through this same exercise — it's how we protect the price we just agreed on. Think of it as the difference between a good sale and a great one."
+          },
+          {
+            "type": "script",
+            "text": "I'm going to organize everything into three buckets: must-do, should-do, and nice-to-have. You decide what you want to tackle yourselves and what you'd like me to coordinate through my trades. Fair?"
+          }
+        ]
+      },
+      {
+        "title": "2. The Six Prep Categories",
+        "items": [
+          {
+            "type": "action",
+            "text": "Walk through each briefly. Reference specific things from the tour — tone of a coach, not an inspector."
+          },
+          {
+            "type": "label",
+            "text": "A. Declutter & Depersonalize"
+          },
+          {
+            "type": "script",
+            "text": "Buyers need to mentally move in, and that's hard when the home still feels fully lived-in. The rule of thumb is to remove about a third of what's visible — especially in closets, counters, and storage areas. Which rooms feel most doable to start with?"
+          },
+          {
+            "type": "label",
+            "text": "B. Deep Clean"
+          },
+          {
+            "type": "script",
+            "text": "A professional deep clean before photos is one of the highest-ROI things we can do. I have a crew I trust — they focus on kitchens, bathrooms, windows, and baseboards. Would you like me to book them, or do you prefer to handle it yourselves?"
+          },
+          {
+            "type": "label",
+            "text": "C. Minor Repairs & Touch-Ups"
+          },
+          {
+            "type": "action",
+            "text": "Reference specific items from walk-through notes — caulking, paint touch-ups, loose handles, squeaky doors, bulbs, slow drains."
+          },
+          {
+            "type": "script",
+            "text": "Small things send big signals. Buyers read a loose towel bar as \"what else has been deferred?\" Most of my sellers knock this list out in a weekend. I can also send my handyman for a half-day if you'd rather hand it off."
+          },
+          {
+            "type": "label",
+            "text": "D. Paint"
+          },
+          {
+            "type": "script",
+            "text": "I'll only flag walls where the color is bold enough to narrow the buyer pool. Neutral doesn't mean boring — it means the photo doesn't fight the furniture. Here's what I noticed…"
+          },
+          {
+            "type": "label",
+            "text": "E. Staging & Furniture Placement"
+          },
+          {
+            "type": "script",
+            "text": "Some rooms photograph best with a small rearrangement of what you already own; others benefit from a stager's eye or a few accent pieces. I'll tell you honestly which rooms are in which category, and we'll decide together."
+          },
+          {
+            "type": "label",
+            "text": "F. Curb Appeal & Yard"
+          },
+          {
+            "type": "script",
+            "text": "First impression happens before the buyer opens the car door. Mow, edged beds, pressure-washed walkway, fresh planters at the front door. Do you handle the yard yourself, or should I line up my landscaper for a one-time refresh?"
+          }
+        ]
+      },
+      {
+        "title": "3. Written Checklist Commitment",
+        "items": [
+          {
+            "type": "script",
+            "text": "Here's what happens next: tonight, I'll email you a written prep checklist organized by room and prioritized — must-do, should-do, nice-to-have. You'll never have to wonder what's next, and you can tick items off at your own pace. Sound good?"
+          }
+        ]
+      },
+      {
+        "title": "4. Locking the Timeline",
+        "items": [
+          {
+            "type": "script",
+            "text": "Last piece — what's a comfortable timeline for you to get the prep done? I want to book the photographer and stager around your schedule, not the other way around."
+          },
+          {
+            "type": "response",
+            "text": "Listen carefully. Their answer reveals true motivation and determines launch date."
+          },
+          {
+            "type": "tip",
+            "text": "Propose concrete dates at the table: Prep completion  •  Professional cleaning  •  Staging consult/install  •  Photography & video  •  Go-live on MLS"
+          }
+        ]
+      },
+      {
+        "title": "5. Week-One Timeline",
+        "items": [
+          {
+            "type": "tip",
+            "text": "Fill in each [BRACKETED] day name at the table with the actual day of the week. \"Day 3\" is forgettable; \"Thursday\" lands. Pull out your phone calendar on camera — signals reliability."
+          },
+          {
+            "type": "script",
+            "text": "Before I head out tonight, I want to walk you through exactly what the next seven days look like from your side — so you don't have to wonder, and you don't have to chase me. Here's what's already on the calendar:"
+          },
+          {
+            "type": "label",
+            "text": "1. [TONIGHT]"
+          },
+          {
+            "type": "script",
+            "text": "Within two hours of leaving here, you'll receive three things: the written prep checklist organized by room and priority, calendar invites for every appointment we agreed on, and a short personal note from me thanking you for today."
+          },
+          {
+            "type": "label",
+            "text": "2. [TOMORROW MORNING]"
+          },
+          {
+            "type": "script",
+            "text": "You'll get an introduction email from my photographer with their direct contact, and if we agreed on the stager consult, you'll also get the stager's contact. Both will know you by name before they reach out."
+          },
+          {
+            "type": "label",
+            "text": "3. [DAY 2 OR 3]"
+          },
+          {
+            "type": "script",
+            "text": "The stager will do the complimentary Priority One walk-through we talked about. About 45 minutes. You'll have a clear list of the highest-impact moves before we shoot photos — not full staging, just the handful of changes that move the needle."
+          },
+          {
+            "type": "label",
+            "text": "4. [DAY 3]"
+          },
+          {
+            "type": "script",
+            "text": "I'll send you the MLS data input form to review. Names spelled correctly, showing instructions, lockbox notes — all the small details that become public the moment we go live. Your one job is to read it carefully and reply with corrections or a thumbs-up."
+          },
+          {
+            "type": "label",
+            "text": "5. [DAY 4]"
+          },
+          {
+            "type": "script",
+            "text": "I'll start teasing the home on my social channels — a \"Coming Soon\" post without the full address, designed to build curiosity before we officially launch. You'll see it live and I'll send you the link so you can share it too."
+          },
+          {
+            "type": "label",
+            "text": "6. [DAY 5]"
+          },
+          {
+            "type": "script",
+            "text": "I'll call you mid-week — just a short check-in to see how prep is going, answer anything that's come up, and adjust the plan if needed. No agenda beyond making sure you feel supported."
+          },
+          {
+            "type": "label",
+            "text": "7. [DAY 7]"
+          },
+          {
+            "type": "script",
+            "text": "Photography day, or if prep needs more time, a launch-readiness check-in. Either way, by the end of Day 7 we'll know exactly when we're going live and the countdown to MLS is underway."
+          },
+          {
+            "type": "script",
+            "text": "So that's your week. Seven touchpoints, all on the calendar, all led by me. You don't have to chase me. You don't have to wonder what's next. I'll be ahead of you on every single one — and if anything slips, it'll be on my side, not yours. Any questions before we wrap up?"
+          },
+          {
+            "type": "tip",
+            "text": "Highest-leverage moment for neutralizing buyer's remorse. Deliver slowly. Eye contact on each numbered item. Rushed = sales pitch; calm = a plan already in motion."
+          }
+        ]
+      },
+      {
+        "title": "6. Close the Meeting",
+        "items": [
+          {
+            "type": "script",
+            "text": "You've built something special here — and now we have a plan to show it at its absolute best. I'll send the checklist and the calendar invites tonight. Anything else on your mind before I head out?"
+          },
+          {
+            "type": "tip",
+            "text": "Send the written prep checklist and calendar invites the same evening, without fail. First promise of the working relationship — keeping it sets the tone."
+          }
+        ]
+      }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// IndexedDB
+// ═══════════════════════════════════════════════════════════
+const DB_NAME = 'LPScriptDB', DB_VER = 1, STORE = 'records';
+let db = null;
+
+function openDB() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open(DB_NAME, DB_VER);
+    r.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE))
+        d.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
+    };
+    r.onsuccess = e => { db = e.target.result; res(db); };
+    r.onerror = e => rej(e.target.error);
+  });
+}
+const dbOp = (mode, fn) => new Promise((res, rej) => {
+  const tx = db.transaction(STORE, mode);
+  const req = fn(tx.objectStore(STORE));
+  req.onsuccess = () => res(req.result);
+  req.onerror = () => rej(req.error);
+});
+const dbAdd = r => dbOp('readwrite', s => s.add(r));
+const dbPut = r => dbOp('readwrite', s => s.put(r));
+const dbGetAll = () => dbOp('readonly', s => s.getAll());
+const dbDel = id => dbOp('readwrite', s => s.delete(id));
+
+// ═══════════════════════════════════════════════════════════
+// Rendering
+// ═══════════════════════════════════════════════════════════
+let currentId = null;
+
+function render() {
+  const tabBar = document.getElementById('tabBar');
+  const content = document.getElementById('content');
+  tabBar.innerHTML = '';
+  content.innerHTML = '';
+
+  // Mobile two-line tab labels (line1 / line2)
+  const MOBILE_TAB_LABELS = [
+    ["1. Walk", "Through"],
+    ["1.5", "Fallback"],
+    ["2.", "Discovery"],
+    ["3. Plan", "of Action"],
+    ["4. Price", "Presentation"],
+    ["5. The", "Close"],
+    ["6.", "Objections"],
+    ["7. Launch", "Prep"]
+  ];
+
+  TABS.forEach((tab, ti) => {
+    // Tab button
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (ti === 0 ? ' active' : '');
+    const m = MOBILE_TAB_LABELS[ti] || ['', tab.label];
+    btn.innerHTML = `<span class="tab-full">${tab.label}</span><span class="tab-num">${m[0]}</span><span class="tab-name">${m[1]}</span>`;
+    btn.onclick = () => switchTab(ti);
+    tabBar.appendChild(btn);
+
+    // Panel
+    const panel = document.createElement('div');
+    panel.className = 'tab-panel' + (ti === 0 ? ' active' : '');
+    panel.id = 'panel-' + ti;
+
+    const isFallback = (ti === 1);
+    tab.sections.forEach((sec, si) => {
+      // For Tab 1.5, wrap each section in its own sub-panel keyed by si
+      let targetParent = panel;
+      if (isFallback) {
+        const sp = document.createElement('div');
+        sp.className = 'sub-panel';
+        sp.id = 'subpanel-' + si; // 0=Entry,1=Default,2=A,3=B,4=C,5=D,6=E
+        panel.appendChild(sp);
+        targetParent = sp;
+        // Replace Entry (si===0) cards with interactive fork UI
+        if (si === 0) {
+          targetParent.innerHTML = FORK_ENTRY_HTML();
+          return; // skip default card rendering for Entry
+        }
+      }
+      const h2 = document.createElement('div');
+      h2.className = 'section-title';
+      h2.textContent = sec.title;
+      targetParent.appendChild(h2);
+
+      sec.items.forEach((item, ii) => {
+        const uid = `t${ti}_s${si}_i${ii}`;
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const header = document.createElement('div');
+        header.className = 'card-header';
+
+        const dot = document.createElement('span');
+        dot.className = 'card-dot ' + item.type;
+        header.appendChild(dot);
+
+        const typeLabels = { action:'DO', script:'SAY', response:'IF/THEN', tip:'TIP', check:'CHECK-IN', label:'—' };
+        const tag = document.createElement('span');
+        tag.className = 'card-tag ' + item.type;
+        tag.textContent = typeLabels[item.type] || '';
+        header.appendChild(tag);
+
+        const text = document.createElement('span');
+        text.className = 'card-text';
+        text.textContent = item.text;
+        header.appendChild(text);
+
+        if (item.type !== 'label') {
+          const noteBtn = document.createElement('span');
+          noteBtn.className = 'card-note-toggle';
+          noteBtn.textContent = '+Note';
+          noteBtn.id = 'nb_' + uid;
+          noteBtn.onclick = (e) => { e.stopPropagation(); toggleNote(uid); };
+          header.appendChild(noteBtn);
+        }
+
+        card.appendChild(header);
+
+        if (item.type !== 'label') {
+          const noteDiv = document.createElement('div');
+          noteDiv.className = 'card-note';
+          noteDiv.id = 'nd_' + uid;
+          const ta = document.createElement('textarea');
+          ta.id = 'nt_' + uid;
+          ta.placeholder = 'Your notes...';
+          ta.oninput = () => onNoteInput(uid);
+          noteDiv.appendChild(ta);
+          card.appendChild(noteDiv);
+        }
+
+        targetParent.appendChild(card);
+      });
+    });
+
+    // After sections: for Tab 1.5, add a Bridge sub-panel
+    if (isFallback) {
+      const bp = document.createElement('div');
+      bp.className = 'sub-panel';
+      bp.id = 'subpanel-bridge';
+      bp.innerHTML = FORK_BRIDGE_HTML();
+      panel.appendChild(bp);
+    }
+
+    content.appendChild(panel);
+  });
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+  const sb = document.getElementById('subtabBar15');
+  if (idx === 1) {
+    renderSubtabBar();
+    // Show bar only if a route has been committed this session (or on entry by default hidden)
+    if (fork15.activeSub) {
+      sb.classList.add('show');
+      showSubPanel(fork15.activeSub);
+    } else {
+      sb.classList.remove('show');
+      showSubPanel('entry'); // default view is Entry interactive
+    }
+  } else {
+    sb.classList.remove('show');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// Tab 1.5 Motivation Fallback Fork
+// ═══════════════════════════════════════════════════════════
+const PATH_NAMES = { a:'Path A · Informational', b:'Path B · Relational', c:'Path C · Circumstantial', d:'Path D · Spousal Split', e:'Path E · Exploratory', default:'Default · Both 8–10' };
+const ORDER = { a:1, c:2, b:3, d:4 }; // larger-blocker rule
+const fork15 = { activeSub: null, chosen: null, secondary: null };
+
+function FORK_ENTRY_HTML() {
+  return `
+  <div class="fork-scale">
+    <h3>Entry · The Readiness Scale</h3>
+    <blockquote>Before we get into the market data and pricing strategy, I'd like a quick sense of where you stand. On a scale of 1 to 10 — where <strong>10</strong> means "we're confident and ready to take photos and list right now," and <strong>1</strong> means "we're still hesitating and haven't fully decided to sell" — where would you put yourselves today?</blockquote>
+  </div>
+  <div class="route-btns">
+    <button class="route-btn primary" onclick="forkGo('default')"><div class="t">Both 8–10</div><div class="s">Aligned &amp; ready. Run full appointment.</div></button>
+    <button class="route-btn mid" onclick="forkGoSignals()"><div class="t">Both 1–7</div><div class="s">Shared hesitation. Classify by follow-up.</div></button>
+    <button class="route-btn split" onclick="forkGo('d')"><div class="t">Split / Divergent</div><div class="s">Scores differ, or one leans back.</div></button>
+  </div>
+  <div id="forkSignals" style="display:none;margin-top:14px">
+    <div class="route-status"><div><span class="label">Route:</span> <span id="routeText">—</span></div>
+      <button class="go" id="openPath" onclick="forkOpenChosen()" disabled>Open Path →</button></div>
+    <div class="sig-block">
+      <div class="q">I completely understand. Selling is a big milestone. <strong>What's the main thing holding you back from feeling fully ready right now?</strong></div>
+      ${sigGroup('a','📘 Informational','Path A',[
+        "We don't really know the market right now.",
+        "We're not sure what our home is actually worth.",
+        "We don't fully understand the selling process."])}
+      ${sigGroup('b','🤝 Relational','Path B',[
+        "We've worked with another agent before.",
+        "A friend or family member is in the business.",
+        "We're comparing a few agents right now."])}
+      ${sigGroup('c','⏳ Circumstantial','Path C',[
+        "The timing isn't quite right.",
+        "We need to find the next place first.",
+        "There's a life event we're waiting on (job, school, family)."])}
+      ${sigGroup('d','💔 Spousal Split','Path D',[
+        "One of us is more ready than the other.",
+        "We haven't fully agreed yet.",
+        "We're still deciding between selling and staying."])}
+      ${sigGroup('e','🧭 Exploratory','Path E',[
+        "We're just curious what it's worth.",
+        "We're not planning to sell soon, just exploring.",
+        "We wanted to see what our options are."])}
+    </div>
+  </div>`;
+}
+function sigGroup(k, icon, pill, opts) {
+  return `<div class="sig-group ${k}"><h4>${icon} <span class="pill">${pill}</span></h4>` +
+    opts.map(t => `<label class="sig-opt"><input type="checkbox" data-p="${k}" onchange="forkRecompute()">${t}</label>`).join('') +
+    `</div>`;
+}
+function FORK_BRIDGE_HTML() {
+  return `<div class="bridge-card">
+    <h3>Bridge · Acknowledge the skipped concern</h3>
+    <div class="skipped">Skipped: <strong id="primaryPathName">—</strong></div>
+    <div class="ack" id="ackScript">—</div>
+    <div class="bridge-btns">
+      <button class="go" onclick="forkOpenPrimary()">Open <span id="primaryBtnName">Primary</span> →</button>
+      <button class="flip" onclick="forkOpenSecondary()">Actually open <span id="secondaryBtnName">Other</span></button>
+    </div>
+  </div>`;
+}
+
+// Map path key → sub-panel id suffix (section index)
+const PATH_TO_SUB = { default:'1', a:'2', b:'3', c:'4', d:'5', e:'6' };
+const SUB_TO_PATH = { '1':'default','2':'a','3':'b','4':'c','5':'d','6':'e' };
+
+function renderSubtabBar() {
+  const sb = document.getElementById('subtabBar15');
+  sb.innerHTML = '';
+  const items = [
+    { key:'entry', label:'Entry' },
+    { key:'bridge', label:'Bridge', cls:'bridge', conditional:true },
+    { key:'default', label:'Default' },
+    { key:'a', label:'Path A' }, { key:'b', label:'Path B' }, { key:'c', label:'Path C' },
+    { key:'d', label:'Path D' }, { key:'e', label:'Path E' }
+  ];
+  items.forEach(it => {
+    if (it.conditional && !fork15.secondary) return; // Bridge only if split
+    const b = document.createElement('button');
+    b.className = 'subtab-btn' + (it.cls ? ' '+it.cls : '') + (fork15.activeSub === it.key ? ' active' : '');
+    b.textContent = it.label;
+    b.onclick = () => { fork15.activeSub = it.key; document.getElementById('subtabBar15').classList.add('show'); renderSubtabBar(); showSubPanel(it.key); save15(); };
+    sb.appendChild(b);
+  });
+}
+function getCheckedTextsByPath() {
+  const out = {};
+  document.querySelectorAll('#subpanel-0 .sig-opt input:checked').forEach(cb => {
+    const p = cb.dataset.p;
+    const t = cb.parentElement.textContent.trim();
+    (out[p] = out[p] || []).push(t);
+  });
+  return out;
+}
+function quoteFor(pathKey) {
+  const texts = (getCheckedTextsByPath()[pathKey]) || [];
+  if (!texts.length) return null;
+  if (texts.length === 1) return texts[0].replace(/^["']|["']$/g,'');
+  // Join up to 2 quotes naturally
+  const a = texts[0], b = texts[1];
+  return a + ' — and also that ' + b.charAt(0).toLowerCase() + b.slice(1);
+}
+function refreshBridgeContent() {
+  if (!fork15.chosen || !fork15.secondary) return;
+  const pn = document.getElementById('primaryPathName');
+  const pb = document.getElementById('primaryBtnName');
+  const sb = document.getElementById('secondaryBtnName');
+  const ack = document.getElementById('ackScript');
+  if (!pn || !pb || !sb || !ack) return;
+  pn.textContent = PATH_NAMES[fork15.secondary];
+  pb.textContent = PATH_NAMES[fork15.chosen].split(' · ')[0];
+  sb.textContent = PATH_NAMES[fork15.secondary].split(' · ')[0];
+  const SLABEL = { a:'the information piece', b:'the trust piece', c:'the timing piece', d:'the readiness split', e:'the exploratory piece' };
+  const secQuote = quoteFor(fork15.secondary);
+  const priQuote = quoteFor(fork15.chosen);
+  const secPhrase = secQuote ? ('that "' + secQuote.replace(/"/g,'') + '"') : SLABEL[fork15.secondary] || 'that concern';
+  const priPhrase = priQuote ? ('what you said about "' + priQuote.replace(/"/g,'') + '"') : SLABEL[fork15.chosen] || 'the bigger piece';
+  ack.innerHTML = 'Before I dive in — I heard you mention <strong>'+secPhrase+'</strong>, and I want you to know I haven\'t forgotten that. We\'ll come back to it. But let me first address <strong>'+priPhrase+'</strong>, because if we don\'t resolve that first, the rest doesn\'t really matter. Is that okay with you?';
+}
+function showSubPanel(key) {
+  document.querySelectorAll('#panel-1 .sub-panel').forEach(p => p.classList.remove('active'));
+  let id;
+  if (key === 'entry') id = 'subpanel-0';
+  else if (key === 'bridge') id = 'subpanel-bridge';
+  else id = 'subpanel-' + PATH_TO_SUB[key];
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  if (key === 'bridge') refreshBridgeContent();
+  window.scrollTo({top:0, behavior:'instant'});
+}
+function forkGo(pathKey) {
+  fork15.chosen = pathKey; fork15.secondary = null; fork15.activeSub = pathKey;
+  document.getElementById('subtabBar15').classList.add('show');
+  renderSubtabBar(); showSubPanel(pathKey); save15();
+}
+function forkGoSignals() {
+  const fs = document.getElementById('forkSignals');
+  if (fs) fs.style.display = 'block';
+  forkRecompute();
+}
+function forkRecompute() {
+  const checked = {};
+  document.querySelectorAll('#subpanel-0 .sig-opt input').forEach(cb => {
+    cb.parentElement.classList.toggle('checked', cb.checked);
+    if (cb.checked) checked[cb.dataset.p] = (checked[cb.dataset.p]||0)+1;
+  });
+  const paths = Object.keys(checked);
+  const status = document.getElementById('routeText');
+  const btn = document.getElementById('openPath');
+  if (!status || !btn) return;
+  if (paths.length === 0) { status.textContent='— (check what they said)'; btn.disabled=true; fork15.chosen=null; fork15.secondary=null; return; }
+  if (paths.includes('d')) {
+    const others = paths.filter(p => p!=='d');
+    fork15.chosen = 'd';
+    fork15.secondary = others.length ? others.sort((a,b)=>(ORDER[b]||0)-(ORDER[a]||0))[0] : null;
+    status.innerHTML = fork15.secondary ? 'Split revealed → <strong>Path D</strong> first, then '+PATH_NAMES[fork15.secondary] : 'Split revealed → <strong>Path D</strong>';
+    btn.disabled=false; btn.textContent = fork15.secondary ? 'Review bridge →' : 'Open Path D →'; return;
+  }
+  if (paths.includes('e') && paths.length > 1) {
+    fork15.chosen='e'; fork15.secondary=null;
+    status.innerHTML = 'Exploratory signals → <strong>Path E</strong>'; btn.disabled=false; btn.textContent='Open Path E →'; return;
+  }
+  if (paths.length === 1) {
+    fork15.chosen = paths[0]; fork15.secondary=null;
+    status.innerHTML = 'Single path → <strong>'+PATH_NAMES[fork15.chosen]+'</strong>'; btn.disabled=false;
+    btn.textContent = 'Open '+PATH_NAMES[fork15.chosen].split(' · ')[0]+' →'; return;
+  }
+  paths.sort((a,b)=>(ORDER[b]||0)-(ORDER[a]||0));
+  fork15.chosen = paths[0]; fork15.secondary = paths[1];
+  status.innerHTML = 'Blocker-split → primary <strong>'+PATH_NAMES[fork15.chosen]+'</strong>, skipped '+PATH_NAMES[fork15.secondary];
+  btn.disabled=false; btn.textContent='Review bridge →';
+}
+function forkOpenChosen() {
+  if (!fork15.chosen) return;
+  if (fork15.secondary) {
+    document.getElementById('primaryPathName').textContent = PATH_NAMES[fork15.chosen];
+    document.getElementById('primaryBtnName').textContent = PATH_NAMES[fork15.chosen].split(' · ')[0];
+    document.getElementById('secondaryBtnName').textContent = PATH_NAMES[fork15.secondary].split(' · ')[0];
+    const SLABEL = { a:'the information piece', b:'the trust piece', c:'the timing piece', d:'the readiness split', e:'the exploratory piece' };
+    const sLabel = SLABEL[fork15.secondary] || 'that concern';
+    document.getElementById('ackScript').innerHTML = 'Before I dive in — I heard you mention <strong>'+sLabel+'</strong>, and I want you to know I haven\'t forgotten that. We\'ll come back to it. But let me first address the bigger piece, because if we don\'t resolve that first, the rest doesn\'t really matter. Is that okay with you?';
+    fork15.activeSub = 'bridge';
+    document.getElementById('subtabBar15').classList.add('show');
+    renderSubtabBar(); showSubPanel('bridge'); save15();
+  } else {
+    forkGo(fork15.chosen);
+  }
+}
+function forkOpenPrimary() { forkGo(fork15.chosen); }
+function forkOpenSecondary() { const t = fork15.secondary; fork15.secondary = fork15.chosen; fork15.chosen = t; forkOpenChosen(); }
+
+function save15() { if (typeof saveData15State === 'function') saveData15State(); }
+
+
+function toggleNote(uid) {
+  const nd = document.getElementById('nd_' + uid);
+  const showing = nd.style.display === 'block';
+  nd.style.display = showing ? 'none' : 'block';
+  if (!showing) document.getElementById('nt_' + uid).focus();
+}
+
+function onNoteInput(uid) {
+  const ta = document.getElementById('nt_' + uid);
+  const btn = document.getElementById('nb_' + uid);
+  if (!ta || !btn) return;
+  if (ta.value.trim()) { btn.classList.add('has-note'); btn.textContent = '★ Note'; }
+  else { btn.classList.remove('has-note'); btn.textContent = '+Note'; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// Data collection
+// ═══════════════════════════════════════════════════════════
+function collectData() {
+  const notes = {};
+  document.querySelectorAll('.card-note textarea').forEach(ta => {
+    if (ta.value.trim()) notes[ta.id.replace('nt_', '')] = ta.value;
+  });
+  return {
+    address: document.getElementById('field-address').value,
+    date: document.getElementById('field-date').value,
+    client: document.getElementById('field-client').value,
+    notes,
+    fork15: {
+      activeSub: fork15.activeSub,
+      chosen: fork15.chosen,
+      secondary: fork15.secondary,
+      checks: Array.from(document.querySelectorAll('#subpanel-0 .sig-opt input:checked')).map(cb => ({ p: cb.dataset.p, text: cb.parentElement.textContent.trim() }))
+    }
+  };
+}
+
+function restoreData(d) {
+  if (!d) return;
+  document.getElementById('field-address').value = d.address || '';
+  document.getElementById('field-date').value = d.date || '';
+  document.getElementById('field-client').value = d.client || '';
+  if (d.notes) {
+    Object.entries(d.notes).forEach(([uid, val]) => {
+      const ta = document.getElementById('nt_' + uid);
+      if (ta) {
+        ta.value = val;
+        onNoteInput(uid);
+        const nd = document.getElementById('nd_' + uid);
+        if (nd) nd.style.display = 'block';
+      }
+    });
+  }
+  // Restore Tab 1.5 fork state
+  if (d.fork15) {
+    fork15.activeSub = d.fork15.activeSub || null;
+    fork15.chosen = d.fork15.chosen || null;
+    fork15.secondary = d.fork15.secondary || null;
+    if (d.fork15.checks) {
+      d.fork15.checks.forEach(c => {
+        document.querySelectorAll('#subpanel-0 .sig-opt input[data-p="'+c.p+'"]').forEach(cb => {
+          if (cb.parentElement.textContent.trim() === c.text) cb.checked = true;
+        });
+      });
+      if (d.fork15.checks.length) {
+        const fs = document.getElementById('forkSignals'); if (fs) fs.style.display = 'block';
+        forkRecompute();
+      }
+    }
+    if (fork15.activeSub) {
+      renderSubtabBar();
+      // Only paint if tab 1 is visible
+      if (document.querySelector('.tab-btn.active') && document.querySelectorAll('.tab-btn')[1]?.classList.contains('active')) {
+        document.getElementById('subtabBar15').classList.add('show');
+        showSubPanel(fork15.activeSub);
+      }
+    }
+  }
+}
+
+function saveData15State() {
+  // Debounced save triggered by sub-tab/route changes; only persists if a record exists
+  if (currentId) { saveData(); }
+}
+
+// ── stub to satisfy previous declarations, replaced by real defs above ──
+function _oldRestoreDataStub(){}
+
+// ═══════════════════════════════════════════════════════════
+// Save / Load / Reset / Export
+// ═══════════════════════════════════════════════════════════
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function showInd(msg) {
+  const el = document.getElementById('saveInd');
+  el.textContent = msg;
+  setTimeout(() => el.textContent = '', 3000);
+}
+
+async function saveData() {
+  const d = collectData();
+  d.savedAt = new Date().toISOString();
+  if (currentId) { d.id = currentId; await dbPut(d); }
+  else { currentId = await dbAdd(d); }
+  toast('Saved!');
+}
+
+async function loadList() {
+  const records = await dbGetAll();
+  if (!records.length) { toast('No saved records.'); return; }
+  records.sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+  const choice = records.map((r, i) => `${i + 1}. ${r.address || 'No address'} — ${r.date || 'No date'} (${r.client || 'No client'})`).join('\n');
+  const pick = prompt('Select a record to load:\n\n' + choice + '\n\nEnter number:');
+  const idx = parseInt(pick) - 1;
+  if (isNaN(idx) || idx < 0 || idx >= records.length) return;
+  const rec = records[idx];
+  resetFields();
+  restoreData(rec);
+  currentId = rec.id;
+  toast('Loaded: ' + (rec.address || 'record'));
+}
+
+function resetFields() {
+  document.getElementById('field-address').value = '';
+  document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('field-client').value = '';
+  document.querySelectorAll('.card-note textarea').forEach(ta => { ta.value = ''; });
+  document.querySelectorAll('.card-note-toggle').forEach(btn => { btn.classList.remove('has-note'); btn.textContent = '+Note'; });
+  document.querySelectorAll('.card-note').forEach(nd => { nd.style.display = 'none'; });
+  // Fork state
+  fork15.activeSub = null; fork15.chosen = null; fork15.secondary = null;
+  document.querySelectorAll('#subpanel-0 .sig-opt input').forEach(cb => { cb.checked = false; cb.parentElement.classList.remove('checked'); });
+  const fs = document.getElementById('forkSignals'); if (fs) fs.style.display = 'none';
+  const rt = document.getElementById('routeText'); if (rt) rt.textContent = '—';
+  const op = document.getElementById('openPath'); if (op) { op.disabled = true; op.textContent = 'Open Path →'; }
+  document.getElementById('subtabBar15').classList.remove('show');
+  document.querySelectorAll('#panel-1 .sub-panel').forEach(p => p.classList.remove('active'));
+  const entryPanel = document.getElementById('subpanel-0'); if (entryPanel) entryPanel.classList.add('active');
+}
+
+function resetAll() {
+  if (!confirm('Clear all notes and fields?')) return;
+  resetFields();
+  currentId = null;
+  toast('Reset complete.');
+}
+
+function exportData() {
+  const d = collectData();
+  d.exportedAt = new Date().toISOString();
+  const addr = (d.address || 'no_address').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
+  const dt = d.date || new Date().toISOString().slice(0, 10);
+  const blob = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `LP_Script_Notes_${addr}_${dt}.json`;
+  a.click();
+  toast('Exported!');
+}
+
+// ═══════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════
+(async () => {
+  render();
+  // Default Tab 1.5 shows Entry sub-panel
+  const entry = document.getElementById('subpanel-0'); if (entry) entry.classList.add('active');
+  document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
+  await openDB();
+})();
+</script>
+</body>
+</html>
