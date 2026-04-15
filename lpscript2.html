@@ -532,11 +532,11 @@ const TABS = [
           },
           {
             "type": "label",
-            "text": "Q1 — Time & Budget"
+            "text": "Q1 — Interior Designer Consult"
           },
           {
             "type": "script",
-            "text": "How much time and budget are you comfortable putting into prep before we go live? Some sellers invest a little upfront to maximize the sale price; others prefer to list as-is and price accordingly. Where do you sit on that spectrum?"
+            "text": "I work with an interior designer who can come in and provide a \"Priority One\" list — just the highest-impact changes, no full redesign required. It can be as simple as rearranging furniture to open up a sightline, swapping out light bulbs for a warmer tone, or helping you pick the right neutral paint color if we decide to freshen up a room. Sometimes it's just one or two small moves that completely change how a space photographs and shows. Would you be open to that consultation? It's complimentary as part of my service."
           },
           {
             "type": "label",
@@ -548,15 +548,7 @@ const TABS = [
           },
           {
             "type": "label",
-            "text": "Q3 — Stager Consult"
-          },
-          {
-            "type": "script",
-            "text": "I work with a stager who can come in and provide a \"Priority One\" list — just the highest-impact changes, no full staging required. Would you be open to that consultation? It's complimentary as part of my service."
-          },
-          {
-            "type": "label",
-            "text": "Q4 — Pre-Listing Inspection"
+            "text": "Q3 — Pre-Listing Inspection"
           },
           {
             "type": "script",
@@ -564,11 +556,19 @@ const TABS = [
           },
           {
             "type": "label",
-            "text": "Q5 — Off-Limits"
+            "text": "Q4 — Off-Limits"
           },
           {
             "type": "script",
-            "text": "Last one — is there anything in the home you'd prefer not to change, move, or touch? I want to know now so I can plan around it."
+            "text": "Is there anything in the home you'd prefer not to change, move, or touch? I want to know now so I can plan around it."
+          },
+          {
+            "type": "label",
+            "text": "Q5 — Time & Budget"
+          },
+          {
+            "type": "script",
+            "text": "Last one — based on what you've shared, it sounds like you're open to some things and want to skip others. Does that match how you're thinking about time and budget overall — a light-touch prep, or would you actually go further if I felt it was worth it? Some sellers invest a little upfront to maximize the sale price; others prefer to list as-is and price accordingly."
           },
           {
             "type": "response",
@@ -576,15 +576,15 @@ const TABS = [
           },
           {
             "type": "tip",
-            "text": "If time is tight, Questions 1, 3, and 5 are the non-negotiables. Questions 2 and 4 can be trimmed on the fly."
+            "text": "If time is tight, Questions 1, 4, and 5 are the non-negotiables — the free offer, the boundary check, and the calibration. Questions 2 and 3 can be trimmed on the fly."
           },
           {
             "type": "action",
-            "text": "Close the pause with one forward-looking sentence. Do not open your notes. Do not list items. Plant the seed that a plan exists and will be built around their answers."
+            "text": "Close the pause with one forward-looking sentence that bridges directly into Wrap-Up. Do not open your notes. Do not list items. Plant the seed that a plan exists, then pivot the conversation from what we'll change to what's already here — the story and substance of the home itself."
           },
           {
             "type": "script",
-            "text": "This is really helpful — thank you. Based on everything you just shared, I have a clear picture of what you're open to. Once we've agreed on strategy and price at the table, I'll put together a short prep plan built around your answers — so you'll know exactly what moves the needle and what doesn't. Nothing wasted, nothing imposed. Shall we head back inside?"
+            "text": "This is really helpful — thank you. Based on everything you just shared, I have a clear picture of what you're open to. Once we've agreed on strategy and price at the table, I'll put together a short prep plan built around your answers — so you'll know exactly what moves the needle and what doesn't. Nothing wasted, nothing imposed."
           }
         ]
       },
@@ -597,7 +597,7 @@ const TABS = [
           },
           {
             "type": "script",
-            "text": "The feeling I'm getting as we walk through is really special — and that emotion is going to help sell this home. And to get the optimal price, we need to back it up with facts — the things buyers can't see. So let me ask you this: over the years, have you made any major upgrades to the windows, insulation, or the plumbing and electrical systems? These are significant value-adders during appraisal."
+            "text": "And you know, the feeling I'm getting as we've walked through today is really special — and that emotion is going to help sell this home. But to get the optimal price, we need to back it up with facts — the things buyers can't see. So let me ask you this: over the years, have you made any major upgrades to the windows, insulation, or the plumbing and electrical systems? These are significant value-adders during appraisal."
           },
           {
             "type": "response",
@@ -916,11 +916,11 @@ const TABS = [
           },
           {
             "type": "script",
-            "text": "One quick question to help me communicate well — who else is involved in this decision? Is it just the two of you, or is there anyone else whose input matters — a family member, an accountant, anyone you'll want to run things by?"
+            "text": "One quick question to help me communicate well — who else is involved in this decision? Is it just the two of you, or is there anyone else whose input matters — a family member, a lawyer, an accountant, anyone you'll want to run things by?"
           },
           {
             "type": "response",
-            "text": "If yes: \"Got it — thank you for letting me know. Would it help if I prepared a short summary you can share with them, so they have the same information you have? I'd rather they hear it from the source than second-hand.\""
+            "text": "If yes: \"Got it — thank you for letting me know. Would it help if I prepared a short summary you can share with them — whether that's a lawyer, accountant, or family member — so they have the same information you have? I'd rather they hear it from the source than second-hand.\""
           },
           {
             "type": "script",
@@ -940,7 +940,7 @@ const TABS = [
           },
           {
             "type": "script",
-            "text": "That's really helpful context. I will make sure you always know what's happening. When all is said and done, what's the one thing that will make you feel truly taken care of?"
+            "text": "Thank you. One more question in this part — and it's less about process, more about you. When all is said and done, what's the one thing that will make you feel truly taken care of?"
           },
           {
             "type": "label",
@@ -1121,9 +1121,9 @@ const TABS = [
         "items": [
           { "type": "label", "anchor": "recap → commit → confirm", "text": "Three-paragraph arc: what we covered, what I'll deliver, do you believe it. Recap re-activates the blueprint. Commitment pivots from capability to pledge. Confirmation asks for the yes." },
           { "type": "label", "anchor": "— step 1 recap —", "text": "Step 1: Recap the Blueprint" },
-          { "type": "script", "anchor": "complete blueprint", "text": "Jane, Mike — we've covered the complete blueprint — The Pinnacle Listing System that maximizes the value of your home. You've seen how we make your home irresistible, how we flood it with the right buyers, and how I protect every dollar through negotiation and appraisal." },
-          { "type": "label", "anchor": "— step 2 commit —", "text": "Step 2: The Commitment" },
-          { "type": "script", "anchor": "start to finish", "text": "That's the plan — start to finish, exactly what I'm going to do for you. In a market that rewards the prepared, you'll have certainty, leverage, and someone fully committed to delivering an outstanding result — together." },
+          { "type": "script", "anchor": "complete blueprint", "text": "Jane, Mike — we've covered the complete blueprint — The Pinnacle Listing System that maximizes the value of your home. You've seen how we make your home irresistible, how we flood it with the right buyers, and how I protect every dollar through negotiation and appraisal. That's the plan — from start to finish, exactly what I'm going to do for you." },
+          { "type": "label", "anchor": "— step 2 commit —", "text": "Step 2: The Value Tie-Down" },
+          { "type": "script", "anchor": "rewards the prepared", "text": "In a market that rewards the prepared, you'll have certainty, leverage, and someone fully committed to delivering an outstanding result — together." },
           { "type": "label", "anchor": "— step 3 confirm —", "text": "Step 3: The Process Close" },
           { "type": "script", "anchor": "highest price today", "text": "Before we move to pricing and launch strategy — one important question: Based on everything you've seen, the preparation, the marketing, the negotiation — do you feel confident that this strategic process will get you the highest price in today's market?" },
           { "type": "response", "anchor": "wait for yes", "text": "Wait for 'Yes' — pause — let them say it." },
