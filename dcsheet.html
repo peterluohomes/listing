@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discovery Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2744;
+  --navy2: #243050;
+  --gold: #c9a84c;
+  --gold-dim: #f0e6cc;
+  --cream: #fdfaf4;
+  --cream2: #f5f0e6;
+  --text: #1e1e2e;
+  --muted: #6b7280;
+  --border: #ddd3b8;
+  --red: #c0392b;
+  --green: #2e7d32;
+  --blue: #2c5f7c;
+  --section-h: #1a2744;
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 20px;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+}
+
+/* ── HEADER ── */
+.page-header {
+  background: var(--navy);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+.page-header .sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.5px;
+}
+.clear-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  padding: 5px 14px;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.clear-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
+
+/* ── SECTIONS ── */
+.section {
+  border-bottom: 1px solid var(--border);
+}
+.section:last-child { border-bottom: none; }
+
+.sec-header {
+  background: var(--navy2);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--gold);
+}
+
+.sec-body {
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* ── ROWS ── */
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 24px;
+}
+.row.indent { padding-left: 20px; }
+.row.indent2 { padding-left: 40px; }
+
+/* ── CUE MARKER ── */
+.cue {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 500;
+  white-space: nowrap;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.cue-arrow {
+  color: var(--blue);
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── LABELS ── */
+.lbl {
+  font-size: 12px;
+  color: var(--muted);
+  flex-shrink: 0;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+.lbl-bold {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  flex-shrink: 0;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+.lbl-yes { color: var(--green); font-weight: 600; font-size: 12px; flex-shrink: 0; margin-top:2px; }
+.lbl-no  { color: var(--red);   font-weight: 600; font-size: 12px; flex-shrink: 0; margin-top:2px; }
+
+/* ── TEXT INPUTS ── */
+.ti {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text);
+  padding: 1px 2px;
+  outline: none;
+  min-width: 60px;
+  flex: 1;
+  transition: border-color 0.15s;
+}
+.ti:focus { border-bottom-color: var(--gold); }
+.ti.sm { max-width: 120px; flex: 0 0 120px; }
+.ti.md { max-width: 180px; flex: 0 0 180px; }
+.ti.lg { flex: 1; }
+.ti.full { width: 100%; flex: 1; }
+
+/* ref fields — coloured to match their number */
+.ti.ref1:focus { border-bottom-color: #c0392b; }
+.ti.ref2:focus { border-bottom-color: #2980b9; }
+.ti.ref3:focus { border-bottom-color: #27ae60; }
+.ti.ref4:focus { border-bottom-color: #8e44ad; }
+.ti.ref5:focus { border-bottom-color: #e67e22; }
+.ti.ref6:focus { border-bottom-color: #16a085; }
+.ti.ref7:focus { border-bottom-color: #d35400; }
+
+/* ── CHECKBOXES ── */
+.cb-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.cb {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--navy);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── RADIO BUTTONS ── */
+.rb-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.rb {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--navy);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ── RANK BADGES ── */
+.rank-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--cream2);
+  transition: all 0.15s;
+  user-select: none;
+}
+.rank-item:hover { border-color: var(--gold); background: var(--gold-dim); }
+.rank-item.ranked { border-color: var(--navy); background: var(--navy); color: #fff; }
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+}
+.rank-item.ranked .rank-badge { background: var(--gold); color: var(--navy); }
+.rank-lbl { font-size: 12px; font-weight: 500; }
+
+/* ── RECAP SECTION ── */
+.recap-box {
+  background: var(--cream2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 12px 16px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--text);
+}
+.recap-box .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  vertical-align: middle;
+  margin: 0 1px;
+  flex-shrink: 0;
+}
+.n1 { background: #c0392b; color: #fff; }
+.n2 { background: #2980b9; color: #fff; }
+.n3 { background: #27ae60; color: #fff; }
+.n4 { background: #8e44ad; color: #fff; }
+.n5 { background: #e67e22; color: #fff; }
+.n6 { background: #16a085; color: #fff; }
+.n7 { background: #d35400; color: #fff; }
+
+.recap-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--navy);
+  border-bottom: 1px dashed var(--border);
+  padding: 0 2px;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.bottom-row {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  background: var(--cream2);
+  font-size: 12px;
+  color: var(--muted);
+}
+.bottom-row .cue { margin-top: 0; }
+
+/* divider */
+.mini-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 3px 0;
+  opacity: 0.5;
+}
+
+@media print {
+  body { padding: 0; background: #fff; }
+  .page { box-shadow: none; border: none; }
+  .clear-btn { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>Discovery Cheat Sheet</h1>
+      <div class="sub">LISTING PRESENTATION · PINNACLE LISTING SYSTEM</div>
+    </div>
+    <button class="clear-btn" onclick="clearAll()">↺ Clear</button>
+  </div>
+
+  <!-- ══ AGENDA ══ -->
+  <div class="section">
+    <div class="sec-header">Agenda</div>
+    <div class="sec-body">
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">Before dive-in. I promise… clear customized plan… absolute max… minimum stress.</span>
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">Quick question — getting multiple opinions?</span>
+        <div class="cb-wrap"><input class="cb" type="checkbox" id="multi-yes"><label for="multi-yes" class="lbl-yes">Yes</label></div>
+        <span class="lbl">→ Great. Smart seller. What matters most?</span>
+      </div>
+      <div class="row indent">
+        <span class="lbl" style="flex-shrink:0;color:var(--muted);">(7)</span>
+        <input class="ti lg ref7" id="f7" type="text" placeholder="what matters most to them…" oninput="updateRecap()">
+        <div class="cb-wrap" style="margin-left:8px;"><input class="cb" type="checkbox" id="multi-no"><label for="multi-no" class="lbl-no">No</label></div>
+        <span class="lbl">→ Appreciate… confident</span>
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">3-step roadmap: 1. Understand &nbsp; 2. Build tailored &nbsp; 3. Comparative &amp; strategy</span>
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">1st step foundation… with permission. Ask?</span>
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">✓</label></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ WHY ══ -->
+  <div class="section">
+    <div class="sec-header"># 1 — WHY</div>
+    <div class="sec-body">
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl" style="flex-shrink:0;">Big picture — what's bringing you</span>
+        <span class="lbl" style="flex-shrink:0;font-weight:600;color:#c0392b;">(1)</span>
+        <input class="ti lg ref1" id="f1" type="text" placeholder="main reason for selling…" oninput="updateRecap()">
+      </div>
+
+      <div class="row indent">
+        <span class="lbl-yes">+</span>
+        <span class="lbl">That's exciting — what are you looking forward to?</span>
+        <input class="ti lg" type="text" placeholder="look forward to…">
+        <span class="lbl">My job.</span>
+      </div>
+
+      <div class="row indent">
+        <span class="lbl-no">−</span>
+        <span class="lbl">Thank you for sharing… stay confidential. Helped many</span>
+        <input class="ti lg" type="text" placeholder="similar situation…">
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">What makes <em>now</em> the right time? What's changed?</span>
+        <input class="ti lg" type="text" placeholder="what changed recently…">
+      </div>
+
+      <div class="row">
+        <span class="cue">◊◊</span>
+        <span class="lbl">If everything perfect… allow next?</span>
+        <input class="ti lg" type="text" placeholder="perfect outcome…">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ WHERE ══ -->
+  <div class="section">
+    <div class="sec-header">## WHERE</div>
+    <div class="sec-body">
+
+      <div class="row">
+        <span class="cue">◊◊</span>
+        <span class="lbl" style="flex-shrink:0;">That makes sense. Where does this take you next</span>
+        <span class="lbl" style="flex-shrink:0;font-weight:600;color:#2980b9;">(2)</span>
+        <input class="ti lg ref2" id="f2" type="text" placeholder="destination / next move…" oninput="updateRecap()">
+        <span class="lbl" style="flex-shrink:0;">— started looking / found something?</span>
+      </div>
+
+      <div class="row indent">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl-yes">Found</label></div>
+        <span class="lbl">That's exciting — what do you love most?</span>
+        <input class="ti lg" type="text" placeholder="love most…">
+      </div>
+      <div class="row indent2">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">Accepted offer</label></div>
+        <div class="cb-wrap" style="margin-left:16px;"><input class="cb" type="checkbox"><label class="lbl">Closing date</label></div>
+        <input class="ti lg" type="text" placeholder="details…">
+      </div>
+
+      <div class="row indent">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl-no">Looking</label></div>
+        <span class="lbl">What looking for — next home?</span>
+        <input class="ti md" type="text" placeholder="home type…">
+        <span class="lbl" style="flex-shrink:0;">Price range?</span>
+        <input class="ti sm" type="text" placeholder="$ range…">
+      </div>
+
+      <div class="row" style="background:var(--cream2);border-left:2px solid var(--gold);padding:5px 8px;border-radius:0 4px 4px 0;">
+        <span class="cue-arrow">⇒</span>
+        <span class="lbl"><strong>Reflect:</strong> So you're moving to</span>
+        <span class="lbl" style="font-weight:600;color:#2980b9;">(2)</span>
+        <span class="lbl">because</span>
+        <span class="lbl" style="font-weight:600;color:#c0392b;">(1)</span>
+        <span class="lbl">— that's a great fit.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ WHEN ══ -->
+  <div class="section">
+    <div class="sec-header">## WHEN</div>
+    <div class="sec-body">
+
+      <div class="row">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">To keep safe — sell before buy?</label></div>
+        <span class="cue" style="margin-left:12px;">◊</span>
+        <span class="lbl">Ideal move-out date</span>
+        <span class="lbl" style="font-weight:600;color:#27ae60;">(3)</span>
+        <input class="ti md ref3" id="f3" type="text" placeholder="target date…" oninput="updateRecap()">
+      </div>
+
+      <div class="row indent">
+        <span class="lbl">Must-hit deadlines? Job start:</span>
+        <input class="ti sm" type="text" placeholder="date…">
+        <span class="lbl" style="flex-shrink:0;margin-left:8px;">School?</span>
+        <input class="ti sm" type="text" placeholder="date…">
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">If <strong>strong offer</strong> tomorrow — earliest… keys?</span>
+        <input class="ti md" type="text" placeholder="earliest date…">
+      </div>
+
+      <div class="row">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">Would you need <strong>flexibility</strong>?</label></div>
+        <input class="ti lg" type="text" placeholder="flexibility needed…">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ PRIORITIES ══ -->
+  <div class="section">
+    <div class="sec-header">Priorities</div>
+    <div class="sec-body">
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">Clear picture. When it comes to selling — what's most important? Some… others… some.</span>
+      </div>
+
+      <div class="row" style="align-items:center;">
+        <span class="cue-arrow">↩</span>
+        <span class="lbl">If "everything" — very common. If rank</span>
+        <span class="lbl" style="font-weight:600;color:#8e44ad;">(4)</span>
+        <div class="rank-group" id="rankGroup" style="margin-left:8px;">
+          <div class="rank-item" id="ri-price" onclick="rankClick('price')">
+            <span class="rank-badge" id="rb-price">?</span>
+            <span class="rank-lbl">Price</span>
+          </div>
+          <div class="rank-item" id="ri-timing" onclick="rankClick('timing')">
+            <span class="rank-badge" id="rb-timing">?</span>
+            <span class="rank-lbl">Timing</span>
+          </div>
+          <div class="rank-item" id="ri-stress" onclick="rankClick('stress')">
+            <span class="rank-badge" id="rb-stress">?</span>
+            <span class="rank-lbl">Low-stress</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">When this is all done — complete success?</span>
+        <input class="ti lg" type="text" placeholder="success means…">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ CONCERNS ══ -->
+  <div class="section">
+    <div class="sec-header">## Concerns</div>
+    <div class="sec-body">
+
+      <div class="row">
+        <span class="cue">◊◊</span>
+        <span class="lbl">Price gets headlines… terms keep safe. Besides price, any deal-breakers?</span>
+        <input class="ti md" type="text" placeholder="deal-breaker…">
+        <span class="lbl" style="flex-shrink:0;">Specific dates?</span>
+        <input class="ti sm" type="text" placeholder="date…">
+        <span class="lbl" style="flex-shrink:0;">Fixture keep?</span>
+        <input class="ti sm" type="text" placeholder="fixture…">
+      </div>
+
+      <div class="row">
+        <span class="lbl" style="flex-shrink:0;">I want to take weight off… If eliminate one worry</span>
+        <span class="lbl" style="font-weight:600;color:#e67e22;flex-shrink:0;">(5)</span>
+        <div class="rb-wrap" style="margin-left:8px;">
+          <input class="rb" type="radio" name="worry" id="w1" value="strangers" onchange="setWorry('strangers')">
+          <label for="w1" class="lbl">Strangers walking through</label>
+        </div>
+        <div class="rb-wrap" style="margin-left:12px;">
+          <input class="rb" type="radio" name="worry" id="w2" value="negotiation" onchange="setWorry('negotiation')">
+          <label for="w2" class="lbl">The negotiation</label>
+        </div>
+        <div class="rb-wrap" style="margin-left:12px;">
+          <input class="rb" type="radio" name="worry" id="w3" value="uncertainty" onchange="setWorry('uncertainty')">
+          <label for="w3" class="lbl">Uncertainty of timeline</label>
+        </div>
+      </div>
+
+      <div class="row indent">
+        <input class="ti full" type="text" placeholder="other worry / their exact words…" id="f5" oninput="updateRecap()">
+        <span class="cue" style="margin-left:8px;">◊</span>
+        <span class="lbl">Perfect — that's exactly what we'll manage together.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ DECISION-MAKING ══ -->
+  <div class="section">
+    <div class="sec-header">Decision-Making</div>
+    <div class="sec-body">
+
+      <div class="row">
+        <span class="lbl">One quick question — who else involved?</span>
+        <input class="ti lg" type="text" placeholder="who else…">
+      </div>
+
+      <div class="row indent">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl-yes">If yes:</label></div>
+        <span class="lbl">Got it — prepared a short summary?</span>
+        <input class="ti lg" type="text" placeholder="summary for them…">
+      </div>
+
+      <div class="row">
+        <span class="lbl">To tailor — when last time sold?</span>
+        <input class="ti lg" type="text" placeholder="last sale experience…">
+      </div>
+
+      <div class="row indent">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">&lt; 10 yrs:</label></div>
+        <span class="lbl">How was experience? What worked / miss?</span>
+        <input class="ti lg" type="text" placeholder="notes…">
+      </div>
+      <div class="row indent">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">&gt; 10 yrs:</label></div>
+        <span class="lbl">A lot changed — tech, behavior. Guide every step.</span>
+        <div class="cb-wrap" style="margin-left:12px;"><input class="cb" type="checkbox"><label class="lbl">1st time:</label></div>
+        <span class="lbl">Exciting — good hands. Walk every step.</span>
+      </div>
+
+      <div class="row">
+        <span class="lbl">One more — less process, more you. When all said &amp; done, truly taken care of?</span>
+        <input class="ti lg" type="text" placeholder="taken care of means…">
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">Communication</span>
+        <span class="lbl" style="font-weight:600;color:#16a085;flex-shrink:0;">(6)</span>
+        <div class="rb-wrap" style="margin-left:8px;">
+          <input class="rb" type="radio" name="comm" id="c1" value="Phone" onchange="setComm('Phone')">
+          <label for="c1" class="lbl">Phone</label>
+        </div>
+        <div class="rb-wrap" style="margin-left:10px;">
+          <input class="rb" type="radio" name="comm" id="c2" value="Text" onchange="setComm('Text')">
+          <label for="c2" class="lbl">Text</label>
+        </div>
+        <div class="rb-wrap" style="margin-left:10px;">
+          <input class="rb" type="radio" name="comm" id="c3" value="Email" onchange="setComm('Email')">
+          <label for="c3" class="lbl">Email</label>
+        </div>
+        <span class="lbl" style="flex-shrink:0;margin-left:14px;">◊ How often?</span>
+        <div class="rb-wrap" style="margin-left:8px;">
+          <input class="rb" type="radio" name="freq" id="q1" value="Weekly" onchange="setFreq('Weekly')">
+          <label for="q1" class="lbl">Weekly</label>
+        </div>
+        <div class="rb-wrap" style="margin-left:10px;">
+          <input class="rb" type="radio" name="freq" id="q2" value="When news" onchange="setFreq('When news')">
+          <label for="q2" class="lbl">When news</label>
+        </div>
+        <div class="rb-wrap" style="margin-left:10px;">
+          <input class="rb" type="radio" name="freq" id="q3" value="" onchange="setFreq(this.dataset.val)">
+          <label for="q3" class="lbl">Else:</label>
+          <input class="ti sm" id="freq-other" type="text" placeholder="…" oninput="setFreq(this.value);updateRecap()" style="margin-left:4px;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ RECAP ══ -->
+  <div class="section">
+    <div class="sec-header">Recap</div>
+    <div class="sec-body" style="gap:10px;">
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">Just make sure — straight. Sounds like…</span>
+      </div>
+
+      <div class="recap-box" id="recapBox">
+        Main reason you're selling is <span class="num n1">1</span> <span class="recap-val" id="r1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>,
+        hoping to <span class="num n2">2</span> <span class="recap-val" id="r2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>,
+        ideally around <span class="num n3">3</span> <span class="recap-val" id="r3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+        Your top priorities are <span class="num n4">4</span> <span class="recap-val" id="r4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+        You want to make sure <span class="num n5">5</span> <span class="recap-val" id="r5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> handled well.
+        You want to be updated by <span class="num n6">6</span> <span class="recap-val" id="r6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+        You are looking for an agent who <span class="num n7">7</span> <span class="recap-val" id="r7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+      </div>
+
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">Did I miss / get anything wrong? I want to see exactly the way you do.</span>
+      </div>
+      <div class="row">
+        <span class="cue-arrow">⇒</span>
+        <span class="lbl">Perfect. My job now — protect equity… deliver exactly what you described.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ PRICE / FLOOR ══ -->
+  <div class="section">
+    <div class="sec-header">Price Range</div>
+    <div class="sec-body">
+      <div class="row">
+        <span class="cue">◊</span>
+        <span class="lbl">Between us — dream price:</span>
+        <input class="ti sm" type="text" placeholder="$ dream…">
+        <span class="lbl" style="flex-shrink:0;margin-left:16px;">Floor:</span>
+        <input class="ti sm" type="text" placeholder="$ floor…">
+      </div>
+      <div class="row">
+        <span class="lbl" style="color:var(--muted);">Excellent question. Line-by-line Step 3… keep. For now, knowing target helps build strongest pricing strategy.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- .page -->
+
+<script>
+// ── RANK LOGIC ────────────────────────────────────────────────────────────────
+var rankOrder = [];
+var rankItems = ['price','timing','stress'];
+
+function rankClick(key) {
+  var idx = rankOrder.indexOf(key);
+  if (idx >= 0) {
+    // already ranked — unrank it and shift others down
+    rankOrder.splice(idx, 1);
+  } else {
+    if (rankOrder.length < 3) rankOrder.push(key);
+  }
+  renderRank();
+  updateRecap();
+}
+
+function renderRank() {
+  rankItems.forEach(function(key) {
+    var item = document.getElementById('ri-' + key);
+    var badge = document.getElementById('rb-' + key);
+    var pos = rankOrder.indexOf(key);
+    if (pos >= 0) {
+      item.classList.add('ranked');
+      badge.textContent = pos + 1;
+    } else {
+      item.classList.remove('ranked');
+      badge.textContent = '?';
+    }
+  });
+}
+
+// ── WORRY RADIO ───────────────────────────────────────────────────────────────
+function setWorry(val) {
+  document.getElementById('f5').value = val;
+  updateRecap();
+}
+
+// ── COMM RADIO ────────────────────────────────────────────────────────────────
+var commVal = '', freqVal = '';
+function setComm(val) { commVal = val; updateRecap(); }
+function setFreq(val) { freqVal = val; updateRecap(); }
+
+// ── RECAP UPDATE ──────────────────────────────────────────────────────────────
+function updateRecap() {
+  var v1 = document.getElementById('f1').value.trim();
+  var v2 = document.getElementById('f2').value.trim();
+  var v3 = document.getElementById('f3').value.trim();
+
+  // Build rank string for (4)
+  var rankLabels = {price:'Price', timing:'Timing', stress:'Low-stress'};
+  var v4 = rankOrder.map(function(k,i){ return (i+1)+'. '+rankLabels[k]; }).join(', ');
+
+  var v5 = document.getElementById('f5').value.trim();
+
+  // Build comm string for (6)
+  var v6 = '';
+  if (commVal) v6 += commVal;
+  if (freqVal) v6 += (v6 ? ' · ' : '') + freqVal;
+
+  var v7 = document.getElementById('f7').value.trim();
+
+  var refs = {r1:v1, r2:v2, r3:v3, r4:v4, r5:v5, r6:v6, r7:v7};
+  Object.keys(refs).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = refs[id] || '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0';
+    el.style.color = refs[id] ? 'var(--navy)' : 'var(--border)';
+  });
+}
+
+// ── CLEAR ALL ─────────────────────────────────────────────────────────────────
+function clearAll() {
+  if (!confirm('Clear all fields?')) return;
+  document.querySelectorAll('input[type=text]').forEach(function(el){ el.value=''; });
+  document.querySelectorAll('input[type=checkbox]').forEach(function(el){ el.checked=false; });
+  document.querySelectorAll('input[type=radio]').forEach(function(el){ el.checked=false; });
+  rankOrder = [];
+  commVal = ''; freqVal = '';
+  renderRank();
+  updateRecap();
+}
+
+// init
+renderRank();
+updateRecap();
+</script>
+</body>
+</html>
