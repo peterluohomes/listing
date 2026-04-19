@@ -40,6 +40,7 @@ body {
   background: #fff;
   border: 1px solid var(--border);
   box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+  overflow-x: hidden;
 }
 
 /* ── HEADER ── */
@@ -98,13 +99,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: 7px;
+  overflow-x: hidden;
+  min-width: 0;
 }
 
 /* ── ROWS ── */
 .row {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px 8px;
   min-height: 24px;
 }
 .row.indent { padding-left: 20px; }
@@ -131,9 +135,9 @@ body {
 .lbl {
   font-size: 12px;
   color: var(--muted);
-  flex-shrink: 0;
+  flex-shrink: 1;
   margin-top: 2px;
-  white-space: nowrap;
+  white-space: normal;
 }
 .lbl-bold {
   font-size: 12px;
@@ -143,8 +147,8 @@ body {
   margin-top: 2px;
   white-space: nowrap;
 }
-.lbl-yes { color: var(--green); font-weight: 600; font-size: 12px; flex-shrink: 0; margin-top:2px; }
-.lbl-no  { color: var(--red);   font-weight: 600; font-size: 12px; flex-shrink: 0; margin-top:2px; }
+.lbl-yes { color: var(--green); font-weight: 600; font-size: 12px; flex-shrink: 0; margin-top:2px; white-space: nowrap; }
+.lbl-no  { color: var(--red);   font-weight: 600; font-size: 12px; flex-shrink: 0; margin-top:2px; white-space: nowrap; }
 
 /* ── TEXT INPUTS ── */
 .ti {
@@ -181,6 +185,7 @@ body {
   align-items: center;
   gap: 5px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .cb {
   width: 14px;
@@ -197,6 +202,7 @@ body {
   align-items: center;
   gap: 5px;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .rb {
   width: 14px;
@@ -210,7 +216,7 @@ body {
 .rank-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .rank-item {
@@ -529,6 +535,8 @@ body {
         <span class="cue">◊◊</span>
         <span class="lbl">Price gets headlines… terms keep safe. Besides price, any deal-breakers?</span>
         <input class="ti md" type="text" placeholder="deal-breaker…">
+      </div>
+      <div class="row indent">
         <span class="lbl" style="flex-shrink:0;">Specific dates?</span>
         <input class="ti sm" type="text" placeholder="date…">
         <span class="lbl" style="flex-shrink:0;">Fixture keep?</span>
@@ -538,15 +546,17 @@ body {
       <div class="row">
         <span class="lbl" style="flex-shrink:0;">I want to take weight off… If eliminate one worry</span>
         <span class="lbl" style="font-weight:600;color:#e67e22;flex-shrink:0;">(5)</span>
-        <div class="rb-wrap" style="margin-left:8px;">
+      </div>
+      <div class="row indent" style="gap:14px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="worry" id="w1" value="strangers" onchange="setWorry('strangers')">
           <label for="w1" class="lbl">Strangers walking through</label>
         </div>
-        <div class="rb-wrap" style="margin-left:12px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="worry" id="w2" value="negotiation" onchange="setWorry('negotiation')">
           <label for="w2" class="lbl">The negotiation</label>
         </div>
-        <div class="rb-wrap" style="margin-left:12px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="worry" id="w3" value="uncertainty" onchange="setWorry('uncertainty')">
           <label for="w3" class="lbl">Uncertainty of timeline</label>
         </div>
@@ -590,7 +600,9 @@ body {
       <div class="row indent">
         <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">&gt; 10 yrs:</label></div>
         <span class="lbl">A lot changed — tech, behavior. Guide every step.</span>
-        <div class="cb-wrap" style="margin-left:12px;"><input class="cb" type="checkbox"><label class="lbl">1st time:</label></div>
+      </div>
+      <div class="row indent">
+        <div class="cb-wrap"><input class="cb" type="checkbox"><label class="lbl">1st time:</label></div>
         <span class="lbl">Exciting — good hands. Walk every step.</span>
       </div>
 
@@ -601,30 +613,32 @@ body {
 
       <div class="row">
         <span class="cue">◊</span>
-        <span class="lbl">Communication</span>
+        <span class="lbl" style="flex-shrink:0;">Communication</span>
         <span class="lbl" style="font-weight:600;color:#16a085;flex-shrink:0;">(6)</span>
-        <div class="rb-wrap" style="margin-left:8px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="comm" id="c1" value="Phone" onchange="setComm('Phone')">
           <label for="c1" class="lbl">Phone</label>
         </div>
-        <div class="rb-wrap" style="margin-left:10px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="comm" id="c2" value="Text" onchange="setComm('Text')">
           <label for="c2" class="lbl">Text</label>
         </div>
-        <div class="rb-wrap" style="margin-left:10px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="comm" id="c3" value="Email" onchange="setComm('Email')">
           <label for="c3" class="lbl">Email</label>
         </div>
-        <span class="lbl" style="flex-shrink:0;margin-left:14px;">◊ How often?</span>
-        <div class="rb-wrap" style="margin-left:8px;">
+      </div>
+      <div class="row indent" style="gap:14px;">
+        <span class="lbl" style="flex-shrink:0;">◊ How often?</span>
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="freq" id="q1" value="Weekly" onchange="setFreq('Weekly')">
           <label for="q1" class="lbl">Weekly</label>
         </div>
-        <div class="rb-wrap" style="margin-left:10px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="freq" id="q2" value="When news" onchange="setFreq('When news')">
           <label for="q2" class="lbl">When news</label>
         </div>
-        <div class="rb-wrap" style="margin-left:10px;">
+        <div class="rb-wrap">
           <input class="rb" type="radio" name="freq" id="q3" value="" onchange="setFreq(this.dataset.val)">
           <label for="q3" class="lbl">Else:</label>
           <input class="ti sm" id="freq-other" type="text" placeholder="…" oninput="setFreq(this.value);updateRecap()" style="margin-left:4px;">
