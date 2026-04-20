@@ -444,9 +444,9 @@ body {
       <div class="row" style="background:var(--cream2);border-left:2px solid var(--gold);padding:5px 8px;border-radius:0 4px 4px 0;">
         <span class="cue-arrow">⇒</span>
         <span class="lbl"><strong>Reflect:</strong> So you're moving to</span>
-        <span class="lbl" style="font-weight:600;color:#2980b9;">(2)</span>
+        <span id="reflect2" style="font-weight:600;color:#2980b9;font-size:12px;border-bottom:1px dashed #2980b9;padding:0 2px;min-width:40px;display:inline-block;">&nbsp;</span>
         <span class="lbl">because</span>
-        <span class="lbl" style="font-weight:600;color:#c0392b;">(1)</span>
+        <span id="reflect1" style="font-weight:600;color:#c0392b;font-size:12px;border-bottom:1px dashed #c0392b;padding:0 2px;min-width:40px;display:inline-block;">&nbsp;</span>
         <span class="lbl">— that's a great fit.</span>
       </div>
 
@@ -768,6 +768,12 @@ function updateRecap() {
     el.textContent = refs[id] || '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0';
     el.style.color = refs[id] ? 'var(--navy)' : 'var(--border)';
   });
+
+  // Update inline reflect row
+  var r1el = document.getElementById('reflect1');
+  var r2el = document.getElementById('reflect2');
+  if (r1el) { r1el.textContent = v1 || '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'; r1el.style.opacity = v1 ? '1' : '0.35'; }
+  if (r2el) { r2el.textContent = v2 || '\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'; r2el.style.opacity = v2 ? '1' : '0.35'; }
 }
 
 // ── CLEAR ALL ─────────────────────────────────────────────────────────────────
