@@ -1,0 +1,2945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Active Listing Marketing Procedure — Pinnacle Listing System</title>
+<style>
+  :root {
+    --navy: #0A2540;
+    --navy-light: #1a3a5c;
+    --navy-deep: #061a2e;
+    --gold: #B8924A;
+    --gold-light: #d4ae6a;
+    --gold-soft: #f4ead4;
+    --cream: #FAF7F0;
+    --paper: #FFFFFF;
+    --gray-text: #3A3A3A;
+    --gray-soft: #6b6b6b;
+    --gray-line: #e5e0d6;
+    --gray-bg: #f8f6f1;
+    --alert: #c0392b;
+    --alert-soft: #fdf2f0;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--gray-text);
+    line-height: 1.7;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    background: var(--paper);
+    padding: 70px 80px;
+    box-shadow: 0 2px 30px rgba(10, 37, 64, 0.08);
+    min-height: 100vh;
+  }
+
+  /* ============== COVER ============== */
+  .cover {
+    text-align: center;
+    padding: 30px 0 50px 0;
+    border-bottom: 1px solid var(--gold);
+    margin-bottom: 40px;
+  }
+
+  .cover .brand-mark {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .cover h1 {
+    font-family: 'Georgia', serif;
+    font-size: 36px;
+    color: var(--navy);
+    margin: 0 0 10px 0;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
+  }
+
+  .cover .subtitle {
+    font-style: italic;
+    color: var(--gold);
+    font-size: 17px;
+    margin: 0 0 28px 0;
+    line-height: 1.5;
+  }
+
+  .cover .author-line {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    color: var(--gray-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ============== TOC ============== */
+  .toc {
+    background: var(--gray-bg);
+    border-left: 3px solid var(--gold);
+    padding: 26px 36px;
+    margin-bottom: 50px;
+  }
+
+  .toc-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  .toc ol {
+    margin: 0;
+    padding-left: 22px;
+    font-size: 14px;
+    line-height: 2;
+    color: var(--gray-text);
+  }
+
+  .toc ol li::marker {
+    color: var(--gold);
+    font-weight: bold;
+  }
+
+  /* ============== PART HEADERS ============== */
+  .part-header {
+    margin: 70px 0 32px 0;
+    padding: 28px 36px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: white;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .part-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gold);
+  }
+
+  .part-header .part-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+
+  .part-header h2 {
+    font-family: 'Georgia', serif;
+    font-size: 26px;
+    color: white;
+    margin: 0 0 6px 0;
+    font-weight: normal;
+    letter-spacing: 0.3px;
+  }
+
+  .part-header .part-subtitle {
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(255,255,255,0.82);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ============== INTRO BLOCKS ============== */
+  .intro {
+    background: var(--gold-soft);
+    border-left: 3px solid var(--gold);
+    padding: 22px 28px;
+    margin-bottom: 36px;
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+
+  .intro strong { color: var(--navy); }
+
+  /* ============== SECTION CONTENT ============== */
+  .section h3 {
+    font-family: 'Georgia', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin: 32px 0 12px 0;
+    font-weight: normal;
+    letter-spacing: 0.2px;
+  }
+
+  .section h4 {
+    font-family: 'Georgia', serif;
+    font-size: 17px;
+    color: var(--navy);
+    margin: 26px 0 10px 0;
+    font-weight: normal;
+  }
+
+  .section h4 .num {
+    color: var(--gold);
+    font-style: italic;
+    margin-right: 8px;
+  }
+
+  .section p {
+    font-size: 14.5px;
+    line-height: 1.75;
+    margin: 0 0 14px 0;
+    color: var(--gray-text);
+  }
+
+  .section p strong { color: var(--navy); }
+
+  .section ul, .section ol {
+    padding-left: 24px;
+    margin: 12px 0 16px 0;
+    font-size: 14.5px;
+    line-height: 1.75;
+  }
+
+  .section ul li, .section ol li { margin-bottom: 7px; }
+  .section ul li::marker, .section ol li::marker { color: var(--gold); }
+
+  /* ============== TIER PILLS ============== */
+  .tier-pill {
+    display: inline-block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    color: white;
+    font-weight: bold;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .tier-pill.tier-1 { background: #2d7a4f; }
+  .tier-pill.tier-2 { background: var(--navy); }
+  .tier-pill.tier-3 { background: var(--gold); }
+  .tier-pill.tier-4 { background: var(--alert); }
+
+  /* ============== TASK CARDS ============== */
+  .task {
+    background: var(--gray-bg);
+    border-left: 3px solid var(--gold);
+    padding: 16px 22px;
+    margin: 14px 0;
+    border-radius: 2px;
+  }
+
+  .task .task-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .task h5 {
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    color: var(--navy);
+    margin: 0 0 8px 0;
+    font-weight: normal;
+  }
+
+  .task p {
+    font-size: 13.5px !important;
+    line-height: 1.65;
+    margin: 0 0 8px 0 !important;
+  }
+
+  .task p:last-child { margin-bottom: 0 !important; }
+
+  /* ============== WEEK BLOCKS ============== */
+  .week-block {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-radius: 2px;
+    margin: 22px 0;
+    overflow: hidden;
+  }
+
+  .week-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: white;
+    padding: 18px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .week-header .week-num {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .week-header h3 {
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    color: white;
+    margin: 4px 0 0 0;
+    font-weight: normal;
+  }
+
+  .week-header .week-focus {
+    background: rgba(212, 174, 106, 0.2);
+    color: var(--gold-light);
+    padding: 5px 12px;
+    border-radius: 2px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .week-body {
+    padding: 24px 30px;
+  }
+
+  /* ============== ARTIFACT BOX ============== */
+  .artifact {
+    background: var(--gold-soft);
+    border-left: 3px solid var(--gold);
+    padding: 14px 20px;
+    margin: 16px 0;
+    border-radius: 2px;
+  }
+
+  .artifact .art-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .artifact p {
+    font-size: 13.5px !important;
+    line-height: 1.65;
+    margin: 0 !important;
+    color: var(--navy);
+  }
+
+  /* ============== INSIGHT BOX ============== */
+  .insight {
+    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+    color: white;
+    padding: 28px 36px;
+    margin: 32px 0;
+    border-radius: 2px;
+  }
+
+  .insight .insight-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 12px;
+  }
+
+  .insight h3 {
+    font-family: 'Georgia', serif;
+    font-size: 21px;
+    color: white;
+    margin: 0 0 14px 0;
+    font-weight: normal;
+    letter-spacing: 0.3px;
+  }
+
+  .insight p {
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0 0 12px 0;
+  }
+
+  .insight p:last-child { margin-bottom: 0; }
+  .insight strong { color: var(--gold-light); }
+
+  /* ============== CHECKLIST ============== */
+  .checklist {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-radius: 2px;
+    padding: 22px 28px;
+    margin: 18px 0;
+  }
+
+  .checklist .check-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 14px;
+  }
+
+  .checklist ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .checklist ul li {
+    padding: 7px 0 7px 26px;
+    position: relative;
+    font-size: 13.5px;
+    color: var(--gray-text);
+    border-bottom: 1px dotted var(--gray-line);
+    line-height: 1.6;
+  }
+
+  .checklist ul li:last-child { border-bottom: none; }
+
+  .checklist ul li::before {
+    content: "☐";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    color: var(--gold);
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  /* ============== UPDATE TEMPLATE ============== */
+  .template {
+    background: var(--gray-bg);
+    border: 1px solid var(--gray-line);
+    border-left: 3px solid var(--navy);
+    border-radius: 2px;
+    padding: 22px 28px;
+    margin: 18px 0;
+    font-family: 'Georgia', serif;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--gray-text);
+    font-style: italic;
+  }
+
+  .template strong {
+    color: var(--navy);
+    font-style: normal;
+  }
+
+  .template .placeholder {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ============== CHEAT SHEET ============== */
+  .cheat-sheet {
+    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+    color: white;
+    padding: 40px 44px;
+    border-radius: 2px;
+    margin: 50px 0 30px 0;
+  }
+
+  .cheat-sheet .cs-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+
+  .cheat-sheet h2 {
+    font-family: 'Georgia', serif;
+    font-size: 26px;
+    color: white;
+    margin: 0 0 20px 0;
+    font-weight: normal;
+    border-bottom: 1px solid rgba(212, 174, 106, 0.3);
+    padding-bottom: 14px;
+  }
+
+  .cheat-sheet h4 {
+    color: var(--gold-light);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 22px 0 8px 0;
+  }
+
+  .cheat-sheet p, .cheat-sheet ul {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0 0 8px 0;
+  }
+
+  .cheat-sheet ul {
+    padding-left: 22px;
+  }
+
+  .cheat-sheet ul li {
+    margin-bottom: 5px;
+  }
+
+  .cheat-sheet ul li::marker {
+    color: var(--gold-light);
+  }
+
+  .cheat-sheet strong {
+    color: var(--gold-light);
+  }
+
+  /* ============== FOOTER ============== */
+  .footer {
+    margin-top: 80px;
+    padding-top: 28px;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  .footer .name {
+    color: var(--navy);
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size: 11px;
+  }
+
+  .footer .credentials {
+    margin-top: 6px;
+    color: var(--gray-soft);
+    letter-spacing: 1.5px;
+  }
+
+  .footer .meta {
+    margin-top: 14px;
+    font-style: italic;
+    color: var(--gray-soft);
+    letter-spacing: 0.5px;
+    text-transform: none;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+
+  /* ============== VIEW MODE TOGGLE ============== */
+  .mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    background: var(--paper);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(10, 37, 64, 0.15);
+  }
+
+  .mode-toggle button {
+    background: transparent;
+    border: none;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-soft);
+    font-weight: bold;
+    transition: all 0.15s;
+  }
+
+  .mode-toggle button.active {
+    background: var(--navy);
+    color: white;
+  }
+
+  .mode-toggle button:not(.active):hover {
+    background: var(--gold-soft);
+    color: var(--navy);
+  }
+
+  /* Body classes that control visibility */
+  body.mode-reference #trackerMode { display: none; }
+  body.mode-tracker #referenceMode { display: none; }
+  body.mode-tracker .mode-toggle { background: rgba(255,255,255,0.95); }
+
+  /* In tracker mode, page padding is different */
+  body.mode-tracker { background: var(--cream); }
+  body.mode-tracker .page-tracker { display: block; }
+  body.mode-reference .page-tracker { display: none; }
+
+  /* ============== TRACKER LAYOUT ============== */
+  .page-tracker {
+    max-width: 100%;
+    margin: 0;
+    background: var(--cream);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .tracker-app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+
+  .tracker-sidebar {
+    background: var(--navy);
+    color: white;
+    padding: 0;
+    overflow-y: auto;
+    max-height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+
+  .tracker-sidebar-header {
+    padding: 70px 20px 22px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .tracker-brand {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .tracker-title {
+    font-family: 'Georgia', serif;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0;
+    color: white;
+  }
+
+  .tracker-add-btn {
+    width: calc(100% - 40px);
+    margin: 14px 20px;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    padding: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .tracker-add-btn:hover {
+    background: var(--gold-light);
+  }
+
+  .tracker-data-buttons {
+    padding: 0 20px 14px;
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .tracker-data-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    padding: 6px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .tracker-data-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .home-link-tracker {
+    padding: 14px 20px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.15s;
+  }
+
+  .home-link-tracker:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--gold-light);
+  }
+
+  .home-link-tracker.active {
+    background: rgba(184, 146, 74, 0.12);
+    border-left: 3px solid var(--gold);
+    padding-left: 17px;
+    color: var(--gold-light);
+  }
+
+  .property-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .property-item {
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .property-item:hover {
+    background: rgba(255,255,255,0.04);
+  }
+
+  .property-item.active {
+    background: rgba(184, 146, 74, 0.12);
+    border-left: 3px solid var(--gold);
+    padding-left: 17px;
+  }
+
+  .property-name {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 3px;
+    line-height: 1.4;
+  }
+
+  .property-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+  }
+
+  .property-progress {
+    margin-top: 6px;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .property-progress-fill {
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  .property-empty {
+    padding: 20px;
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  /* Tracker main panel */
+  .tracker-main {
+    padding: 70px 50px 60px;
+    overflow-y: auto;
+    max-height: 100vh;
+    background: var(--cream);
+  }
+
+  .tracker-empty-state {
+    text-align: center;
+    padding: 100px 40px;
+    color: var(--gray-soft);
+  }
+
+  .tracker-empty-state h2 {
+    font-family: 'Georgia', serif;
+    font-size: 24px;
+    color: var(--navy);
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+
+  /* Property header */
+  .property-detail-header {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-top: 3px solid var(--gold);
+    border-radius: 2px;
+    padding: 24px 30px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .property-detail-header h1 {
+    font-family: 'Georgia', serif;
+    font-size: 24px;
+    color: var(--navy);
+    margin: 0 0 6px 0;
+    font-weight: normal;
+  }
+
+  .property-detail-meta {
+    font-size: 13px;
+    color: var(--gray-soft);
+  }
+
+  .property-edit-btn {
+    background: transparent;
+    border: 1px solid var(--gray-line);
+    color: var(--gray-soft);
+    padding: 6px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .property-edit-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* Stats summary */
+  .property-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .prop-stat {
+    background: white;
+    border: 1px solid var(--gray-line);
+    padding: 16px;
+    border-radius: 2px;
+    text-align: center;
+  }
+
+  .prop-stat .num {
+    font-family: 'Georgia', serif;
+    font-size: 28px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .prop-stat.complete .num { color: #2d7a4f; }
+  .prop-stat.due .num { color: var(--alert); }
+
+  .prop-stat .lbl {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: bold;
+  }
+
+  /* Phase blocks */
+  .phase-block {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-radius: 2px;
+    margin-bottom: 22px;
+    overflow: hidden;
+  }
+
+  .phase-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .phase-header.completed {
+    background: linear-gradient(135deg, #2d7a4f 0%, #4a9968 100%);
+  }
+
+  .phase-header .phase-num {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+  }
+
+  .phase-header.completed .phase-num {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .phase-header h3 {
+    font-family: 'Georgia', serif;
+    font-size: 18px;
+    color: white;
+    margin: 4px 0 0 0;
+    font-weight: normal;
+  }
+
+  .phase-header .phase-progress {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 2px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    font-weight: bold;
+  }
+
+  .phase-body {
+    padding: 18px 24px;
+  }
+
+  .phase-body.collapsed {
+    display: none;
+  }
+
+  /* Task rows */
+  .task-row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-line);
+  }
+
+  .task-row:last-child {
+    border-bottom: none;
+  }
+
+  .task-row.done .task-title {
+    text-decoration: line-through;
+    color: var(--gray-soft);
+  }
+
+  .task-checkbox {
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--gold);
+  }
+
+  .task-content {
+    flex-grow: 1;
+  }
+
+  .task-title {
+    font-family: 'Georgia', serif;
+    font-size: 14.5px;
+    color: var(--navy);
+    margin-bottom: 4px;
+    line-height: 1.45;
+  }
+
+  .task-tier {
+    display: inline-block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 8px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    color: white;
+    font-weight: bold;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .task-tier.tier-1 { background: #2d7a4f; }
+  .task-tier.tier-2 { background: var(--navy); }
+  .task-tier.tier-3 { background: var(--gold); }
+  .task-tier.tier-4 { background: var(--alert); }
+
+  .task-desc {
+    font-size: 12.5px;
+    color: var(--gray-soft);
+    line-height: 1.55;
+    font-style: italic;
+    margin-bottom: 5px;
+  }
+
+  .task-target-date {
+    font-size: 11px;
+    color: var(--gold);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  .task-target-date.overdue { color: var(--alert); font-weight: bold; }
+  .task-target-date.today { color: var(--alert); font-weight: bold; }
+  .task-target-date.soon { color: var(--gold); font-weight: bold; }
+
+  .task-notes-toggle {
+    background: transparent;
+    border: 1px solid var(--gray-line);
+    color: var(--gray-soft);
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .task-notes-toggle:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .task-notes-area {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--gray-bg);
+    border-radius: 2px;
+    display: none;
+  }
+
+  .task-notes-area.active {
+    display: block;
+  }
+
+  .task-notes-area textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--gray-line);
+    border-radius: 2px;
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 60px;
+  }
+
+  /* Modal */
+  .modal-overlay-tracker {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(10, 37, 64, 0.65);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay-tracker.active { display: flex; }
+
+  .modal-tracker {
+    background: white;
+    border-radius: 2px;
+    padding: 30px 36px;
+    max-width: 480px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-tracker h3 {
+    font-family: 'Georgia', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin: 0 0 18px 0;
+    font-weight: normal;
+  }
+
+  .modal-tracker .field {
+    margin-bottom: 14px;
+  }
+
+  .modal-tracker .field label {
+    display: block;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .modal-tracker .field input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--gray-line);
+    border-radius: 2px;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+  }
+
+  .modal-tracker .field input:focus {
+    border-color: var(--gold);
+    outline: none;
+  }
+
+  .modal-tracker .field-help {
+    font-size: 11px;
+    color: var(--gray-soft);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  .modal-actions-tracker {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .btn-tracker {
+    padding: 9px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: 1px solid var(--gray-line);
+    background: white;
+    color: var(--gray-text);
+  }
+
+  .btn-tracker:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .btn-tracker.primary {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+
+  .btn-tracker.primary:hover {
+    background: var(--navy-light);
+    border-color: var(--navy-light);
+    color: white;
+  }
+
+  .btn-tracker.danger {
+    background: var(--alert);
+    color: white;
+    border-color: var(--alert);
+  }
+
+  /* Today's tasks (home view) */
+  .today-section {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-top: 3px solid var(--gold);
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .today-section-header {
+    padding: 16px 24px;
+    background: var(--gray-bg);
+    border-bottom: 1px solid var(--gray-line);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: bold;
+  }
+
+  .today-task-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--gray-line);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  .today-task-row:hover {
+    background: var(--gold-soft);
+  }
+
+  .today-task-row:last-child {
+    border-bottom: none;
+  }
+
+  .today-task-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .today-task-property {
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: var(--navy);
+  }
+
+  .today-task-due {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    color: white;
+    font-weight: bold;
+  }
+
+  .today-task-due.overdue { background: var(--alert); }
+  .today-task-due.today { background: var(--alert); }
+  .today-task-due.soon { background: var(--gold); }
+  .today-task-due.future { background: var(--navy); }
+
+  .today-task-title {
+    font-size: 13px;
+    color: var(--gray-text);
+    line-height: 1.5;
+  }
+
+  /* Tracker dashboard stats */
+  .tracker-dash-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  /* Friday update template panel */
+  .friday-update-panel {
+    background: white;
+    border: 1px solid var(--gray-line);
+    border-radius: 2px;
+    padding: 22px 26px;
+    margin-bottom: 24px;
+  }
+
+  .friday-update-panel h3 {
+    font-family: 'Georgia', serif;
+    font-size: 17px;
+    color: var(--navy);
+    margin: 0 0 14px 0;
+    font-weight: normal;
+  }
+
+  .friday-update-panel textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--gray-line);
+    border-radius: 2px;
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    line-height: 1.65;
+    resize: vertical;
+    min-height: 200px;
+  }
+
+  .friday-update-buttons {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  /* Reference button mode-specific layout */
+  body.mode-reference {
+    /* keep default reference layout */
+  }
+
+  /* Print */
+  @media print {
+    .mode-toggle { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .tracker-app {
+      grid-template-columns: 1fr;
+    }
+    .tracker-sidebar {
+      max-height: none;
+      position: relative;
+    }
+    .tracker-main {
+      padding: 30px 22px;
+    }
+    .property-stats, .tracker-dash-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .tracker-sidebar-header {
+      padding-top: 80px;
+    }
+  }
+
+  /* ============== PRINT ============== */
+  @media print {
+    body { background: white; }
+    .page {
+      box-shadow: none;
+      padding: 30px 40px;
+      max-width: 100%;
+    }
+    .week-block, .insight, .task, .checklist, .artifact, .template, .cheat-sheet {
+      page-break-inside: avoid;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .page { padding: 30px 22px; }
+    .cover h1 { font-size: 24px; }
+    .cover .subtitle { font-size: 14px; }
+    .part-header { padding: 22px 22px; }
+    .part-header h2 { font-size: 22px; }
+    .week-header { padding: 16px 22px; }
+    .week-body { padding: 20px 22px; }
+    .insight, .cheat-sheet { padding: 24px 22px; }
+    .insight h3 { font-size: 18px; }
+  }
+</style>
+</head>
+<body class="mode-reference">
+
+<!-- ============== MODE TOGGLE ============== -->
+<div class="mode-toggle">
+  <button id="btnReference" class="active">📖 Reference</button>
+  <button id="btnTracker">📋 Tracker</button>
+</div>
+
+<!-- ============== REFERENCE MODE ============== -->
+<div id="referenceMode">
+
+<div class="page">
+
+  <!-- ============== COVER ============== -->
+  <div class="cover">
+    <div class="brand-mark">Pinnacle Listing System</div>
+    <h1>Active Listing Marketing Procedure</h1>
+    <p class="subtitle">A runnable system for every listing — from before MLS to firm sale.<br>Designed to actually sell the property; visibility follows.</p>
+    <div class="author-line">Internal Operating Document &nbsp;·&nbsp; May 2026</div>
+  </div>
+
+  <!-- ============== TOC ============== -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li>The Three Goals — and Why Their Hierarchy Matters</li>
+      <li>The Four Tiers — A Test for Every Tactic</li>
+      <li>Phase One — Pre-MLS (the most underused window)</li>
+      <li>Phase Two — Active Listing, Week by Week</li>
+      <li>Phase Three — Conditional, Firm, and Closing</li>
+      <li>Phase Four — Post-Sale Debrief and Earned Promotion</li>
+      <li>The Visibility Discipline — Weekly Seller Update Format</li>
+      <li>Single-Page Cheat Sheet</li>
+    </ol>
+  </div>
+
+  <!-- ============== INTRO ============== -->
+  <div class="intro">
+    Every active listing pursues three goals at once: <strong>sell the property</strong>, <strong>maximize seller satisfaction</strong>, and <strong>build the agent's reputation</strong>. They sound coordinate, but they are not. They exist in a hierarchy, and respecting that hierarchy is what separates marketing that produces results from activity that merely <em>looks like</em> marketing. This document is the runnable procedure for every active listing — phase by phase, week by week — designed so the work that genuinely moves the property is also the work the seller can see.
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PART I: THE THREE GOALS                                      -->
+  <!-- ============================================================ -->
+
+  <div class="part-header">
+    <div class="part-label">Part One</div>
+    <h2>The Three Goals — and Why Their Hierarchy Matters</h2>
+    <p class="part-subtitle">The most important strategic decision of any listing is which goal comes first</p>
+  </div>
+
+  <div class="section">
+    <p>Most agents say they want to do all three of the following equally well:</p>
+    <ul>
+      <li><strong>Sell the property</strong> — at the right price, in a reasonable time</li>
+      <li><strong>Maximize seller satisfaction</strong> — leave the seller feeling well-served</li>
+      <li><strong>Build the agent's reputation</strong> — generate referrals, future listings, recognition</li>
+    </ul>
+
+    <p>But pursuing all three with equal weight is what produces scattered effort. Tactics that <em>partially</em> serve all three but <em>fully</em> serve none. Marketing that looks impressive but doesn't produce buyers. Activities that feel client-serving but are really self-promotion. Self-promotion wrapped in client-service language.</p>
+
+    <p>The honest truth is that <strong>these three goals exist in a strict hierarchy</strong>, and getting that hierarchy right is what makes a great agent different from an average one.</p>
+
+    <h3>The Hierarchy</h3>
+
+    <h4><span class="num">1.</span> Sell the property — paramount</h4>
+    <p>Every other goal is downstream of this one. If the property doesn't sell, or sells slowly, or sells below its potential, <strong>nothing else matters.</strong> The seller wasn't satisfied. The agent's reputation wasn't promoted — it was damaged. The promotional benefits of tactics that didn't actually help sell the home are negative, not zero.</p>
+
+    <h4><span class="num">2.</span> Seller satisfaction — built almost entirely from Goal 1</h4>
+    <p>Worth internalizing deeply: <strong>seller satisfaction is overwhelmingly determined by whether the property sold well, and only marginally by anything else.</strong> All the gestures, the weekly updates, the personal touches — they matter, but they are additive to a foundation built on outcome. A seller whose home sold for the right price in the right time will forgive small communication failures. A seller whose home didn't sell will not be saved by excellent communication.</p>
+    <p>The implication: <strong>the way to maximize seller satisfaction is mostly to do an excellent job of Goal 1</strong>, with a thin layer of communication discipline on top. Not the other way around.</p>
+
+    <h4><span class="num">3.</span> Self-promotion — a byproduct, not a strategy</h4>
+    <p>Self-promotion that comes from doing Goal 1 well is enormously powerful. When a property sells faster than expected at a great price because of distinctive marketing, that's a story worth telling, listings to show, sellers who refer. The promotion writes itself, grounded in real results.</p>
+    <p>Self-promotion pursued as its own goal during a live listing is dangerous. It centers the agent instead of the property. It teaches sellers, slowly and unconsciously, that their agent is more interested in being seen than in selling their home. It also gets attention from the wrong audience — generic followers rather than future clients and buyer agents.</p>
+    <p>The principle: <strong>promote the work; don't promote yourself.</strong></p>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">The Operating Test</div>
+    <h3>Does this primarily move the property toward sale?</h3>
+    <p><strong>If yes</strong> — do it. Satisfaction and promotion follow as byproducts.</p>
+    <p><strong>If no, but it makes the seller feel cared for in ways property work doesn't directly produce</strong> — do it judiciously, with discipline, in service of the relationship.</p>
+    <p><strong>If no, and it primarily exists to make the agent look like they're working</strong> — don't do it. It's theater. The cost is real (time, the seller's calibration, professional reputation among buyer agents) and the benefit is illusory.</p>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PART II: THE FOUR TIERS                                      -->
+  <!-- ============================================================ -->
+
+  <div class="part-header">
+    <div class="part-label">Part Two</div>
+    <h2>The Four Tiers — A Test for Every Tactic</h2>
+    <p class="part-subtitle">Categorizing marketing activity by how much real work it does</p>
+  </div>
+
+  <div class="section">
+    <p>Every potential marketing activity falls into one of four tiers. Knowing which tier a tactic belongs to tells you how much of your time and budget it deserves.</p>
+
+    <h3><span class="tier-pill tier-1">Tier 1</span> Real Marketing That's Also Visible</h3>
+    <p>These do the actual work of producing buyers <strong>and</strong> the seller can see them happening. Best of both worlds. <em>Most of the listing's time and energy belongs here.</em></p>
+    <ul>
+      <li><strong>Direct outreach to qualified buyer agents.</strong> Identify agents whose recent activity suggests likely-fit clients. Reach out before listing goes live: <em>"I'm bringing a property to market next week that I think one of your clients might want to see before it's public."</em></li>
+      <li><strong>Online performance tracking with strategic interpretation.</strong> Compile MLS portal views, saves, inquiries weekly. Interpret what they mean. The interpretation is the value-add.</li>
+      <li><strong>Targeted neighborhood outreach.</strong> Printed "just listed" pieces, hand-delivered to immediate streets. Some sales come from neighbors referring friends and family.</li>
+      <li><strong>Strategic open houses with pre-event invitations.</strong> Email specific buyer agents and likely-fit prospects in advance. Dramatically more qualified attendance than generic open houses.</li>
+      <li><strong>Showing feedback synthesis.</strong> Follow up with every buyer agent after a showing. Compile patterns weekly. <em>"The pattern across four showings is that buyers love the kitchen but feel the master is small."</em> That synthesis is real intelligence; it informs adjustments.</li>
+    </ul>
+
+    <h3><span class="tier-pill tier-2">Tier 2</span> Visibility That's Also Genuinely Useful</h3>
+    <p>These do less heavy lifting on producing offers, but they meaningfully expand reach and they are visible to sellers.</p>
+    <ul>
+      <li><strong>Social media videos.</strong> Walk-throughs, lifestyle vignettes, neighborhood tours. Reach buyer audiences MLS doesn't. Worth doing if quality can be maintained without consuming all available time.</li>
+      <li><strong>Curated photo updates.</strong> A blooming tree, seasonal change, different light. <em>"I noticed the back garden is in full bloom this week — refreshed the listing photos."</em></li>
+      <li><strong>Listing description refreshes.</strong> Slight rewording in week three signals freshness to portals and incorporates showing feedback.</li>
+      <li><strong>Featured / boosted placement.</strong> Selectively, perhaps in week three after the initial-launch surge subsides. Once or twice — not constantly.</li>
+      <li><strong>Print collateral.</strong> Property feature sheets, neighborhood brochures. Few direct buyers; signals seriousness to buyer agents.</li>
+    </ul>
+
+    <h3><span class="tier-pill tier-3">Tier 3</span> Visibility-Forward, Useful in Moderation</h3>
+    <p>These do less actual marketing work, but they reassure sellers and have small marginal value.</p>
+    <ul>
+      <li><strong>Weekly written status updates</strong> — even when nothing has changed. Silence is interpreted as inactivity.</li>
+      <li><strong>Pre-showing texts to the seller.</strong> Each showing becomes an event the seller can see being managed.</li>
+      <li><strong>Agent broker tours / luncheons.</strong> Rarely produce direct buyers but build awareness and give something specific to report.</li>
+    </ul>
+
+    <h3><span class="tier-pill tier-4">Tier 4</span> Tactics to Use Sparingly or Avoid</h3>
+    <p>These often don't help the listing and sometimes actively dilute the marketing.</p>
+    <ul>
+      <li><strong>High-volume social media posting.</strong> One thoughtful video per week is marketing. Five rushed posts per week is noise — and signals to buyer agents that the agent is more interested in being seen than in selling the home.</li>
+      <li><strong>Repeated price-drop announcements.</strong> Each one signals weakness. If a price reduction is needed, do it once, deliberately, with strategy.</li>
+      <li><strong>Constant boosting / featuring.</strong> Diminishing returns. Algorithms learn to deprioritize.</li>
+      <li><strong>Generic paid lead-generation ads.</strong> Produce general buyer prospects who rarely match the specific listing.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PART III: PRE-MLS                                            -->
+  <!-- ============================================================ -->
+
+  <div class="part-header">
+    <div class="part-label">Part Three</div>
+    <h2>Phase One — Pre-MLS (the most underused window)</h2>
+    <p class="part-subtitle">The 7-14 days between signing and going live are where great agents separate from average ones</p>
+  </div>
+
+  <div class="section">
+    <p>Most agents treat the pre-MLS window as logistics — photos, sign installation, MLS data entry. Great agents treat it as <strong>the highest-leverage marketing window of the entire listing</strong>, because every action taken before launch compounds at launch.</p>
+
+    <p>The seller experiences this phase as <em>"my agent is preparing seriously."</em> That impression is what builds trust before the property has had a chance to perform. It's also when the most consequential strategic decisions get locked in.</p>
+
+    <h3>Pre-MLS Tasks</h3>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 1–3</div>
+      <h5>Strategic Listing Plan Document</h5>
+      <p>Within 48 hours of signing, send the seller a brief written document outlining: target buyer profile, pricing rationale with comps, marketing timeline, photography plan, scheduled intervention points (week 2, week 4, week 6), and what success looks like. This document is the seller's anchor for the entire listing period — they refer back to it every time they wonder "what's the plan?"</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 1–5</div>
+      <h5>Pre-Photography Property Prep</h5>
+      <p>Walk through the home with the seller, room by room (using the Listing Tour Script). Identify what stays, what gets rearranged, what gets removed. Recommend professional staging consultation if needed. The seller sees the work being thought through, not improvised.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 5–8</div>
+      <h5>Professional Photography (Timed to the Light)</h5>
+      <p>Book the photographer for the time of day the seller said the home looks best (per the tour question about light). Most agents shoot at the photographer's convenience. Shooting at the home's best moment is one of the most underrated competitive advantages in residential marketing.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 7–10</div>
+      <h5>Pre-Launch Buyer Agent Outreach</h5>
+      <p>Identify 8–15 buyer agents whose recent activity suggests likely-fit clients (via MLS searches, recent comparable showings, neighborhood relationships). Reach out individually before launch: <em>"I'm bringing a property to market on [date] that I think one of your clients might want to see. Happy to give you and them a preview look."</em> This is the single most underused tactic in residential real estate.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 2 · Day 8–12</div>
+      <h5>Social Media Content Pre-Built</h5>
+      <p>Produce one walk-through video, one lifestyle/exterior video, one neighborhood vignette. Have all three ready before launch — schedule them across week 1, 3, and 5 of the active period. Producing content during the listing under deadline pressure tends to produce worse content than producing it ahead.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 10–12</div>
+      <h5>Listing Description and Feature Sheet Drafted</h5>
+      <p>Write the listing description using the seller's own words from the tour. Lead with what the seller said made them say yes to the house. The description that captures emotional truth produces showings; the description that lists features produces drive-bys.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 12–14</div>
+      <h5>Final Strategic Walkthrough with Seller</h5>
+      <p>Before launch, walk through the strategic plan once more with the seller. Confirm price, timeline, marketing rhythm, expected showing pace, your weekly update cadence. This is where you set expectations explicitly so the seller has a frame for everything that follows.</p>
+    </div>
+
+    <div class="checklist">
+      <div class="check-label">Pre-MLS Checklist</div>
+      <ul>
+        <li>Strategic Listing Plan document delivered to seller</li>
+        <li>Property prep walkthrough completed</li>
+        <li>Professional photography scheduled at the home's best light</li>
+        <li>Pre-launch buyer agent outreach (8–15 contacts) completed and documented</li>
+        <li>Social media content produced and scheduled (3 pieces minimum)</li>
+        <li>Listing description and feature sheet drafted, leading with seller's own language</li>
+        <li>Floor plans, professional photography, virtual tour finalized</li>
+        <li>Sign installed, lockbox set</li>
+        <li>Final pre-launch strategic walkthrough with seller completed</li>
+        <li>Launch day expectations set: when, what to expect, how communication will work</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PART IV: ACTIVE LISTING, WEEK BY WEEK                        -->
+  <!-- ============================================================ -->
+
+  <div class="part-header">
+    <div class="part-label">Part Four</div>
+    <h2>Phase Two — Active Listing, Week by Week</h2>
+    <p class="part-subtitle">A disciplined rhythm that produces real activity and visible work</p>
+  </div>
+
+  <div class="intro">
+    <strong>The principle of the active phase:</strong> don't perform constant activity — build a rhythm and let the rhythm carry the visibility. Each week has a baseline routine; certain weeks have scheduled interventions. The seller experiences this as a professional running a marketing program, not an agent improvising.
+  </div>
+
+  <div class="section">
+    <h3>The Weekly Baseline (Every Week of Active Listing)</h3>
+    <p>Regardless of week number, every active listing receives this baseline rhythm:</p>
+    <ul>
+      <li><strong>Monday</strong> — Online performance check. Pull view counts, saves, inquiries from MLS portals. Note trends.</li>
+      <li><strong>Monday/Tuesday</strong> — Buyer-agent outreach round. 3–5 fresh contacts to agents whose recent activity suggests fit.</li>
+      <li><strong>Throughout the week</strong> — Showings happen. Pre-showing text to seller before each. Feedback collected from buyer agents within 24 hours after.</li>
+      <li><strong>Thursday</strong> — Showing feedback synthesis written up. Patterns identified.</li>
+      <li><strong>Friday</strong> — Weekly seller update sent. Includes metrics, synthesis, what was done this week, what's planned next week. (See Part Six for format.)</li>
+    </ul>
+    <p>The Friday update is the visibility mechanism. The rest of the week is the actual work. Both are non-negotiable.</p>
+  </div>
+
+  <!-- WEEK 1 -->
+  <div class="week-block">
+    <div class="week-header">
+      <div>
+        <div class="week-num">Week One</div>
+        <h3>Launch Surge</h3>
+      </div>
+      <div class="week-focus">Maximum visibility, qualified showings</div>
+    </div>
+    <div class="week-body">
+      <p>The listing goes live. The first 7 days produce the largest natural surge of attention — most online inquiries, most showings, most buyer-agent interest. The job is to capture and convert that surge.</p>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Launch Day</div>
+        <h5>Live MLS launch + buyer-agent push</h5>
+        <p>Simultaneously: MLS goes live, social media post #1 publishes, individual emails go to the 8–15 buyer agents pre-contacted. The buyer agents now know the listing has gone live and have a one-click path to book a showing.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Days 2–4</div>
+        <h5>First showings + immediate feedback collection</h5>
+        <p>Most showings in the first week come from the launch surge. Follow up with every buyer agent within 24 hours of the showing. Even a brief <em>"What was your client's reaction?"</em> via text produces useful intelligence.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Day 5–6</div>
+        <h5>First open house</h5>
+        <p>Pre-event email invitations sent to specific buyer agents and likely-fit prospects. Hand-delivered flyers on the immediate streets. Sign placement strategic. Track attendance and follow up within 48 hours.</p>
+      </div>
+
+      <div class="artifact">
+        <div class="art-label">Friday Update Includes</div>
+        <p>Online stats from the launch week. Number of showings booked vs held. Initial buyer-agent feedback themes. Open house attendance. <strong>Your interpretation</strong> of what the data tells us about market reception. Plan for week 2.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 2 -->
+  <div class="week-block">
+    <div class="week-header">
+      <div>
+        <div class="week-num">Week Two</div>
+        <h3>First Calibration</h3>
+      </div>
+      <div class="week-focus">Read the data, refine the message</div>
+    </div>
+    <div class="week-body">
+      <p>The launch surge has run its course. Week 2 is when the underlying market signal becomes visible — and when the first strategic intervention happens.</p>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Throughout</div>
+        <h5>Showing feedback synthesis becomes meaningful</h5>
+        <p>By week 2, you have 5–10 showings of feedback. Patterns are visible. Common positives, common concerns. Write up the synthesis in plain language. <em>"Buyers love the kitchen and the natural light. Three buyers mentioned the master bedroom feels small. One buyer was concerned about the basement ceiling height."</em></p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 2 · Mid-Week</div>
+        <h5>Scheduled Intervention #1: Description Refresh</h5>
+        <p>Based on showing feedback, refine the listing description. Lead with whatever buyers responded most strongly to. Address subtly any common concern (without naming it as an issue). This refresh signals to portals that the listing is fresh; it also incorporates real intelligence.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 2 · Mid-Week</div>
+        <h5>Social media post #2 — lifestyle / neighborhood</h5>
+        <p>The video produced pre-launch publishes this week. Different angle than the walk-through (which led week 1). Captures the way of living the home offers, not just the property.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Friday/Weekend</div>
+        <h5>Mid-Process Service Feedback Check-in</h5>
+        <p>Two weeks in is the right moment to ask the seller: <em>"Is the rhythm of our communication working for you? Anything I could be doing differently?"</em> This is the asking practice from the Service Procedures playbook. Capture in the tracker.</p>
+      </div>
+
+      <div class="artifact">
+        <div class="art-label">Friday Update Includes</div>
+        <p>Cumulative showing count and recent feedback synthesis. Online performance comparison week 1 vs week 2. The description refresh. <strong>Strategic read</strong>: is the listing performing on track, ahead, or behind expectations? Plan for week 3.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 3 -->
+  <div class="week-block">
+    <div class="week-header">
+      <div>
+        <div class="week-num">Week Three</div>
+        <h3>Re-energize</h3>
+      </div>
+      <div class="week-focus">If no offer yet, deliberate refresh</div>
+    </div>
+    <div class="week-body">
+      <p>By week 3, if no offer is in hand, attention naturally cools. This is when most agents go quiet. <strong>This is when the disciplined agent gets louder — strategically.</strong></p>
+
+      <div class="task">
+        <div class="task-label">Tier 2 · Early Week</div>
+        <h5>Scheduled Intervention #2: Photo refresh</h5>
+        <p>If conditions allow, fresh photos. New season, different light, different staging detail. Even one or two new photos signals freshness and gives social media something new to share.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Mid-Week</div>
+        <h5>Second wave of buyer-agent outreach</h5>
+        <p>Different cohort than the pre-launch round. Agents whose buyer activity has picked up since launch. <em>"Wanted to make sure you'd seen [property] — three weeks in, still showing well, and I think your buyer profile is a good fit. Happy to arrange a private showing."</em></p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 2 · Mid-Week</div>
+        <h5>Social media post #3 — dwelling on a specific feature</h5>
+        <p>The third pre-produced video publishes. Often a single-feature focus: the kitchen, the backyard, the natural light. Reaches buyers who scrolled past the broader videos.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 2 · End of Week</div>
+        <h5>Featured / boosted placement on portals</h5>
+        <p>Selective paid promotion. One time. Drives a fresh wave of online attention.</p>
+      </div>
+
+      <div class="artifact">
+        <div class="art-label">Friday Update Includes</div>
+        <p>Three-week performance summary. The interventions of this week (refresh, outreach round, boosted placement). Showing feedback patterns. <strong>If the listing is performing below expectations, this is the moment to begin gently introducing the price-conversation framework</strong> — bring three options, the agent's recommendation, the seller's decision.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 4 -->
+  <div class="week-block">
+    <div class="week-header">
+      <div>
+        <div class="week-num">Week Four</div>
+        <h3>Strategic Decision Point</h3>
+      </div>
+      <div class="week-focus">Hold, adjust, or change strategy</div>
+    </div>
+    <div class="week-body">
+      <p>Four weeks of market data is enough to make a real strategic decision. Week 4 is when the conversation about <em>hold, adjust, or change strategy</em> happens explicitly with the seller — using the System-Based Delivery framework.</p>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Beginning of Week</div>
+        <h5>Strategic Options Document</h5>
+        <p>Bring three options to the seller in writing: (1) hold the current price and continue the marketing program; (2) adjust pricing by a specific amount with rationale; (3) change marketing strategy (different photographer, restage, repositioning). Include the data supporting each option, the trade-offs, and your recommendation.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Mid-Week</div>
+        <h5>Strategic conversation with seller</h5>
+        <p>Walk through the document together — preferably in person or on a video call. Use the Validate / Draw the Line / Hand Them the Map structure. The seller chooses; you execute.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · End of Week</div>
+        <h5>Execute the chosen path</h5>
+        <p>Whatever the seller decides, the next week starts with concrete action. If price adjustment: re-list with adjusted price, new round of buyer-agent outreach announcing the change. If hold: re-energize with new tactic of choice. If strategy change: implement immediately.</p>
+      </div>
+
+      <div class="artifact">
+        <div class="art-label">Friday Update Includes</div>
+        <p>The strategic options document (sent before the meeting, not at it). After-meeting written confirmation of the decision and the plan for week 5. <strong>This document becomes part of the seller's record</strong> — they can refer back to it as evidence of how the decision was made.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK 5+ -->
+  <div class="week-block">
+    <div class="week-header">
+      <div>
+        <div class="week-num">Week Five and Beyond</div>
+        <h3>Sustained Discipline</h3>
+      </div>
+      <div class="week-focus">Same rhythm; new interventions</div>
+    </div>
+    <div class="week-body">
+      <p>Once past the strategic decision point, the listing settles into one of two trajectories: (1) the chosen path produces an offer in 1–3 weeks; (2) further calibration is required.</p>
+
+      <p>The weekly baseline (Monday performance check, Tuesday outreach, Friday update) continues unchanged. Scheduled interventions space out: photo or staging change at week 6 if needed; second strategic options document at week 8 if no offer.</p>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Week 6</div>
+        <h5>Scheduled Intervention #3 (if needed)</h5>
+        <p>Either a refresh (new photos, restage, description rewrite) or a further strategic conversation. The pre-decided rhythm prevents the listing from going stale and prevents the agent from running out of things to do.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Week 8</div>
+        <h5>Second Strategic Options Document (if no offer)</h5>
+        <p>If the listing is past 8 weeks without an offer, a second formal options conversation is required. The same Validate / Draw the Line / Hand Them the Map structure. Possibly: substantial price adjustment, withdraw and re-launch with different angle, or take the property off the market until conditions improve.</p>
+      </div>
+
+      <div class="task">
+        <div class="task-label">Tier 1 · Throughout</div>
+        <h5>Maintain the weekly Friday update — without exception</h5>
+        <p>Even when nothing has changed. <em>"Quiet week — two showings booked for next weekend. Online views holding steady. Reaching out to three more buyer agents this Tuesday. Will have feedback for you Friday."</em> Silence at this stage is the most damaging communication failure possible.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PART V: CONDITIONAL, FIRM, CLOSING                           -->
+  <!-- ============================================================ -->
+
+  <div class="part-header">
+    <div class="part-label">Part Five</div>
+    <h2>Phase Three — Conditional, Firm, and Closing</h2>
+    <p class="part-subtitle">Marketing-related work continues through closing — just differently</p>
+  </div>
+
+  <div class="section">
+    <p>Once an offer is accepted, the marketing job changes shape. The work shifts from <em>attracting buyers</em> to <em>protecting the deal and the seller's experience.</em> But the rhythm of visible work continues.</p>
+
+    <h3>Conditional Period</h3>
+
+    <div class="task">
+      <div class="task-label">Tier 1</div>
+      <h5>Daily-or-near-daily check-ins with the buyer agent</h5>
+      <p>Track the financing condition, inspection condition, status condition. Brief written updates to the seller every 2–3 days even if nothing has changed: <em>"Financing condition still pending — buyer's agent confirmed lender is reviewing today. Inspection booked for Wednesday."</em> The seller's anxiety during conditional periods is enormous; visibility into progress is the antidote.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 2</div>
+      <h5>Maintain the listing's online presence (briefly)</h5>
+      <p>Don't pull marketing immediately. Conditions can fall through. Keep the listing visible for the duration of the conditional period — though signal accordingly (status shows "conditional" on MLS).</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1</div>
+      <h5>After Major Milestone Service Feedback Check-in</h5>
+      <p>Once the deal is firm, ask the seller: <em>"Looking back at how I've handled this so far, is there anything you'd want me to do differently as we go into closing?"</em> The asking practice from the Service Procedures playbook. Capture in the tracker.</p>
+    </div>
+
+    <h3>Firm Period (Sold Firm to Closing Day)</h3>
+
+    <div class="task">
+      <div class="task-label">Tier 1</div>
+      <h5>Marketing artifacts archived for the post-sale story</h5>
+      <p>Save copies of all marketing produced during the listing — videos, photos, descriptions, performance metrics, the strategic options documents. These become the raw material for the post-sale debrief and any future case-study work.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1</div>
+      <h5>Weekly closing-period status check</h5>
+      <p>Even when nothing has changed: <em>"Quick update — financing waived, on track for closing on [date]."</em> The pre-closing weeks are when sellers often experience the highest anxiety; weekly written confirmation is essential.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1</div>
+      <h5>Pre-closing logistics document</h5>
+      <p>One week before closing, send the seller a written document outlining: walkthrough timing, key handover plan, final utility readings, lawyer coordination, what to bring, what to expect. Eliminates 80% of last-minute questions.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PART VI: POST-SALE DEBRIEF                                   -->
+  <!-- ============================================================ -->
+
+  <div class="part-header">
+    <div class="part-label">Part Six</div>
+    <h2>Phase Four — Post-Sale Debrief and Earned Promotion</h2>
+    <p class="part-subtitle">Where Goal 3 finally becomes appropriate to pursue directly</p>
+  </div>
+
+  <div class="section">
+    <p>The post-sale phase is where self-promotion stops being inappropriate and starts being earned. The work has been done; the result is in. Now the story can be told — grounded in actual results, not asserted ahead of them.</p>
+
+    <h3>Debrief Tasks</h3>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 1–7 Post-Close</div>
+      <h5>Post-Close Service Feedback Debrief</h5>
+      <p>The most valuable feedback moment in the entire relationship. Ask honestly: <em>"What worked well in how I served you? And — honestly — what could have been better? I ask every client this. The only way I improve is if people are willing to tell me."</em> Capture exact words in the tracker. This produces the most actionable improvement data possible.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 7–14 Post-Close</div>
+      <h5>Internal Listing Debrief Document</h5>
+      <p>Write a short internal document covering: launch metrics, what worked, what didn't, time-to-offer, sale-to-list ratio, key lessons. This becomes the case-study material for future presentations and the institutional memory for refining the procedure.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 3 · Day 14–30 Post-Close</div>
+      <h5>Earned promotional content (with permission)</h5>
+      <p>If the listing performed well, request permission from the seller to share the story. Frame it as the marketing strategy, not the agent. <em>"Listed at $X, sold at $Y in Z days — here's what worked: pre-launch buyer outreach, photography timed to the home's best light, weekly performance interpretation."</em> The story is about the system, not the storyteller.</p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · Day 30 Post-Close</div>
+      <h5>30-day check-in with the seller</h5>
+      <p>The settled, post-stress moment. Ideal moment to ask for a referral — framed around the business model: <em>"The part of this work I value most is referrals from clients I've served well."</em></p>
+    </div>
+
+    <div class="task">
+      <div class="task-label">Tier 1 · 6-month and 1-year</div>
+      <h5>Ongoing relationship maintenance</h5>
+      <p>Light, non-transactional check-ins. Birthday and important-date acknowledgment. Holiday note. Most agents disappear after closing; the agents who don't are the ones who get called when the seller's friend, neighbor, or family member needs a real estate referral.</p>
+    </div>
+
+    <div class="insight">
+      <div class="insight-label">The Self-Promotion Principle</div>
+      <h3>Promote the work, not the worker</h3>
+      <p>The agent who wins long-term in the GTA market wins by being so good at the substance that the promotion takes care of itself. Lean hard into self-promotion early and you peak quickly, then plateau. <strong>Build the substance. Tell the story of the substance afterward. Let the promotion be the shadow that the substance casts.</strong></p>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PART VII: VISIBILITY DISCIPLINE                              -->
+  <!-- ============================================================ -->
+
+  <div class="part-header">
+    <div class="part-label">Part Seven</div>
+    <h2>The Visibility Discipline — Weekly Seller Update Format</h2>
+    <p class="part-subtitle">The single artifact that turns invisible work into visible service</p>
+  </div>
+
+  <div class="section">
+    <p>The Friday weekly update is the most important communication artifact of the entire active listing period. It is the mechanism by which all the work being done — the buyer-agent outreach, the performance tracking, the showing feedback synthesis, the strategic thinking — becomes visible to the seller.</p>
+
+    <p>It needs structure. Same structure every week. The seller gets used to it; the rhythm itself becomes reassuring.</p>
+
+    <h3>The Five Sections of Every Friday Update</h3>
+
+    <div class="task">
+      <h5><span class="num">1.</span> The Numbers</h5>
+      <p>Showings this week / total. Online views, saves, inquiries (week-over-week). Open house attendance if applicable. Count of buyer-agent outreach contacts made.</p>
+    </div>
+
+    <div class="task">
+      <h5><span class="num">2.</span> What Buyers Are Saying</h5>
+      <p>Synthesized feedback from showings. Patterns, not raw quotes. <em>"Buyers consistently praise the kitchen and natural light. Two of four mentioned the master feels smaller than they expected; one was concerned about the basement ceiling height."</em></p>
+    </div>
+
+    <div class="task">
+      <h5><span class="num">3.</span> What I Did This Week</h5>
+      <p>Specific. <em>"Reached out to 5 buyer agents whose recent activity matches your home. Refreshed two photos to capture the spring blooms in the back garden. Submitted listing for featured placement on Realtor.ca through next Tuesday."</em></p>
+    </div>
+
+    <div class="task">
+      <h5><span class="num">4.</span> My Read of the Data</h5>
+      <p>The interpretation. <em>"View counts are strong but conversion to inquiries has slowed in week 3 — this is normal pattern. The feedback theme on the master suggests buyers in our target range are looking for either more square footage or a stronger price-to-comp positioning. We're approaching the moment when a strategic options conversation makes sense."</em></p>
+    </div>
+
+    <div class="task">
+      <h5><span class="num">5.</span> Next Week's Plan</h5>
+      <p>Specific actions. <em>"Tuesday: another round of buyer-agent outreach (different cohort). Wednesday: refreshed listing description goes live. Saturday: open house with pre-event email invitations. Friday: I'll send the next update with showing feedback and strategic recommendation."</em></p>
+    </div>
+
+    <div class="template">
+      <strong>Subject:</strong> Weekly Update — <span class="placeholder">[Address]</span> — Week <span class="placeholder">[N]</span><br><br>
+      <strong>Hi [Seller name],</strong><br><br>
+      Quick weekly update on the listing.<br><br>
+      <strong>The Numbers:</strong><br>
+      <span class="placeholder">[showings / views / inquiries / outreach contacts]</span><br><br>
+      <strong>What buyers are saying:</strong><br>
+      <span class="placeholder">[synthesized feedback themes]</span><br><br>
+      <strong>What I did this week:</strong><br>
+      <span class="placeholder">[specific actions]</span><br><br>
+      <strong>My read of the data:</strong><br>
+      <span class="placeholder">[strategic interpretation]</span><br><br>
+      <strong>Next week:</strong><br>
+      <span class="placeholder">[planned actions]</span><br><br>
+      Talk Friday. Anything you want me to look into in the meantime, just let me know.<br><br>
+      Peter
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- CHEAT SHEET                                                  -->
+  <!-- ============================================================ -->
+
+  <div class="cheat-sheet">
+    <div class="cs-label">Quick Reference</div>
+    <h2>Single-Page Cheat Sheet</h2>
+
+    <h4>The Hierarchy</h4>
+    <p>1. <strong>Sell the property.</strong> Paramount. Everything else is downstream.<br>
+    2. <strong>Seller satisfaction.</strong> Built mostly from #1. Communication discipline on top.<br>
+    3. <strong>Self-promotion.</strong> Byproduct, not strategy. Earned by results.</p>
+
+    <h4>The Operating Test</h4>
+    <p>Does this primarily move the property toward sale?<br>
+    <strong>Yes</strong> → do it. <strong>No, but cares for seller</strong> → do judiciously. <strong>No, but makes me look busy</strong> → don't do it.</p>
+
+    <h4>Pre-MLS (Days 1–14)</h4>
+    <ul>
+      <li>Strategic Listing Plan document delivered to seller (Day 1–3)</li>
+      <li>Property prep walkthrough using tour script (Day 1–5)</li>
+      <li>Photography at the home's best light (Day 5–8)</li>
+      <li>Pre-launch buyer-agent outreach: 8–15 contacts (Day 7–10)</li>
+      <li>Three social media videos pre-built (Day 8–12)</li>
+      <li>Listing description with seller's own language (Day 10–12)</li>
+      <li>Final pre-launch strategic walkthrough (Day 12–14)</li>
+    </ul>
+
+    <h4>Weekly Baseline (Every Active Week)</h4>
+    <ul>
+      <li>Mon: Online performance check</li>
+      <li>Mon/Tue: Buyer-agent outreach round (3–5 contacts)</li>
+      <li>Throughout: Pre-showing texts to seller, post-showing feedback collection</li>
+      <li>Thu: Showing feedback synthesis written up</li>
+      <li>Fri: Weekly seller update sent (5-section format)</li>
+    </ul>
+
+    <h4>Scheduled Interventions</h4>
+    <ul>
+      <li><strong>Week 2:</strong> Description refresh based on showing feedback</li>
+      <li><strong>Week 3:</strong> Photo refresh + second outreach round + boosted placement</li>
+      <li><strong>Week 4:</strong> Strategic Options Document — hold/adjust/change conversation</li>
+      <li><strong>Week 6:</strong> Refresh or strategic conversation (if needed)</li>
+      <li><strong>Week 8:</strong> Second Strategic Options Document (if no offer)</li>
+    </ul>
+
+    <h4>Service Feedback Asking Moments</h4>
+    <ul>
+      <li><strong>Week 2:</strong> Mid-process check-in</li>
+      <li><strong>After deal goes firm:</strong> Major milestone check-in</li>
+      <li><strong>5–10 days post-close:</strong> Honest debrief — most valuable</li>
+    </ul>
+
+    <h4>Friday Update — Five Sections</h4>
+    <ul>
+      <li>The Numbers</li>
+      <li>What Buyers Are Saying (synthesized themes)</li>
+      <li>What I Did This Week (specific actions)</li>
+      <li>My Read of the Data (interpretation)</li>
+      <li>Next Week's Plan</li>
+    </ul>
+
+    <h4>Post-Close</h4>
+    <ul>
+      <li>Day 1–7: Service feedback debrief</li>
+      <li>Day 7–14: Internal listing debrief document</li>
+      <li>Day 14–30: Earned promotional story (with permission, about the work)</li>
+      <li>Day 30: Referral request</li>
+      <li>6-month and 1-year: Light relationship maintenance</li>
+    </ul>
+  </div>
+
+  <!-- ============== FOOTER ============== -->
+  <div class="footer">
+    <div class="name">PETER LUO</div>
+    <div class="credentials">SRS &nbsp;·&nbsp; MCNE &nbsp;·&nbsp; FRI &nbsp;·&nbsp; RE/MAX REALTRON REALTY INC., BROKERAGE</div>
+    <div class="meta">
+      Pinnacle Listing System &nbsp;·&nbsp; peterluo.homes<br>
+      Internal operating procedure — May 2026
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /referenceMode -->
+
+<!-- ============== TRACKER MODE ============== -->
+<div id="trackerMode">
+  <div class="tracker-app">
+
+    <!-- Sidebar -->
+    <aside class="tracker-sidebar">
+      <div class="tracker-sidebar-header">
+        <div class="tracker-brand">Pinnacle Listing System</div>
+        <h2 class="tracker-title">Active Listings Tracker</h2>
+      </div>
+
+      <button class="tracker-add-btn" id="addPropertyBtn">+ Add Property</button>
+
+      <div class="tracker-data-buttons">
+        <button class="tracker-data-btn" id="trackerBackupBtn" title="Download all properties as JSON">↓ Backup</button>
+        <button class="tracker-data-btn" id="trackerRestoreBtn" title="Restore from JSON">↑ Restore</button>
+      </div>
+      <input type="file" id="trackerRestoreInput" accept=".json,application/json" style="display:none;">
+
+      <div class="home-link-tracker active" id="trackerHomeLink">
+        ◆ Today's Tasks
+      </div>
+
+      <ul class="property-list" id="propertyList">
+        <li class="property-empty">No properties yet — add one to get started</li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <main class="tracker-main" id="trackerMain">
+      <!-- Filled in by JS -->
+    </main>
+
+  </div>
+</div>
+
+<!-- ============== ADD/EDIT PROPERTY MODAL ============== -->
+<div class="modal-overlay-tracker" id="propertyModal">
+  <div class="modal-tracker">
+    <h3 id="propertyModalTitle">Add Property</h3>
+    <div class="field">
+      <label>Property Address</label>
+      <input type="text" id="propAddress" placeholder="123 Main St, Newmarket">
+    </div>
+    <div class="field">
+      <label>Seller Name(s)</label>
+      <input type="text" id="propSeller" placeholder="John & Jane Smith">
+    </div>
+    <div class="field">
+      <label>Listing Agreement Signed Date</label>
+      <input type="date" id="propSignedDate">
+      <div class="field-help">Pre-MLS tasks will be anchored relative to the planned MLS launch date below.</div>
+    </div>
+    <div class="field">
+      <label>Planned MLS Launch Date</label>
+      <input type="date" id="propLaunchDate">
+      <div class="field-help">All weekly tasks will be anchored from this date. Pre-MLS tasks fall in the 14 days before.</div>
+    </div>
+    <div class="field">
+      <label>List Price</label>
+      <input type="text" id="propPrice" placeholder="$1,250,000">
+    </div>
+    <div class="modal-actions-tracker">
+      <button class="btn-tracker danger" id="deletePropertyBtn" style="display:none;margin-right:auto;">Delete</button>
+      <button class="btn-tracker" id="cancelPropertyBtn">Cancel</button>
+      <button class="btn-tracker primary" id="savePropertyBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// ACTIVE LISTING MARKETING TRACKER — JAVASCRIPT
+// ============================================================
+
+// ============== UTILITY FUNCTIONS ==============
+function todayISO() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+
+function parseAsLocal(iso) {
+  if (!iso) return null;
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  return new Date(parseInt(m[1],10), parseInt(m[2],10)-1, parseInt(m[3],10));
+}
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  const d = parseAsLocal(iso);
+  if (!d) return '—';
+  return d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function daysBetween(fromIso, toIso) {
+  const a = parseAsLocal(fromIso);
+  const b = parseAsLocal(toIso);
+  if (!a || !b) return null;
+  return Math.round((b - a) / (1000 * 60 * 60 * 24));
+}
+
+function addDays(iso, days) {
+  const d = parseAsLocal(iso);
+  if (!d) return '';
+  d.setDate(d.getDate() + days);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function uid() {
+  return 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+}
+
+// Strict price formatter: $##,###,### with comma separators.
+// Strips everything non-digit, then re-formats. Idempotent.
+function formatPriceStrict(value) {
+  if (value === null || value === undefined || value === '') return '';
+  const digits = String(value).replace(/[^\d]/g, '');
+  if (!digits) return '';
+  return '$' + digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// ============== TASK PLAN TEMPLATE ==============
+const TASK_PLAN = [
+  // Phase 0: Pre-MLS
+  { id: 'pm_01', phase: 0, dayOffset: -14, tier: 1, title: 'Strategic Listing Plan document delivered to seller',
+    desc: 'Brief written document: target buyer profile, pricing rationale with comps, marketing timeline, photography plan, scheduled intervention points, and what success looks like.' },
+  { id: 'pm_02', phase: 0, dayOffset: -13, tier: 1, title: 'Pre-photography property prep walkthrough',
+    desc: 'Walk through with seller using the Listing Tour Script. Identify what stays, rearranges, or removed. Recommend professional staging if needed.' },
+  { id: 'pm_03', phase: 0, dayOffset: -10, tier: 1, title: 'Professional photography booked at the home\u2019s best light',
+    desc: 'Shoot at the time of day the seller said the home looks best. Most agents shoot at the photographer\u2019s convenience. Don\u2019t.' },
+  { id: 'pm_04', phase: 0, dayOffset: -9, tier: 1, title: 'Photography session completed',
+    desc: 'On-site for the shoot. Direct the photographer toward the angles and details the seller surfaced during the tour.' },
+  { id: 'pm_05', phase: 0, dayOffset: -7, tier: 1, title: 'Pre-launch buyer-agent outreach: 8\u201315 contacts',
+    desc: 'Identify and reach out to buyer agents whose recent activity suggests likely-fit clients. The single most underused tactic in residential real estate.' },
+  { id: 'pm_06', phase: 0, dayOffset: -6, tier: 2, title: 'Three social media videos pre-built and scheduled',
+    desc: 'Walk-through, lifestyle/exterior, and neighbourhood vignette. Schedule across week 1, 2, and 3 so they don\u2019t need to be rushed during the active period.' },
+  { id: 'pm_07', phase: 0, dayOffset: -5, tier: 1, title: 'Listing description and feature sheet drafted',
+    desc: 'Lead with what the seller said made them say yes to the house. Use their own language. Emotional truth produces showings; feature lists produce drive-bys.' },
+  { id: 'pm_08', phase: 0, dayOffset: -4, tier: 1, title: 'Floor plans, virtual tour, and final photos finalized',
+    desc: 'All assets reviewed and approved. Compress images for fast portal loading. Verify floor plans are accurate.' },
+  { id: 'pm_09', phase: 0, dayOffset: -3, tier: 2, title: 'Sign installed and lockbox set',
+    desc: 'Sign placement chosen for maximum street visibility. Lockbox tested with code shared to brokerage system.' },
+  { id: 'pm_10', phase: 0, dayOffset: -2, tier: 1, title: 'Final pre-launch strategic walkthrough with seller',
+    desc: 'Confirm price, timeline, marketing rhythm, expected showing pace, weekly update cadence. Set expectations explicitly.' },
+
+  // Phase 1: Week 1
+  { id: 'w1_01', phase: 1, dayOffset: 0, tier: 1, title: 'MLS launch + buyer-agent push',
+    desc: 'Simultaneously: MLS goes live, social media post #1 publishes, individual emails go to the 8\u201315 buyer agents pre-contacted.' },
+  { id: 'w1_02', phase: 1, dayOffset: 2, tier: 1, title: 'First showings + immediate feedback collection',
+    desc: 'Follow up with every buyer agent within 24 hours. Even a brief "What was your client\u2019s reaction?" via text produces useful intelligence.' },
+  { id: 'w1_03', phase: 1, dayOffset: 5, tier: 1, title: 'First open house with pre-event invitations',
+    desc: 'Pre-event email invitations to specific buyer agents and likely-fit prospects. Hand-delivered flyers on immediate streets. Track attendance.' },
+  { id: 'w1_04', phase: 1, dayOffset: 6, tier: 1, title: 'Open house follow-up within 48 hours',
+    desc: 'Reach out to every attendee whose contact info you collected. Synthesize attendance feedback for the Friday update.' },
+  { id: 'w1_05', phase: 1, dayOffset: 7, tier: 1, title: 'Friday Update \u2014 Week 1',
+    desc: 'Five sections: numbers, what buyers are saying, what I did this week, my read of the data, next week\u2019s plan. Send before end of day Friday.' },
+
+  // Phase 2: Week 2
+  { id: 'w2_01', phase: 2, dayOffset: 9, tier: 1, title: 'Showing feedback synthesis (5\u201310 showings of data)',
+    desc: 'Patterns are visible by week 2. Common positives, common concerns. Write up in plain language for both internal use and the Friday update.' },
+  { id: 'w2_02', phase: 2, dayOffset: 10, tier: 2, title: 'Scheduled Intervention #1: Description Refresh',
+    desc: 'Refine the listing description based on showing feedback. Lead with whatever buyers responded most strongly to. Address common concerns subtly.' },
+  { id: 'w2_03', phase: 2, dayOffset: 11, tier: 2, title: 'Social media post #2 \u2014 lifestyle/neighbourhood',
+    desc: 'Different angle than the walk-through (which led week 1). Captures the way of living the home offers, not just the property.' },
+  { id: 'w2_04', phase: 2, dayOffset: 12, tier: 1, title: 'Mid-process service feedback check-in with seller',
+    desc: 'Ask: "Is the rhythm of our communication working for you? Anything I could be doing differently?" Capture in client tracker.' },
+  { id: 'w2_05', phase: 2, dayOffset: 14, tier: 1, title: 'Friday Update \u2014 Week 2',
+    desc: 'Cumulative showing count, recent feedback synthesis, online performance comparison, the description refresh, strategic read.' },
+
+  // Phase 3: Week 3
+  { id: 'w3_01', phase: 3, dayOffset: 15, tier: 2, title: 'Scheduled Intervention #2: Photo refresh',
+    desc: 'Fresh photos if conditions allow. New season, different light, different staging detail. Even one or two new photos signals freshness.' },
+  { id: 'w3_02', phase: 3, dayOffset: 17, tier: 1, title: 'Second wave of buyer-agent outreach',
+    desc: 'Different cohort than the pre-launch round. Agents whose buyer activity has picked up since launch.' },
+  { id: 'w3_03', phase: 3, dayOffset: 18, tier: 2, title: 'Social media post #3 \u2014 single feature focus',
+    desc: 'Often a single-feature focus: kitchen, backyard, natural light. Reaches buyers who scrolled past the broader videos.' },
+  { id: 'w3_04', phase: 3, dayOffset: 19, tier: 2, title: 'Featured/boosted placement on portals',
+    desc: 'Selective paid promotion. One time. Drives a fresh wave of online attention.' },
+  { id: 'w3_05', phase: 3, dayOffset: 21, tier: 1, title: 'Friday Update \u2014 Week 3',
+    desc: 'Three-week performance summary. The interventions of this week. If performing below expectations, gently introduce price-conversation framework.' },
+
+  // Phase 4: Week 4
+  { id: 'w4_01', phase: 4, dayOffset: 22, tier: 1, title: 'Strategic Options Document prepared',
+    desc: 'Three options in writing: hold, adjust price, or change strategy. Include data, trade-offs, recommendation.' },
+  { id: 'w4_02', phase: 4, dayOffset: 24, tier: 1, title: 'Strategic conversation with seller',
+    desc: 'Walk through document together \u2014 in person or by video call. Use Validate / Draw the Line / Hand Them the Map structure.' },
+  { id: 'w4_03', phase: 4, dayOffset: 26, tier: 1, title: 'Execute the chosen path',
+    desc: 'Whatever the seller decides, week 5 starts with concrete action. Price adjustment, hold, or strategy change \u2014 implement immediately.' },
+  { id: 'w4_04', phase: 4, dayOffset: 28, tier: 1, title: 'Friday Update \u2014 Week 4',
+    desc: 'Send strategic options document before the meeting. After-meeting written confirmation of decision and plan for week 5.' },
+
+  // Phase 5: Week 5+
+  { id: 'w5_01', phase: 5, dayOffset: 35, tier: 1, title: 'Week 5 Friday Update (continue baseline rhythm)',
+    desc: 'Mon: performance check. Mon/Tue: outreach round (3\u20135). Throughout: pre-showing texts, post-showing feedback. Thu: synthesis. Fri: 5-section update.' },
+  { id: 'w5_02', phase: 5, dayOffset: 42, tier: 1, title: 'Week 6 \u2014 Scheduled Intervention #3 if needed',
+    desc: 'Either a refresh (new photos, restage, description rewrite) or a further strategic conversation. Pre-decided rhythm prevents listing from going stale.' },
+  { id: 'w5_03', phase: 5, dayOffset: 56, tier: 1, title: 'Week 8 \u2014 Second Strategic Options Document if no offer',
+    desc: 'If past 8 weeks without offer, second formal options conversation. Substantial price adjustment, withdraw and re-launch, or take off market.' },
+
+  // Phase 6: Negotiation (offer received → offer accepted)
+  { id: 'ng_01', phase: 6, dayOffset: null, tier: 1, title: 'Review entire offer carefully before presenting',
+    desc: 'Analyze price, deposit, financing terms, conditions, closing date, inclusions/exclusions, irrevocable timing. Verify buyer strength via pre-approval, deposit, agent professionalism. Every term matters.' },
+  { id: 'ng_02', phase: 6, dayOffset: null, tier: 1, title: 'Prepare net sheet for the seller',
+    desc: 'Calculate estimated net proceeds: purchase price minus commissions, HST, legal fees, mortgage payout, adjustments. Helps seller see actual financial outcome \u2014 not just headline price.' },
+  { id: 'ng_03', phase: 6, dayOffset: null, tier: 1, title: 'Present offer with structure: facts \u2192 implications \u2192 options \u2192 recommendation',
+    desc: 'Begin with offer summary (price, terms, conditions). Explain how each term affects the seller. Present options (accept, counter, reject, hold). Then recommend a clear direction \u2014 not "what do you want to do?"' },
+  { id: 'ng_04', phase: 6, dayOffset: null, tier: 1, title: 'For multiple offers: written process and side-by-side comparison',
+    desc: 'Establish offer deadlines, communication procedures, review timing. Compare not just price but deposit strength, conditions, closing flexibility, financing quality. Highest price isn\u2019t always best offer.' },
+  { id: 'ng_05', phase: 6, dayOffset: null, tier: 1, title: 'Counter-offer strategy document if countering',
+    desc: 'Identify negotiation priorities (price vs. closing date vs. conditions vs. certainty). Prioritize highest-impact improvements. Avoid over-negotiating \u2014 excessive demands frustrate buyers and increase collapse risk.' },
+
+  // Phase 7: Conditional Period (offer accepted → sold firm)
+  { id: 'co_01', phase: 7, dayOffset: null, tier: 1, title: 'Send written summary of conditional period expectations to seller',
+    desc: 'Document: dates of each condition (financing, inspection, status), what happens at each, what could fall through, your communication rhythm during this period. Sets the frame for the highest-anxiety stage.' },
+  { id: 'co_02', phase: 7, dayOffset: null, tier: 1, title: 'Track every condition deadline in writing',
+    desc: 'Financing condition, inspection condition, status condition, deposit deadline. Calendar each. Watch for warning signs: delays, incomplete documents, lender complications, buyer hesitation.' },
+  { id: 'co_03', phase: 7, dayOffset: null, tier: 1, title: 'Inspection prep: brief seller before inspection day',
+    desc: 'Explain what happens during inspection, common buyer concerns, possible negotiation outcomes. Most inspections uncover something \u2014 preparing the seller emotionally beforehand prevents panic when results come.' },
+  { id: 'co_04', phase: 7, dayOffset: null, tier: 1, title: 'Brief written update every 2-3 days even if nothing has changed',
+    desc: '"Financing condition status: lender confirmed review on track. Inspection booked Wednesday." Silence during conditional period creates more anxiety than any other stage. Brief, written, frequent.' },
+  { id: 'co_05', phase: 7, dayOffset: null, tier: 1, title: 'If repair requests or renegotiation: present options strategically',
+    desc: 'Evaluate severity of issues, repair costs, leverage, transaction-collapse risk. Present options to seller: agree to repairs, provide credit, renegotiate price, refuse, compromise selectively. Recommend a path.' },
+  { id: 'co_06', phase: 7, dayOffset: null, tier: 1, title: 'Maintain listing\u2019s online presence until firm',
+    desc: 'Don\u2019t pull marketing immediately \u2014 conditions can fall through. Keep visible for the duration; signal "conditional" on MLS. Reactivate fully if deal collapses.' },
+  { id: 'co_07', phase: 7, dayOffset: null, tier: 1, title: 'After-Milestone service feedback check-in (when firm)',
+    desc: 'Once deal is firm, ask seller: "Looking back at how I\u2019ve handled this so far, is there anything you\u2019d want me to do differently as we go into closing?" Capture in client tracker.' },
+
+  // Phase 8: Firm to Pre-Closing (sold firm → closing day)
+  { id: 'fi_01', phase: 8, dayOffset: null, tier: 1, title: 'Marketing artifacts archived for post-sale story',
+    desc: 'Save copies of all marketing \u2014 videos, photos, descriptions, performance metrics, strategic options documents. Raw material for post-sale debrief and future case studies.' },
+  { id: 'fi_02', phase: 8, dayOffset: null, tier: 1, title: 'Weekly closing-period status check',
+    desc: '"Quick update \u2014 financing waived, lawyer documents in progress, on track for closing on [date]." Even when nothing has changed. Pre-closing weeks are high seller anxiety.' },
+  { id: 'fi_03', phase: 8, dayOffset: null, tier: 1, title: 'Coordinate vendor referrals: movers, cleaners, lawyer, utility transfers',
+    desc: 'Provide trusted vendor list. Help seller schedule moving services. Confirm lawyer engagement. Remind about utility transfer dates. Be the central coordinator \u2014 logistics is where most stress lives.' },
+  { id: 'fi_04', phase: 8, dayOffset: null, tier: 1, title: 'Pre-closing logistics document (1 week before closing)',
+    desc: 'Walkthrough timing, key handover plan, final utility readings, lawyer coordination, what to bring, what to expect. One written document eliminates 80% of last-minute questions.' },
+  { id: 'fi_05', phase: 8, dayOffset: null, tier: 2, title: 'Confirm all parties: lender, lawyer, mortgage broker, buyer agent',
+    desc: 'Three days out: confirm everyone\u2019s on track. Documents signed, funds verified, closing time confirmed. Anticipate problems early \u2014 last-minute surprises are the most preventable kind.' },
+
+  // Phase 9: Closing Day
+  { id: 'cd_01', phase: 9, dayOffset: null, tier: 1, title: 'Day-of acknowledgement message to seller (morning of)',
+    desc: '"Today\u2019s the day. I\u2019ll be in touch as soon as the transaction completes. Anything you need from me, just text." Brief, warm, present. The seller has been waiting weeks for this day.' },
+  { id: 'cd_02', phase: 9, dayOffset: null, tier: 1, title: 'Walkthrough coordination if applicable',
+    desc: 'Confirm walkthrough timing with buyer agent. Ensure property is in promised condition. Address any walkthrough issues immediately \u2014 they can stall closing if not handled fast.' },
+  { id: 'cd_03', phase: 9, dayOffset: null, tier: 1, title: 'Closing confirmation message + thank you',
+    desc: 'Once closing completes: "Congratulations \u2014 the transaction is done. The keys have transferred. I\u2019ll follow up in a few days to make sure the move went smoothly. Thank you for trusting me with this." Mark the moment.' },
+
+  // Phase 10: Post-Close Follow-Up
+  { id: 'pc_01', phase: 10, dayOffset: null, tier: 1, title: 'Day 1-3: Move-in check-in',
+    desc: '"How\u2019s the move going? Anything that came up I can help with?" Most agents disappear after closing. Showing up in the first few days makes you memorably different.' },
+  { id: 'pc_02', phase: 10, dayOffset: null, tier: 1, title: 'Day 5-10: Post-Close service feedback debrief',
+    desc: 'The most valuable feedback moment in the entire relationship. "What worked well? Honestly, what could have been better? I ask every client \u2014 the only way I improve is if people are willing to tell me." Capture in client tracker.' },
+  { id: 'pc_03', phase: 10, dayOffset: null, tier: 1, title: 'Day 7-14: Internal listing debrief document',
+    desc: 'Short document: launch metrics, what worked, what didn\u2019t, sale-to-list ratio, time-to-offer, key lessons. Becomes case-study material for future presentations and refines the procedure.' },
+  { id: 'pc_04', phase: 10, dayOffset: null, tier: 1, title: 'Day 30: Referral conversation',
+    desc: 'Settled, post-stress moment. "The part of this work I value most is referrals from clients I\u2019ve served well. If you ever know someone who could use the same kind of service, I\u2019d be grateful for the introduction."' },
+  { id: 'pc_05', phase: 10, dayOffset: null, tier: 3, title: 'Month 6: Light, non-transactional check-in',
+    desc: 'Brief, warm, no agenda. "Just wanted to check in \u2014 hope the new place still feels like home." This is what separates the agents who get called for the next sale from the ones who don\u2019t.' },
+  { id: 'pc_06', phase: 10, dayOffset: null, tier: 1, title: 'Year 1: Home anniversary acknowledgement',
+    desc: 'Schedule it. "It\u2019s been a year since we closed on [address]. Hard to believe. How\u2019s life there?" Anniversary touches are the highest-leverage long-term relationship move in real estate.' },
+];
+
+const PHASE_NAMES = {
+  0: 'Pre-MLS \u00B7 Days -14 to 0',
+  1: 'Week 1 \u00B7 Launch Surge',
+  2: 'Week 2 \u00B7 First Calibration',
+  3: 'Week 3 \u00B7 Re-energize',
+  4: 'Week 4 \u00B7 Strategic Decision Point',
+  5: 'Week 5+ \u00B7 Sustained Discipline',
+  6: 'Negotiation (Offer Received \u2192 Accepted)',
+  7: 'Conditional Period (Accepted \u2192 Firm)',
+  8: 'Firm to Pre-Closing',
+  9: 'Closing Day',
+  10: 'Post-Close Follow-Up'
+};
+
+// ============== INDEXEDDB ==============
+const DB_NAME = 'PinnacleActiveListings';
+const DB_VERSION = 1;
+const STORE = 'properties';
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => resolve(req.result);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE)) {
+        db.createObjectStore(STORE, { keyPath: 'id' });
+      }
+    };
+  });
+}
+
+let db;
+let properties = [];
+let activePropertyId = null;
+let editingPropertyId = null;
+let collapsedPhases = new Set();
+
+async function dbGetAll() {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function dbPut(prop) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    const req = tx.objectStore(STORE).put(prop);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function dbDelete(id) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    const req = tx.objectStore(STORE).delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+// ============== TASK STATE ==============
+function getTaskState(prop, taskId) {
+  if (!prop.taskState) prop.taskState = {};
+  return prop.taskState[taskId] || { done: false, doneDate: '', notes: '' };
+}
+
+function setTaskState(prop, taskId, state) {
+  if (!prop.taskState) prop.taskState = {};
+  prop.taskState[taskId] = state;
+}
+
+function getTaskTargetDate(prop, task) {
+  if (task.dayOffset === null || !prop.launchDate) return null;
+  return addDays(prop.launchDate, task.dayOffset);
+}
+
+function getTaskUrgency(prop, task) {
+  const state = getTaskState(prop, task.id);
+  if (state.done) return 'done';
+  const target = getTaskTargetDate(prop, task);
+  if (!target) return 'undated';
+  const today = todayISO();
+  const diff = daysBetween(today, target);
+  if (diff === null) return 'undated';
+  if (diff < 0) return 'overdue';
+  if (diff === 0) return 'today';
+  if (diff <= 3) return 'soon';
+  return 'future';
+}
+
+function calculateProgress(prop) {
+  const taskState = prop.taskState || {};
+  const total = TASK_PLAN.length;
+  const done = TASK_PLAN.filter(t => taskState[t.id]?.done).length;
+  return { done, total, pct: Math.round((done / total) * 100) };
+}
+
+// ============== MODE TOGGLE ==============
+function setMode(mode) {
+  document.body.className = 'mode-' + mode;
+  document.getElementById('btnReference').classList.toggle('active', mode === 'reference');
+  document.getElementById('btnTracker').classList.toggle('active', mode === 'tracker');
+  if (mode === 'tracker') {
+    renderTrackerSidebar();
+    renderTrackerMain();
+  }
+}
+
+// ============== RENDER: SIDEBAR ==============
+function renderTrackerSidebar() {
+  const list = document.getElementById('propertyList');
+  if (properties.length === 0) {
+    list.innerHTML = '<li class="property-empty">No properties yet \u2014 add one to get started</li>';
+    document.getElementById('trackerHomeLink').classList.toggle('active', activePropertyId === null);
+    return;
+  }
+  list.innerHTML = properties.map(p => {
+    const progress = calculateProgress(p);
+    const isActive = p.id === activePropertyId;
+    const launchLabel = p.launchDate ? formatDate(p.launchDate) : 'No launch date';
+    return `
+      <li class="property-item ${isActive ? 'active' : ''}" data-id="${p.id}">
+        <div class="property-name">${escapeHtml(p.address)}</div>
+        <div class="property-meta">${escapeHtml(p.seller || '\u2014')} \u00B7 ${launchLabel}</div>
+        <div class="property-progress"><div class="property-progress-fill" style="width:${progress.pct}%"></div></div>
+      </li>
+    `;
+  }).join('');
+
+  list.querySelectorAll('.property-item').forEach(el => {
+    el.addEventListener('click', () => {
+      activePropertyId = el.dataset.id;
+      renderTrackerSidebar();
+      renderTrackerMain();
+    });
+  });
+
+  document.getElementById('trackerHomeLink').classList.toggle('active', activePropertyId === null);
+}
+
+// ============== RENDER: MAIN PANEL ==============
+function renderTrackerMain() {
+  const main = document.getElementById('trackerMain');
+  if (activePropertyId === null) {
+    renderHomeView(main);
+  } else {
+    const prop = properties.find(p => p.id === activePropertyId);
+    if (prop) renderPropertyDetail(main, prop);
+    else renderHomeView(main);
+  }
+}
+
+function renderHomeView(main) {
+  const today = todayISO();
+  const allTodayTasks = [];
+  const allOverdueTasks = [];
+  const allUpcomingTasks = [];
+
+  let totalActive = 0;
+  let totalDone = 0;
+  let totalOverdue = 0;
+
+  for (const p of properties) {
+    totalActive++;
+    for (const task of TASK_PLAN) {
+      const state = getTaskState(p, task.id);
+      if (state.done) { totalDone++; continue; }
+      const urgency = getTaskUrgency(p, task);
+      const target = getTaskTargetDate(p, task);
+      const item = { property: p, task, target, urgency };
+      if (urgency === 'overdue') { allOverdueTasks.push(item); totalOverdue++; }
+      else if (urgency === 'today') allTodayTasks.push(item);
+      else if (urgency === 'soon') allUpcomingTasks.push(item);
+    }
+  }
+
+  allOverdueTasks.sort((a, b) => daysBetween(today, a.target) - daysBetween(today, b.target));
+  allUpcomingTasks.sort((a, b) => daysBetween(today, a.target) - daysBetween(today, b.target));
+
+  const formattedToday = new Date().toLocaleDateString('en-CA', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  main.innerHTML = `
+    <div style="margin-bottom: 24px;">
+      <h1 style="font-family:Georgia,serif;font-size:28px;color:var(--navy);font-weight:normal;margin:0 0 4px 0;">Today's Tasks</h1>
+      <div style="font-size:13px;color:var(--gray-soft);font-style:italic;">${formattedToday} \u2014 what needs attention across all active listings</div>
+    </div>
+
+    <div class="tracker-dash-stats">
+      <div class="prop-stat"><div class="num">${totalActive}</div><div class="lbl">Active Listings</div></div>
+      <div class="prop-stat ${totalOverdue > 0 ? 'due' : ''}"><div class="num">${totalOverdue}</div><div class="lbl">Overdue</div></div>
+      <div class="prop-stat"><div class="num">${allTodayTasks.length + allUpcomingTasks.length}</div><div class="lbl">Due Soon</div></div>
+      <div class="prop-stat complete"><div class="num">${totalDone}</div><div class="lbl">Completed</div></div>
+    </div>
+
+    ${allOverdueTasks.length > 0 ? `
+      <div class="today-section" style="border-top-color: var(--alert);">
+        <div class="today-section-header" style="color: var(--alert);">\u26A0 Overdue Tasks</div>
+        ${allOverdueTasks.map(item => renderTodayTaskRow(item)).join('')}
+      </div>
+    ` : ''}
+
+    ${allTodayTasks.length > 0 ? `
+      <div class="today-section">
+        <div class="today-section-header">Due Today</div>
+        ${allTodayTasks.map(item => renderTodayTaskRow(item)).join('')}
+      </div>
+    ` : ''}
+
+    ${allUpcomingTasks.length > 0 ? `
+      <div class="today-section">
+        <div class="today-section-header">Coming in Next 3 Days</div>
+        ${allUpcomingTasks.map(item => renderTodayTaskRow(item)).join('')}
+      </div>
+    ` : ''}
+
+    ${properties.length === 0 ? `
+      <div class="tracker-empty-state">
+        <h2>No properties yet</h2>
+        <p>Add your first property to start tracking the marketing rhythm. Each property gets a full plan from 14 days before MLS through firm sale.</p>
+      </div>
+    ` : (allOverdueTasks.length === 0 && allTodayTasks.length === 0 && allUpcomingTasks.length === 0) ? `
+      <div class="today-section">
+        <div class="today-section-header">All Caught Up</div>
+        <div style="padding:30px;text-align:center;color:var(--gray-soft);font-style:italic;">
+          No tasks due in the next 3 days. Continue the weekly baseline rhythm \u2014 Monday outreach, Friday update.
+        </div>
+      </div>
+    ` : ''}
+  `;
+
+  main.querySelectorAll('.today-task-row').forEach(el => {
+    el.addEventListener('click', () => {
+      activePropertyId = el.dataset.propertyId;
+      renderTrackerSidebar();
+      renderTrackerMain();
+    });
+  });
+}
+
+function renderTodayTaskRow(item) {
+  const { property, task, target, urgency } = item;
+  const today = todayISO();
+  const diff = daysBetween(today, target);
+  let dueLabel;
+  if (urgency === 'overdue') dueLabel = `${Math.abs(diff)}d overdue`;
+  else if (urgency === 'today') dueLabel = 'Today';
+  else dueLabel = `In ${diff}d`;
+
+  return `
+    <div class="today-task-row" data-property-id="${property.id}" data-task-id="${task.id}">
+      <div class="today-task-top">
+        <div class="today-task-property">${escapeHtml(property.address)}</div>
+        <div class="today-task-due ${urgency}">${dueLabel}</div>
+      </div>
+      <div class="today-task-title"><span class="task-tier tier-${task.tier}">T${task.tier}</span> ${escapeHtml(task.title)}</div>
+    </div>
+  `;
+}
+
+function renderPropertyDetail(main, prop) {
+  const progress = calculateProgress(prop);
+  const launchLabel = prop.launchDate ? formatDate(prop.launchDate) : 'Not set';
+
+  const tasksByPhase = {};
+  for (const task of TASK_PLAN) {
+    if (!tasksByPhase[task.phase]) tasksByPhase[task.phase] = [];
+    tasksByPhase[task.phase].push(task);
+  }
+
+  function phaseProgress(phaseNum) {
+    const tasks = tasksByPhase[phaseNum] || [];
+    const done = tasks.filter(t => getTaskState(prop, t.id).done).length;
+    return { done, total: tasks.length, complete: done === tasks.length && tasks.length > 0 };
+  }
+
+  let overdueCount = 0;
+  let upcomingCount = 0;
+  for (const task of TASK_PLAN) {
+    const u = getTaskUrgency(prop, task);
+    if (u === 'overdue') overdueCount++;
+    if (u === 'today' || u === 'soon') upcomingCount++;
+  }
+
+  main.innerHTML = `
+    <div class="property-detail-header">
+      <div>
+        <h1>${escapeHtml(prop.address)}</h1>
+        <div class="property-detail-meta">
+          ${escapeHtml(prop.seller || '\u2014')}
+          ${prop.price ? ' \u00B7 ' + escapeHtml(prop.price) : ''}
+          \u00B7 Launch: ${launchLabel}
+        </div>
+      </div>
+      <button class="property-edit-btn" id="editPropertyBtn">Edit / Delete</button>
+    </div>
+
+    <div class="property-stats">
+      <div class="prop-stat"><div class="num">${progress.pct}%</div><div class="lbl">Complete</div></div>
+      <div class="prop-stat complete"><div class="num">${progress.done}</div><div class="lbl">Tasks Done</div></div>
+      <div class="prop-stat ${overdueCount > 0 ? 'due' : ''}"><div class="num">${overdueCount}</div><div class="lbl">Overdue</div></div>
+      <div class="prop-stat"><div class="num">${upcomingCount}</div><div class="lbl">Due Soon</div></div>
+    </div>
+
+    <div class="friday-update-panel">
+      <h3>\u25C6 Friday Update Notes</h3>
+      <textarea id="fridayUpdate" placeholder="Draft this week's update here. Five sections: numbers, what buyers are saying, what I did this week, my read of the data, next week's plan.">${escapeHtml(prop.fridayUpdate || '')}</textarea>
+      <div class="friday-update-buttons">
+        <button class="btn-tracker" id="copyFridayBtn">Copy to Clipboard</button>
+        <button class="btn-tracker" id="emailFridayBtn">Open in Email</button>
+      </div>
+    </div>
+
+    ${Object.keys(tasksByPhase).map(phaseNum => {
+      const pp = phaseProgress(parseInt(phaseNum));
+      const isCollapsed = collapsedPhases.has(prop.id + '_' + phaseNum);
+      return `
+        <div class="phase-block">
+          <div class="phase-header ${pp.complete ? 'completed' : ''}" data-phase="${phaseNum}">
+            <div>
+              <div class="phase-num">Phase ${phaseNum}${pp.complete ? ' \u00B7 \u2713 Complete' : ''}</div>
+              <h3>${PHASE_NAMES[phaseNum]}</h3>
+            </div>
+            <div class="phase-progress">${pp.done} / ${pp.total}</div>
+          </div>
+          <div class="phase-body ${isCollapsed ? 'collapsed' : ''}" data-phase-body="${phaseNum}">
+            ${tasksByPhase[phaseNum].map(task => renderTaskRow(prop, task)).join('')}
+          </div>
+        </div>
+      `;
+    }).join('')}
+  `;
+
+  attachPropertyDetailListeners(prop);
+}
+
+function renderTaskRow(prop, task) {
+  const state = getTaskState(prop, task.id);
+  const target = getTaskTargetDate(prop, task);
+  const urgency = getTaskUrgency(prop, task);
+  let dateLabel = '';
+  if (target) {
+    const today = todayISO();
+    const diff = daysBetween(today, target);
+    if (state.done && state.doneDate) {
+      dateLabel = `<span class="task-target-date">\u2713 Done ${formatDate(state.doneDate)}</span>`;
+    } else if (urgency === 'overdue') {
+      dateLabel = `<span class="task-target-date overdue">\u26A0 ${Math.abs(diff)}d overdue \u00B7 target ${formatDate(target)}</span>`;
+    } else if (urgency === 'today') {
+      dateLabel = `<span class="task-target-date today">Due today \u00B7 ${formatDate(target)}</span>`;
+    } else if (urgency === 'soon') {
+      dateLabel = `<span class="task-target-date soon">In ${diff} days \u00B7 ${formatDate(target)}</span>`;
+    } else {
+      dateLabel = `<span class="task-target-date">Target ${formatDate(target)}</span>`;
+    }
+  } else if (state.done && state.doneDate) {
+    dateLabel = `<span class="task-target-date">\u2713 Done ${formatDate(state.doneDate)}</span>`;
+  } else {
+    dateLabel = `<span class="task-target-date">Phase-based timing</span>`;
+  }
+
+  const hasNotes = state.notes && state.notes.trim();
+
+  return `
+    <div class="task-row ${state.done ? 'done' : ''}" data-task-id="${task.id}">
+      <input type="checkbox" class="task-checkbox" ${state.done ? 'checked' : ''} data-task-check="${task.id}">
+      <div class="task-content">
+        <div class="task-title">
+          <span class="task-tier tier-${task.tier}">Tier ${task.tier}</span>
+          ${escapeHtml(task.title)}
+        </div>
+        <div class="task-desc">${escapeHtml(task.desc)}</div>
+        ${dateLabel}
+      </div>
+      <button class="task-notes-toggle" data-notes-toggle="${task.id}">
+        ${hasNotes ? '\u270E' : '+'} Notes
+      </button>
+      <div class="task-notes-area ${hasNotes ? 'active' : ''}" data-notes-area="${task.id}">
+        <textarea data-notes-text="${task.id}" placeholder="Notes for this task \u2014 what was done, who was contacted, observations\u2026">${escapeHtml(state.notes || '')}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+function attachPropertyDetailListeners(prop) {
+  document.getElementById('editPropertyBtn').addEventListener('click', () => {
+    openPropertyModal(prop);
+  });
+
+  const fridayEl = document.getElementById('fridayUpdate');
+  if (fridayEl) {
+    fridayEl.addEventListener('change', async () => {
+      prop.fridayUpdate = fridayEl.value;
+      await dbPut(prop);
+    });
+  }
+  const copyBtn = document.getElementById('copyFridayBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(fridayEl.value || '').then(() => {
+        copyBtn.textContent = '\u2713 Copied!';
+        setTimeout(() => { copyBtn.textContent = 'Copy to Clipboard'; }, 1500);
+      });
+    });
+  }
+  const emailBtn = document.getElementById('emailFridayBtn');
+  if (emailBtn) {
+    emailBtn.addEventListener('click', () => {
+      const subject = encodeURIComponent(`Weekly Update \u2014 ${prop.address}`);
+      const body = encodeURIComponent(fridayEl.value || '');
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    });
+  }
+
+  document.querySelectorAll('.phase-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const phaseNum = h.dataset.phase;
+      const key = prop.id + '_' + phaseNum;
+      const body = document.querySelector(`[data-phase-body="${phaseNum}"]`);
+      if (collapsedPhases.has(key)) {
+        collapsedPhases.delete(key);
+        body.classList.remove('collapsed');
+      } else {
+        collapsedPhases.add(key);
+        body.classList.add('collapsed');
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-task-check]').forEach(cb => {
+    cb.addEventListener('change', async (e) => {
+      const taskId = e.target.dataset.taskCheck;
+      const state = getTaskState(prop, taskId);
+      state.done = e.target.checked;
+      state.doneDate = e.target.checked ? todayISO() : '';
+      setTaskState(prop, taskId, state);
+      await dbPut(prop);
+      renderTrackerSidebar();
+      renderTrackerMain();
+    });
+  });
+
+  document.querySelectorAll('[data-notes-toggle]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const taskId = e.currentTarget.dataset.notesToggle;
+      const area = document.querySelector(`[data-notes-area="${taskId}"]`);
+      area.classList.toggle('active');
+    });
+  });
+
+  document.querySelectorAll('[data-notes-text]').forEach(ta => {
+    ta.addEventListener('change', async (e) => {
+      const taskId = e.target.dataset.notesText;
+      const state = getTaskState(prop, taskId);
+      state.notes = e.target.value;
+      setTaskState(prop, taskId, state);
+      await dbPut(prop);
+    });
+  });
+}
+
+// ============== ADD / EDIT PROPERTY MODAL ==============
+function openPropertyModal(prop) {
+  editingPropertyId = prop ? prop.id : null;
+  document.getElementById('propertyModalTitle').textContent = prop ? 'Edit Property' : 'Add Property';
+  document.getElementById('propAddress').value = prop?.address || '';
+  document.getElementById('propSeller').value = prop?.seller || '';
+  document.getElementById('propSignedDate').value = prop?.signedDate || '';
+  document.getElementById('propLaunchDate').value = prop?.launchDate || '';
+  document.getElementById('propPrice').value = formatPriceStrict(prop?.price || '');
+  document.getElementById('deletePropertyBtn').style.display = prop ? 'inline-block' : 'none';
+  document.getElementById('propertyModal').classList.add('active');
+  setTimeout(() => document.getElementById('propAddress').focus(), 50);
+}
+
+function closePropertyModal() {
+  document.getElementById('propertyModal').classList.remove('active');
+  editingPropertyId = null;
+}
+
+async function savePropertyFromModal() {
+  const address = document.getElementById('propAddress').value.trim();
+  if (!address) {
+    alert('Please enter a property address.');
+    return;
+  }
+  const data = {
+    address,
+    seller: document.getElementById('propSeller').value.trim(),
+    signedDate: document.getElementById('propSignedDate').value,
+    launchDate: document.getElementById('propLaunchDate').value,
+    price: formatPriceStrict(document.getElementById('propPrice').value)
+  };
+
+  if (editingPropertyId) {
+    const prop = properties.find(p => p.id === editingPropertyId);
+    Object.assign(prop, data);
+    await dbPut(prop);
+  } else {
+    const newProp = {
+      id: uid(),
+      ...data,
+      taskState: {},
+      fridayUpdate: '',
+      createdAt: todayISO()
+    };
+    properties.push(newProp);
+    await dbPut(newProp);
+    activePropertyId = newProp.id;
+  }
+  closePropertyModal();
+  renderTrackerSidebar();
+  renderTrackerMain();
+}
+
+async function deletePropertyFromModal() {
+  if (!editingPropertyId) return;
+  if (!confirm('Permanently delete this property and all its task data? This cannot be undone.')) return;
+  await dbDelete(editingPropertyId);
+  properties = properties.filter(p => p.id !== editingPropertyId);
+  if (activePropertyId === editingPropertyId) activePropertyId = null;
+  closePropertyModal();
+  renderTrackerSidebar();
+  renderTrackerMain();
+}
+
+// ============== BACKUP / RESTORE ==============
+function backupAllProperties() {
+  const payload = {
+    schema: 1,
+    exportedAt: new Date().toISOString(),
+    properties: properties
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `pinnacle_listings_${todayISO()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 100);
+}
+
+function handleRestoreFile(file) {
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      const list = Array.isArray(parsed) ? parsed : (parsed.properties || []);
+      if (!Array.isArray(list)) throw new Error('Backup format not recognized.');
+      const valid = list.every(p => p && typeof p.id === 'string' && typeof p.address === 'string');
+      if (!valid) throw new Error('Backup contains invalid records.');
+
+      if (!confirm(`Restore ${list.length} properties? This will MERGE \u2014 matching IDs are overwritten, new ones added.`)) return;
+
+      for (const p of list) {
+        await dbPut(p);
+        const existingIdx = properties.findIndex(x => x.id === p.id);
+        if (existingIdx >= 0) properties[existingIdx] = p;
+        else properties.push(p);
+      }
+      renderTrackerSidebar();
+      renderTrackerMain();
+      alert('Restore complete.');
+    } catch (err) {
+      alert('Could not restore: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ============== INIT ==============
+async function init() {
+  db = await openDB();
+  properties = await dbGetAll();
+
+  document.getElementById('btnReference').addEventListener('click', () => setMode('reference'));
+  document.getElementById('btnTracker').addEventListener('click', () => setMode('tracker'));
+
+  document.getElementById('addPropertyBtn').addEventListener('click', () => openPropertyModal(null));
+  document.getElementById('cancelPropertyBtn').addEventListener('click', closePropertyModal);
+  document.getElementById('savePropertyBtn').addEventListener('click', savePropertyFromModal);
+  document.getElementById('deletePropertyBtn').addEventListener('click', deletePropertyFromModal);
+  document.getElementById('propertyModal').addEventListener('click', (e) => {
+    if (e.target.id === 'propertyModal') closePropertyModal();
+  });
+
+  // Live price formatting as the user types
+  const priceInput = document.getElementById('propPrice');
+  priceInput.addEventListener('input', () => {
+    const cursorAtEnd = priceInput.selectionStart === priceInput.value.length;
+    const formatted = formatPriceStrict(priceInput.value);
+    priceInput.value = formatted;
+    if (cursorAtEnd) {
+      priceInput.setSelectionRange(formatted.length, formatted.length);
+    }
+  });
+
+  document.getElementById('trackerHomeLink').addEventListener('click', () => {
+    activePropertyId = null;
+    renderTrackerSidebar();
+    renderTrackerMain();
+  });
+
+  document.getElementById('trackerBackupBtn').addEventListener('click', backupAllProperties);
+  document.getElementById('trackerRestoreBtn').addEventListener('click', () => {
+    document.getElementById('trackerRestoreInput').click();
+  });
+  document.getElementById('trackerRestoreInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) handleRestoreFile(file);
+    e.target.value = '';
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+
+</body>
+</html>
