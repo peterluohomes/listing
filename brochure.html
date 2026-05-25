@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Luxury Listing Brochure — 4 / 8 / 10 / 12 / 16 / 20 / 24 / 32 Page Editions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  @page { size: 8.5in 11in; margin: 0; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  :root {
+    --navy: #14213D;
+    --navy-deep: #0B1729;
+    --accent: #9d8147;
+    --accent-light: #C2A77A;
+    --bg-cream: #F6F1E4;
+    --bg-warm: #FBF8F1;
+    --bg-light: #faf9f6;
+    --text-dark: #1a1a1a;
+    --text-soft: #5b5b5b;
+    --border: #E3DECF;
+    --hair: rgba(0,0,0,0.08);
+  }
+
+  body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-dark);
+    background: #2a2a2a;
+    font-weight: 400;
+  }
+
+  /* -------- Control Bar -------- */
+  .controls {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(15,15,15,0.96); backdrop-filter: blur(10px);
+    color: #fff; padding: 14px 24px;
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    border-bottom: 1px solid rgba(157,129,71,0.4);
+  }
+  .controls .brand {
+    font-family: 'Playfair Display', serif; font-size: 15px; letter-spacing: 0.15em;
+    color: var(--accent-light); text-transform: uppercase;
+  }
+  .controls .seg { display: flex; background: rgba(255,255,255,0.06); border-radius: 4px; padding: 3px; }
+  .controls .seg button {
+    background: transparent; border: none; color: #ccc; padding: 8px 13px;
+    font-family: 'DM Sans', sans-serif; font-size: 10.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: all 0.2s;
+  }
+  .controls .seg button.active { background: var(--accent); color: #fff; }
+  .controls .seg button:hover:not(.active) { color: #fff; }
+  .controls .print {
+    margin-left: auto;
+    background: var(--accent); color: #fff; border: none;
+    padding: 10px 22px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 500;
+  }
+  .controls .print:hover { background: var(--accent-light); }
+  .controls .clear-btn {
+    background: transparent; color: #ccc; border: 1px solid rgba(255,255,255,0.25);
+    padding: 9px 18px; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 400;
+    transition: all 0.2s;
+  }
+  .controls .clear-btn:hover { color: #fff; border-color: rgba(220,80,80,0.6); background: rgba(220,80,80,0.12); }
+  .controls .matrix-btn {
+    background: transparent; color: var(--accent-light); border: 1px solid rgba(157,129,71,0.5);
+    padding: 9px 18px; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 400;
+    transition: all 0.2s;
+  }
+  .controls .matrix-btn:hover { color: #fff; border-color: var(--accent); background: rgba(157,129,71,0.18); }
+  .controls .save-status {
+    font-size: 9.5px; letter-spacing: 0.18em; color: #888; text-transform: uppercase;
+    transition: opacity 0.3s; opacity: 0;
+  }
+  .controls .save-status.show { opacity: 1; color: var(--accent-light); }
+
+  /* -------- Page Index Matrix Modal -------- */
+  .matrix-modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    align-items: flex-start; justify-content: center;
+    padding: 90px 24px 40px;
+    overflow-y: auto;
+  }
+  .matrix-modal.open { display: flex; }
+  .matrix-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(11,23,41,0.78);
+    backdrop-filter: blur(4px);
+  }
+  .matrix-content {
+    position: relative;
+    background: var(--bg-warm);
+    width: 100%; max-width: 880px;
+    border: 1px solid var(--accent);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .matrix-header {
+    padding: 26px 36px 22px;
+    border-bottom: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; align-items: baseline;
+    background: #fff;
+  }
+  .matrix-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 400; color: var(--navy-deep);
+    letter-spacing: 0.01em; margin: 0; text-transform: none;
+  }
+  .matrix-header .matrix-sub {
+    font-size: 9.5px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: var(--accent);
+    font-weight: 500;
+  }
+  .matrix-close {
+    position: absolute; top: 18px; right: 20px;
+    background: transparent; border: none;
+    width: 32px; height: 32px;
+    font-size: 22px; color: var(--text-soft);
+    cursor: pointer; line-height: 1;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s;
+  }
+  .matrix-close:hover { color: var(--accent); }
+  .matrix-body { padding: 0; }
+  .matrix-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 11px;
+  }
+  .matrix-table thead th {
+    background: var(--navy-deep); color: #fff;
+    font-weight: 500;
+    padding: 14px 6px;
+    font-size: 9px; letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border-right: 0.5px solid rgba(255,255,255,0.08);
+    text-align: center;
+  }
+  .matrix-table thead th:first-child {
+    text-align: left; padding-left: 28px;
+    letter-spacing: 0.32em;
+  }
+  .matrix-table thead th:last-child { border-right: none; }
+  .matrix-table thead th .ed-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px; letter-spacing: 0;
+    display: block; margin-bottom: 2px;
+    font-weight: 400;
+  }
+  .matrix-table tbody td {
+    padding: 9px 6px;
+    border-bottom: 0.5px solid var(--border);
+    border-right: 0.5px solid var(--border);
+    text-align: center;
+    color: var(--navy-deep);
+    font-family: 'Playfair Display', serif;
+    font-size: 12px;
+    background: #fff;
+  }
+  .matrix-table tbody td.page-name {
+    text-align: left; padding-left: 28px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-dark);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  .matrix-table tbody td.empty {
+    color: #d4d0c4;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+  }
+  .matrix-table tbody tr:nth-child(even) td { background: #fafaf6; }
+  .matrix-table tbody tr.totals td {
+    background: var(--bg-cream);
+    border-top: 1px solid var(--accent);
+    border-bottom: none;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 13px;
+    padding: 14px 6px;
+  }
+  .matrix-table tbody tr.totals td.page-name {
+    font-style: normal;
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* Active edition column highlighting */
+  body.show-4  .matrix-table [data-col="4"],
+  body.show-8  .matrix-table [data-col="8"],
+  body.show-10 .matrix-table [data-col="10"],
+  body.show-12 .matrix-table [data-col="12"],
+  body.show-16 .matrix-table [data-col="16"],
+  body.show-20 .matrix-table [data-col="20"],
+  body.show-24 .matrix-table [data-col="24"],
+  body.show-32 .matrix-table [data-col="32"] {
+    background: var(--bg-cream) !important;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  body.show-4  .matrix-table thead [data-col="4"],
+  body.show-8  .matrix-table thead [data-col="8"],
+  body.show-10 .matrix-table thead [data-col="10"],
+  body.show-12 .matrix-table thead [data-col="12"],
+  body.show-16 .matrix-table thead [data-col="16"],
+  body.show-20 .matrix-table thead [data-col="20"],
+  body.show-24 .matrix-table thead [data-col="24"],
+  body.show-32 .matrix-table thead [data-col="32"] {
+    background: var(--accent) !important;
+    color: #fff !important;
+  }
+  body.show-4  .matrix-table tbody [data-col="4"].empty,
+  body.show-8  .matrix-table tbody [data-col="8"].empty,
+  body.show-10 .matrix-table tbody [data-col="10"].empty,
+  body.show-12 .matrix-table tbody [data-col="12"].empty,
+  body.show-16 .matrix-table tbody [data-col="16"].empty,
+  body.show-20 .matrix-table tbody [data-col="20"].empty,
+  body.show-24 .matrix-table tbody [data-col="24"].empty,
+  body.show-32 .matrix-table tbody [data-col="32"].empty {
+    color: #c8b896;
+  }
+
+  .matrix-footer {
+    padding: 16px 36px 22px;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    background: #fff;
+    border-top: 0.5px solid var(--border);
+    text-align: center;
+    font-weight: 400;
+  }
+  .matrix-footer .gold { color: var(--accent); }
+  .controls .hint { font-size: 10px; color: #888; letter-spacing: 0.1em; }
+
+  .stage { padding-top: 80px; }
+
+  /* -------- Page Frame -------- */
+  .page {
+    width: 8.5in; height: 11in;
+    margin: 24px auto;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    page-break-after: always;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+  }
+  .page-content { padding: 0.85in 0.8in; flex: 1; display: flex; flex-direction: column; }
+  .page-content.no-pad { padding: 0; }
+
+  /* -------- Typography -------- */
+  h1 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 54px; line-height: 1.05; margin: 0; color: var(--navy-deep); letter-spacing: -0.01em; }
+  h2 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin: 0; color: var(--navy-deep); }
+  h3 { font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.35em; color: var(--accent); margin: 0 0 18px; }
+  p  { font-size: 11.5px; line-height: 1.75; color: var(--text-soft); font-weight: 300; }
+  .pullquote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 19px; color: var(--accent); line-height: 1.4; margin: 18px 0; }
+  .label-xs { font-family: 'DM Sans', sans-serif; font-size: 8.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3em; color: var(--accent); }
+
+  /* -------- Decorative Elements -------- */
+  .gold-rule { width: 44px; height: 1px; background: var(--accent); margin: 22px 0; }
+  .gold-rule-thin { width: 80px; height: 0.5px; background: var(--accent); }
+  .page-num { position: absolute; bottom: 0.5in; left: 0; right: 0; text-align: center; font-size: 9px; letter-spacing: 0.4em; color: #b5b5b5; font-family: 'DM Sans', sans-serif; }
+  .corner-mark { position: absolute; top: 0.55in; left: 0.8in; font-size: 8.5px; letter-spacing: 0.4em; color: var(--accent); text-transform: uppercase; }
+  .corner-mark.right { left: auto; right: 0.8in; }
+
+  /* -------- Editable Fields -------- */
+  [contenteditable] { outline: none; }
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: #c0c0c0;
+    font-style: italic;
+    font-weight: 300;
+  }
+  [contenteditable]:focus { background: rgba(157,129,71,0.06); }
+
+  .field-line {
+    border-bottom: 0.5px solid var(--border);
+    padding: 8px 0;
+    font-size: 12px;
+    color: var(--text-dark);
+    min-height: 28px;
+  }
+
+  /* -------- Image Boxes -------- */
+  .img {
+    position: relative;
+    background: linear-gradient(135deg, #ECE6D8 0%, #DDD3B8 100%);
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .img::after {
+    content: 'CLICK TO ADD PHOTO';
+    position: absolute; font-size: 9px; letter-spacing: 0.3em;
+    color: rgba(20,33,61,0.45); font-weight: 500;
+    pointer-events: none;
+  }
+  .img img { width: 100%; height: 100%; object-fit: cover; display: none; position: relative; z-index: 2; }
+  .img img.loaded { display: block; }
+  .img img.loaded ~ * { display: none; }
+  .img input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 5;
+  }
+
+  /* -------- Cover Page (Page 1) -------- */
+  .cover { background: var(--navy-deep); }
+  .cover .img { width: 100%; height: 100%; }
+  .cover .overlay {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 0.7in 0.8in 0.6in;
+    background: linear-gradient(to top, rgba(11,23,41,0.92) 0%, rgba(11,23,41,0.7) 60%, transparent 100%);
+    color: #fff;
+    z-index: 10;
+  }
+  .cover .overlay-top {
+    position: absolute; top: 0.6in; left: 0; right: 0;
+    text-align: center; color: var(--accent-light); z-index: 10;
+    font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase;
+  }
+  .cover .overlay-top .divider { display: inline-block; width: 30px; height: 1px; background: var(--accent-light); margin: 8px auto 0; }
+  .cover h1.cover-title { color: #fff; font-size: 38px; line-height: 1.15; margin-bottom: 8px; font-weight: 400; }
+  .cover .address {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; color: #fff; margin: 10px 0 6px;
+    font-weight: 400;
+    min-height: 36px;
+  }
+  .cover .city {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--accent-light); margin-top: 14px;
+  }
+  .cover .gold-rule { background: var(--accent-light); margin: 14px 0 0; }
+
+  /* -------- Title Page (Page 2) -------- */
+  .title-page .page-content { justify-content: center; }
+  .title-page h1 { font-size: 64px; }
+
+  /* -------- Vision / Text Page -------- */
+  .vision-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 50px; flex: 1; align-items: start; padding-top: 30px; }
+  .vision-grid .left h3 { margin-bottom: 30px; }
+  .vision-grid .left .meta { font-size: 10px; color: var(--text-soft); letter-spacing: 0.15em; margin-top: 30px; line-height: 2; }
+  .vision-grid .right .body-text { font-size: 12px; line-height: 1.9; color: var(--text-soft); font-weight: 300; min-height: 380px; }
+
+  /* -------- Two 3:2 Stacked -------- */
+  .stack-two { display: grid; grid-template-rows: 1fr 1fr; gap: 0.25in; height: 100%; padding: 0.5in; }
+  .stack-two .img { width: 100%; aspect-ratio: auto; }
+
+  /* -------- Four Vertical (Filmstrip) -------- */
+  .four-vertical-page .page-content { padding: 0.7in 0.6in 0.85in; }
+  .four-vertical { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; flex: 1; margin-top: 24px; }
+  .four-vertical .img { width: 100%; height: 100%; }
+  .four-vertical-cap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
+  .four-vertical-cap div { font-size: 8.5px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); text-align: center; }
+
+  /* -------- Mixed Image + Text -------- */
+  .mix-page .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; height: 3.6in; }
+  .mix-page .text-block { margin-top: 40px; }
+  .spec-list { list-style: none; padding: 0; margin: 28px 0 0; }
+  .spec-list li {
+    border-bottom: 0.5px solid var(--border);
+    padding: 13px 0;
+    font-size: 11px;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--navy-deep);
+  }
+  .spec-list li .key { font-family: 'DM Sans', sans-serif; font-weight: 400; }
+  .spec-list li .val { font-family: 'Playfair Display', serif; font-style: italic; color: var(--accent); font-size: 12px; }
+
+  /* -------- Asymmetric Collage (3 images) -------- */
+  .collage-three {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
+    height: 100%;
+    padding: 0.5in;
+  }
+  .collage-three .img.lead { grid-row: 1 / 3; }
+
+  /* -------- Cream Description Page -------- */
+  .cream-page { background: var(--bg-cream); }
+  .cream-page .page-content { justify-content: center; padding: 1in 1.1in; }
+  .cream-page h1 { font-size: 48px; }
+  .cream-page .body-text { font-size: 12px; line-height: 1.95; color: var(--text-soft); margin-top: 24px; max-width: 5.2in; }
+  .cream-page .ornament { position: absolute; top: 0.6in; right: 0.8in; font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--accent); }
+
+  /* -------- 4-Grid Materials -------- */
+  .materials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; }
+  .materials-grid .img { aspect-ratio: 1/1; }
+
+  /* -------- Neighborhood -------- */
+  .neighborhood .map-area { height: 3.4in; margin: 24px 0; }
+  .neighborhood .col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 18px; }
+  .neighborhood .col-grid h4 { font-family: 'DM Sans', sans-serif; font-size: 9px; letter-spacing: 0.3em; color: var(--accent); margin: 0 0 12px; text-transform: uppercase; font-weight: 500; }
+  .neighborhood .col-grid .field-line { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; }
+
+  /* -------- Specs Page -------- */
+  .specs-page .floor-plan { flex: 1; background: var(--bg-warm); border: 0.5px solid var(--border); margin-bottom: 24px; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 0.5px solid var(--border); padding-top: 24px; }
+  .stats-row .stat { text-align: center; border-right: 0.5px solid var(--border); padding: 4px 0; }
+  .stats-row .stat:last-child { border-right: none; }
+  .stats-row .stat .lbl { font-size: 8.5px; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
+  .stats-row .stat .val { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--navy-deep); }
+
+  /* -------- Site Plan -------- */
+  .site-plan .blueprint { flex: 1; background: #fcfaf4; }
+
+  /* -------- Agent Final Page -------- */
+  .agent-page { background: var(--navy-deep); color: #fff; }
+  .agent-page .page-content { align-items: center; justify-content: center; text-align: center; padding: 1.2in 1in; }
+  .agent-page h1 { color: #fff; font-size: 36px; margin-bottom: 8px; font-weight: 400; }
+  .agent-page .tag { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; color: var(--accent-light); margin-bottom: 50px; }
+  .agent-page .portrait {
+    width: 195px; height: 195px; border-radius: 50%;
+    border: 2px solid var(--accent); margin: 0 auto 26px;
+    overflow: hidden; position: relative;
+  }
+  .agent-page .portrait .img { width: 100%; height: 100%; background: linear-gradient(135deg, #2a3a5e, #1a2a4a); }
+  .agent-page .portrait .img::after { color: rgba(255,255,255,0.4); }
+  .agent-page .agent-name {
+    font-family: 'Playfair Display', serif; font-size: 28px;
+    color: #fff; margin: 0; min-height: 38px;
+  }
+  .agent-page .designations { font-size: 9px; letter-spacing: 0.4em; color: var(--accent); margin: 10px 0 0; text-transform: uppercase; font-weight: 500; }
+  .agent-page .gold-rule { background: var(--accent); margin: 28px auto; }
+  .agent-page .role { font-size: 10px; letter-spacing: 0.4em; color: var(--accent-light); text-transform: uppercase; font-weight: 500; }
+  .agent-page .brokerage { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: #b8b8b8; margin: 16px 0 40px; }
+  .agent-page .contact-block { font-size: 11.5px; line-height: 2.4; color: #ddd; letter-spacing: 0.05em; }
+  .agent-page .contact-block .row { display: flex; justify-content: center; align-items: center; gap: 12px; }
+  .agent-page .contact-block .row .key {
+    font-size: 8.5px; letter-spacing: 0.35em; color: var(--accent);
+    text-transform: uppercase; min-width: 70px; text-align: right; font-weight: 500;
+  }
+  .agent-page .contact-block .row .val { color: #fff; min-width: 220px; text-align: left; }
+  .agent-page .footer-note {
+    position: absolute; bottom: 0.5in; left: 0; right: 0;
+    text-align: center; font-size: 8.5px; letter-spacing: 0.4em; color: #555;
+    text-transform: uppercase;
+  }
+
+  /* -------- Letter Page (24 & 32) -------- */
+  .letter-page { background: var(--bg-warm); }
+  .letter-page .page-content { padding: 1in 1.1in 0.9in; justify-content: flex-start; }
+  .letter-page .letter-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 36px; }
+  .letter-page .letter-head .date { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--accent); }
+  .letter-page h1 { font-size: 42px; line-height: 1.08; }
+  .letter-page .body-text { font-family: 'Playfair Display', serif; font-size: 14px; line-height: 1.95; color: var(--text-dark); font-style: italic; margin-top: 30px; font-weight: 400; min-height: 4.6in; }
+  .letter-page .signature { margin-top: 36px; }
+  .letter-page .signature .sig-name { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--navy-deep); }
+  .letter-page .signature .sig-title { font-size: 9px; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; margin-top: 6px; font-weight: 500; }
+
+  /* -------- Heritage Page (24 & 32) — second cream narrative -------- */
+  .heritage-page { background: var(--bg-cream); }
+  .heritage-page .page-content { padding: 0.9in 1in; }
+  .heritage-page .heritage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: center; flex: 1; margin-top: 20px; }
+  .heritage-page .heritage-img { aspect-ratio: 3/4; }
+  .heritage-page h1 { font-size: 44px; }
+  .heritage-page .body-text { font-size: 11.5px; line-height: 1.95; color: var(--text-soft); margin-top: 20px; }
+  .heritage-page .ornament { position: absolute; top: 0.6in; right: 0.8in; font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--accent); }
+
+  /* -------- Floor Plan Page (24 & 32) -------- */
+  .floorplan-page .page-content { padding: 0.85in 0.8in 0.7in; }
+  .floorplan-page .floor-plan-large {
+    flex: 1;
+    background: var(--bg-warm);
+    border: 0.5px solid var(--border);
+    margin-top: 22px;
+    min-height: 6.4in;
+  }
+  .floorplan-page .floor-legend {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+    border-top: 0.5px solid var(--border);
+    margin-top: 22px;
+    padding-top: 18px;
+  }
+  .floorplan-page .floor-legend .legend-item {
+    text-align: center;
+    border-right: 0.5px solid var(--border);
+    padding: 4px 6px;
+  }
+  .floorplan-page .floor-legend .legend-item:last-child { border-right: none; }
+  .floorplan-page .floor-legend .key {
+    display: block;
+    font-size: 8.5px; letter-spacing: 0.3em; color: var(--accent);
+    text-transform: uppercase; margin-bottom: 8px; font-weight: 500;
+  }
+  .floorplan-page .floor-legend .val {
+    display: block;
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 15px; color: var(--navy-deep);
+  }
+
+  /* -------- Schools & Parks Page (24 & 32) -------- */
+  .schools-page .page-content { padding: 0.85in 0.8in 0.7in; }
+  .schools-page .sp-section { margin-top: 30px; }
+  .schools-page .sp-section-head {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 8px;
+  }
+  .schools-page .sp-roman {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 14px; color: var(--accent);
+    min-width: 18px;
+  }
+  .schools-page .sp-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--navy-deep);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .schools-page .sp-rule {
+    flex: 1; height: 0.5px; background: var(--accent);
+    margin-left: 4px;
+  }
+  .schools-page .sp-list { margin-top: 6px; }
+  .schools-page .sp-row {
+    display: grid;
+    grid-template-columns: 2fr 2.2fr 0.9fr;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 0.5px solid var(--border);
+    align-items: baseline;
+  }
+  .schools-page .sp-row:last-child { border-bottom: none; }
+  .schools-page .sp-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--navy-deep);
+    font-weight: 400;
+  }
+  .schools-page .sp-meta {
+    font-size: 10px;
+    color: var(--text-soft);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+  .schools-page .sp-dist {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--accent);
+    text-align: right;
+  }
+  .schools-page .sp-note {
+    margin-top: 22px;
+    font-size: 9px;
+    color: #999;
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* -------- Outdoor Living / Mix variant for 32 -------- */
+  .outdoor-page .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; height: 3.8in; margin-bottom: 30px; }
+
+  /* -------- Designer Notes (32 only) -------- */
+  .designer-page .page-content { padding: 0.9in 0.8in; }
+  .designer-page .designer-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; margin-top: 28px; flex: 1; align-items: start; }
+  .designer-page .designer-img { aspect-ratio: 3/4; }
+  .designer-page .designer-text h4 { font-family: 'DM Sans', sans-serif; font-size: 9px; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; margin: 24px 0 6px; font-weight: 500; }
+  .designer-page .designer-text .item { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--navy-deep); }
+
+  /* -------- Day & Night (32 only) — uses stack-two with caption labels -------- */
+  .day-night-page .page-content { padding: 0.55in 0.5in; }
+  .day-night-page .stack-two-cap { display: grid; grid-template-rows: 1fr 1fr; gap: 0.25in; height: 100%; }
+  .day-night-page .stack-two-cap .row { position: relative; }
+  .day-night-page .stack-two-cap .row .img { width: 100%; height: 100%; }
+  .day-night-page .stack-two-cap .row .cap {
+    position: absolute; bottom: 14px; left: 14px;
+    color: #fff; font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 13px; letter-spacing: 0.15em; text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    z-index: 5;
+  }
+
+  /* -------- Highlights / What Sets This Home Apart (32 only) -------- */
+  .highlights-page .page-content { padding: 0.85in 0.8in 0.7in; }
+  .highlights-page .highlights-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+    flex: 1;
+  }
+  .highlights-page .highlight-card {
+    border: 0.5px solid var(--border);
+    background: var(--bg-warm);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .highlights-page .highlight-card .img { width: 100%; aspect-ratio: 4/3; }
+  .highlights-page .highlight-card .meta { padding: 14px 16px 18px; }
+  .highlights-page .feature-roman {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 13px; color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .highlights-page .feature-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; color: var(--navy-deep);
+    margin-bottom: 8px; font-weight: 400;
+    line-height: 1.2;
+  }
+  .highlights-page .feature-desc {
+    font-size: 10px; color: var(--text-soft);
+    line-height: 1.65; font-weight: 300;
+  }
+
+  /* -------- Gratitude / Closing Reflection (32 only) -------- */
+  .gratitude-page { background: var(--bg-cream); }
+  .gratitude-page .page-content { padding: 1.2in 1.2in; justify-content: center; text-align: center; align-items: center; }
+  .gratitude-page h3 { color: var(--accent); margin-bottom: 28px; }
+  .gratitude-page h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 38px; line-height: 1.35; color: var(--navy-deep); font-weight: 400; max-width: 5.5in; }
+  .gratitude-page .gold-rule { margin: 36px auto; }
+  .gratitude-page .body-text { font-size: 12px; line-height: 1.95; color: var(--text-soft); max-width: 4.6in; font-weight: 300; }
+  .gratitude-page .colophon { margin-top: 50px; font-size: 9px; letter-spacing: 0.4em; color: var(--accent); text-transform: uppercase; }
+
+  /* -------- Template Visibility Logic -------- */
+  body.show-4  .page:not(.t4)  { display: none; }
+  body.show-8  .page:not(.t8)  { display: none; }
+  body.show-10 .page:not(.t10) { display: none; }
+  body.show-12 .page:not(.t12) { display: none; }
+  body.show-16 .page:not(.t16) { display: none; }
+  body.show-20 .page:not(.t20) { display: none; }
+  body.show-24 .page:not(.t24) { display: none; }
+  body.show-32 .page:not(.t32) { display: none; }
+
+  /* Page number counters per template */
+  body.show-4  { counter-reset: pageno; }
+  body.show-4  .page.t4  .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+  body.show-8  { counter-reset: pageno; }
+  body.show-8  .page.t8  .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+  body.show-10 { counter-reset: pageno; }
+  body.show-10 .page.t10 .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+  body.show-12 { counter-reset: pageno; }
+  body.show-12 .page.t12 .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+  body.show-16 { counter-reset: pageno; }
+  body.show-16 .page.t16 .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+  body.show-20 { counter-reset: pageno; }
+  body.show-20 .page.t20 .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+  body.show-24 { counter-reset: pageno; }
+  body.show-24 .page.t24 .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+  body.show-32 { counter-reset: pageno; }
+  body.show-32 .page.t32 .page-num::before { counter-increment: pageno; content: counter(pageno, decimal-leading-zero); }
+
+  /* -------- Print -------- */
+  @media print {
+    body { background: #fff; }
+    .controls { display: none; }
+    .matrix-modal { display: none !important; }
+    .stage { padding-top: 0; }
+    .page { margin: 0; box-shadow: none; }
+    .img::after { display: none; }
+  }
+</style>
+</head>
+<body class="show-16">
+
+<!-- ========== CONTROL BAR ========== -->
+<div class="controls">
+  <div class="brand">The Collector Edition</div>
+  <div class="seg">
+    <button data-len="4"  onclick="setTemplate(4)">4 Pg</button>
+    <button data-len="8"  onclick="setTemplate(8)">8 Pg</button>
+    <button data-len="10" onclick="setTemplate(10)">10 Pg</button>
+    <button data-len="12" onclick="setTemplate(12)">12 Pg</button>
+    <button data-len="16" onclick="setTemplate(16)" class="active">16 Pg</button>
+    <button data-len="20" onclick="setTemplate(20)">20 Pg</button>
+    <button data-len="24" onclick="setTemplate(24)">24 Pg</button>
+    <button data-len="32" onclick="setTemplate(32)">32 Pg</button>
+  </div>
+  <span class="hint">Click images to upload · Click any text to edit</span>
+  <span class="save-status" id="saveStatus">Saved</span>
+  <button class="matrix-btn" onclick="toggleMatrix()">Page Index</button>
+  <button class="clear-btn" onclick="clearAllPhotos()">Clear Photos</button>
+  <button class="print" onclick="window.print()">Export PDF</button>
+</div>
+
+<div class="stage">
+
+<!-- ============================================================
+     PAGE 1 — COVER (ALL TEMPLATES)
+     ============================================================ -->
+<div class="page cover t4 t8 t10 t12 t16 t20 t24 t32">
+  <div class="page-content no-pad" style="position: relative; height: 100%;">
+    <div class="img" style="height: 100%;">
+      <input type="file" onchange="loadImage(event, this)"><img alt="">
+    </div>
+    <div class="overlay-top">
+      The Collector Edition
+      <div><span class="divider"></span></div>
+    </div>
+    <div class="overlay">
+      <div class="label-xs" style="color: var(--accent-light); margin-bottom: 8px;">A Private Offering</div>
+      <div class="address" contenteditable="true" data-placeholder="156 Tower Hill Road"></div>
+      <div class="gold-rule"></div>
+      <div class="city" contenteditable="true" data-placeholder="Jefferson · Richmond Hill · Ontario"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PAGE 1B — TWILIGHT EXTERIOR FULL-BLEED (32 ONLY)
+     ============================================================ -->
+<div class="page t32">
+  <div class="img" style="width:100%; height:100%;">
+    <input type="file" onchange="loadImage(event, this)"><img alt="">
+  </div>
+  <div class="page-num" style="color: rgba(255,255,255,0.6); mix-blend-mode: difference;"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 2 — TITLE PAGE (ALL)
+     ============================================================ -->
+<div class="page title-page t8 t10 t12 t16 t20 t24 t32">
+  <div class="corner-mark">Vol. I</div>
+  <div class="corner-mark right" contenteditable="true" data-placeholder="MMXXVI"></div>
+  <div class="page-content">
+    <h3 contenteditable="true">An Estate Of Distinction</h3>
+    <h1 contenteditable="true" data-placeholder="The Ravine&#10;Residence."></h1>
+    <div class="gold-rule"></div>
+    <div class="pullquote" contenteditable="true" data-placeholder="A rare ravine-backing offering, presented exclusively for the discerning few."></div>
+    <div style="margin-top: auto; font-size: 10px; letter-spacing: 0.25em; color: var(--text-soft); text-transform: uppercase;">
+      Presented by &nbsp;·&nbsp; <span contenteditable="true" data-placeholder="Peter Luo">Peter Luo</span><br/>
+      <span style="color: var(--accent);">RE/MAX Realtron Realty Inc.</span>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 2B — LETTER FROM YOUR BROKER (24 & 32)
+     ============================================================ -->
+<div class="page letter-page t24 t32">
+  <div class="page-content">
+    <div class="letter-head">
+      <h3 contenteditable="true">A Personal Note</h3>
+      <div class="date" contenteditable="true" data-placeholder="Spring · MMXXVI"></div>
+    </div>
+    <h1 contenteditable="true" data-placeholder="To the discerning&#10;reader."></h1>
+    <div class="gold-rule"></div>
+    <div class="body-text" contenteditable="true" data-placeholder="Every home tells a story, and the finest homes are entrusted to those who will tell that story faithfully. This residence has been a sanctuary for a family who treasured it — and I have been honoured to be chosen as the one to introduce it to its next chapter.&#10;&#10;What follows is not a brochure in the ordinary sense. It is a careful study — of architecture, of setting, of the considered choices that distinguish this home from any other on the market today. I invite you to take your time with these pages.&#10;&#10;When you are ready to see it in person, I will be here. Quietly, attentively, and entirely at your service."></div>
+    <div class="signature">
+      <div class="sig-name" contenteditable="true" data-placeholder="Peter Luo">Peter Luo</div>
+      <div class="sig-title">Broker · Pinnacle Listing System</div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 3 — VISION / DESCRIPTIVE TEXT (ALL)
+     ============================================================ -->
+<div class="page t4 t8 t10 t12 t16 t20 t24 t32">
+  <div class="page-content">
+    <div class="vision-grid">
+      <div class="left">
+        <h3 contenteditable="true">The Vision</h3>
+        <h2 contenteditable="true" data-placeholder="A Sanctuary&#10;in the Treetops."></h2>
+        <div class="gold-rule"></div>
+        <div class="meta" contenteditable="true" data-placeholder="LOT — 50 FT FRONTAGE&#10;EXPOSURE — RAVINE&#10;INTERIOR — APPROX. 3,800 SF&#10;RENOVATION — $150,000+"></div>
+      </div>
+      <div class="right">
+        <div class="body-text" contenteditable="true" data-placeholder="Set on a coveted 50-foot lot backing directly onto a protected ravine, this meticulously upgraded residence offers something exceedingly rare in the Greater Toronto Area — uninterrupted treetop views and no rear neighbours, ever.&#10;&#10;Approximately 3,800 square feet of beautifully appointed living space showcase a comprehensive $150,000+ renovation: extensive custom millwork, layered tray ceilings, statement chandeliers, and rich dark hardwood throughout. The chef's kitchen is the showstopper — floor-to-ceiling white cabinetry with brass hardware, Calacatta-style quartz with a full-height bookmatched backsplash, and an oversized charcoal island for entertaining.&#10;&#10;The walk-out lower level is a true second home: a fully self-contained one-bedroom apartment with its own grade-level entrance into the ravine yard — ideal for in-laws, a nanny suite, or rental income with complete privacy."></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 4 — FULL-BLEED IMAGE (ALL)
+     ============================================================ -->
+<div class="page t10 t12 t16 t20 t24 t32">
+  <div class="img" style="width:100%; height:100%;">
+    <input type="file" onchange="loadImage(event, this)"><img alt="">
+  </div>
+  <div class="page-num" style="color: rgba(255,255,255,0.6); mix-blend-mode: difference;"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 5 — TWO 3:2 PHOTOS STACKED (ALL)
+     ============================================================ -->
+<div class="page t8 t10 t12 t16 t20 t24 t32">
+  <div class="page-content no-pad" style="height: 100%;">
+    <div class="stack-two">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 5B — OUTDOOR LIVING (32 ONLY)
+     ============================================================ -->
+<div class="page mix-page outdoor-page t32">
+  <div class="page-content">
+    <div class="text-block" style="margin-top: 0; margin-bottom: 24px;">
+      <h3 contenteditable="true">Al Fresco</h3>
+      <h2 contenteditable="true" data-placeholder="The Outdoor&#10;Rooms."></h2>
+      <div class="pullquote" contenteditable="true" data-placeholder="Where mornings begin with birdsong and evenings end with the canopy aglow."></div>
+    </div>
+    <div class="duo">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+    <ul class="spec-list">
+      <li><span class="key" contenteditable="true">Deck</span><span class="val" contenteditable="true">Composite · Glass Railings</span></li>
+      <li><span class="key" contenteditable="true">Yard</span><span class="val" contenteditable="true">Ravine-Backing, Mature Landscaping</span></li>
+      <li><span class="key" contenteditable="true">Privacy</span><span class="val" contenteditable="true">No Rear Neighbours · Protected Greenbelt</span></li>
+    </ul>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 6 — MIXED: TWO IMAGES + KITCHEN TEXT (ALL)
+     ============================================================ -->
+<div class="page mix-page t8 t10 t12 t16 t20 t24 t32">
+  <div class="page-content">
+    <div class="duo">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+    <div class="text-block">
+      <h3 contenteditable="true">Culinary Arts</h3>
+      <h2 contenteditable="true" data-placeholder="A Chef's Canvas."></h2>
+      <div class="pullquote" contenteditable="true" data-placeholder="Crafted for the host who entertains effortlessly."></div>
+      <ul class="spec-list">
+        <li><span class="key" contenteditable="true">Cabinetry</span><span class="val" contenteditable="true">Floor-to-Ceiling Custom White</span></li>
+        <li><span class="key" contenteditable="true">Surfaces</span><span class="val" contenteditable="true">Calacatta-Style Quartz, Bookmatched</span></li>
+        <li><span class="key" contenteditable="true">Hardware</span><span class="val" contenteditable="true">Designer Brass, Gold Pendants</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 6B — THE WINE ROOM / LOUNGE (32 ONLY)
+     ============================================================ -->
+<div class="page mix-page t32">
+  <div class="page-content">
+    <div class="duo">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+    <div class="text-block">
+      <h3 contenteditable="true">After Hours</h3>
+      <h2 contenteditable="true" data-placeholder="The Lounge&#10;&amp; Cellar."></h2>
+      <div class="pullquote" contenteditable="true" data-placeholder="A quiet corner of the home reserved for evenings worth remembering."></div>
+      <ul class="spec-list">
+        <li><span class="key" contenteditable="true">Cellar</span><span class="val" contenteditable="true">Climate-Controlled · 200+ Bottle</span></li>
+        <li><span class="key" contenteditable="true">Bar</span><span class="val" contenteditable="true">Custom Millwork · Backlit Display</span></li>
+        <li><span class="key" contenteditable="true">Lighting</span><span class="val" contenteditable="true">Dimmable Sconces · Statement Pendant</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 7 — FOUR VERTICAL PHOTOS / FILMSTRIP (ALL)
+     ============================================================ -->
+<div class="page four-vertical-page t4 t8 t10 t12 t16 t20 t24 t32">
+  <div class="page-content">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <h3 contenteditable="true">Interior Studies</h3>
+      <div class="label-xs" contenteditable="true" data-placeholder="Plate I — IV"></div>
+    </div>
+    <div class="four-vertical">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+    <div class="four-vertical-cap">
+      <div contenteditable="true" data-placeholder="Foyer"></div>
+      <div contenteditable="true" data-placeholder="Living"></div>
+      <div contenteditable="true" data-placeholder="Dining"></div>
+      <div contenteditable="true" data-placeholder="Family"></div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 8 — FULL-BLEED IMAGE (16 & 20 ONLY)
+     ============================================================ -->
+<div class="page t12 t16 t20 t24 t32">
+  <div class="img" style="width:100%; height:100%;">
+    <input type="file" onchange="loadImage(event, this)"><img alt="">
+  </div>
+  <div class="page-num" style="color: rgba(255,255,255,0.6); mix-blend-mode: difference;"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 9 — CREAM DESCRIPTION PAGE (ALL)
+     ============================================================ -->
+<div class="page cream-page t10 t12 t16 t20 t24 t32">
+  <div class="ornament">~ &nbsp; II &nbsp; ~</div>
+  <div class="page-content">
+    <h3 contenteditable="true">Private Quarters</h3>
+    <h1 contenteditable="true" data-placeholder="The Primary&#10;Retreat."></h1>
+    <div class="gold-rule"></div>
+    <div class="body-text" contenteditable="true" data-placeholder="Four generous bedrooms occupy the upper level, anchored by a luxurious primary retreat. The spa-inspired five-piece ensuite features a frameless glass shower, a corner soaker tub framed beneath a crystal chandelier, a double quartz vanity, walnut accents, and marble flooring throughout.&#10;&#10;Every detail has been considered — from the picture-frame wainscoting to the layered tray ceiling, from the rich dark hardwood underfoot to the oversized windows that frame the ravine canopy beyond. It is, simply, a sanctuary."></div>
+    <div contenteditable="true" style="margin-top: 40px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--accent);">
+      — Four bedrooms · Three full baths · Renovated 2024
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 9B — SETTING & HERITAGE (24 & 32)
+     ============================================================ -->
+<div class="page heritage-page t24 t32">
+  <div class="ornament">~ &nbsp; III &nbsp; ~</div>
+  <div class="page-content">
+    <h3 contenteditable="true">Setting &amp; Heritage</h3>
+    <h1 contenteditable="true" data-placeholder="The Land,&#10;Then the House."></h1>
+    <div class="gold-rule"></div>
+    <div class="heritage-grid">
+      <div class="heritage-img img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="body-text" contenteditable="true" data-placeholder="The land came first. A protected ravine corridor that has remained untouched while the neighbourhood grew up around it — a rare and finite asset in a city that builds quickly.&#10;&#10;The home itself was carefully sited to honour that setting. Every principal room turns its gaze toward the canopy. Every window was placed not by accident, but by intention.&#10;&#10;Over the years, the residence has been thoughtfully renewed — preserving what was best of the original build while adding the quiet luxuries today's buyer expects. This is not a flip. This is a home that has been loved."></div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 10 — ASYMMETRIC COLLAGE (3 IMAGES) (ALL)
+     ============================================================ -->
+<div class="page t12 t16 t20 t24 t32">
+  <div class="page-content no-pad" style="height: 100%;">
+    <div class="collage-three">
+      <div class="img lead"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 10B — GROUNDS FULL-BLEED (32 ONLY)
+     ============================================================ -->
+<div class="page t32">
+  <div class="img" style="width:100%; height:100%;">
+    <input type="file" onchange="loadImage(event, this)"><img alt="">
+  </div>
+  <div class="page-num" style="color: rgba(255,255,255,0.6); mix-blend-mode: difference;"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 11 — TWO 3:2 STACKED #2 (20 ONLY)
+     ============================================================ -->
+<div class="page t20 t24 t32">
+  <div class="page-content no-pad" style="height: 100%;">
+    <div class="stack-two">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 12 — FULL-BLEED #3 (20 ONLY)
+     ============================================================ -->
+<div class="page t20 t24 t32">
+  <div class="img" style="width:100%; height:100%;">
+    <input type="file" onchange="loadImage(event, this)"><img alt="">
+  </div>
+  <div class="page-num" style="color: rgba(255,255,255,0.6); mix-blend-mode: difference;"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 13 — 4-GRID MATERIALS PAGE (16 & 20)
+     ============================================================ -->
+<div class="page t16 t20 t24 t32">
+  <div class="page-content">
+    <h3 contenteditable="true">The Maker's Marks</h3>
+    <h2 contenteditable="true" data-placeholder="Materials &amp; Artistry."></h2>
+    <div class="materials-grid">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+    <ul class="spec-list" style="margin-top: 30px;">
+      <li><span class="key" contenteditable="true">Hardwood</span><span class="val" contenteditable="true">Wide-Plank, Dark Stain Throughout</span></li>
+      <li><span class="key" contenteditable="true">Millwork</span><span class="val" contenteditable="true">Picture-Frame Wainscoting · Tray Ceilings</span></li>
+      <li><span class="key" contenteditable="true">Lighting</span><span class="val" contenteditable="true">Crystal Chandeliers · Designer Pendants</span></li>
+    </ul>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 13B — DESIGNER NOTES (32 ONLY)
+     ============================================================ -->
+<div class="page designer-page t32">
+  <div class="page-content">
+    <h3 contenteditable="true">Designer's Notes</h3>
+    <h2 contenteditable="true" data-placeholder="The Hands Behind&#10;the House."></h2>
+    <div class="designer-grid">
+      <div class="designer-img img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="designer-text">
+        <div class="pullquote" contenteditable="true" data-placeholder="A restrained palette of warm woods, cream stone, and brushed brass — composed, never crowded.">A restrained palette of warm woods, cream stone, and brushed brass — composed, never crowded.</div>
+        <h4 contenteditable="true">Architecture</h4>
+        <div class="item" contenteditable="true" data-placeholder="Original build · Custom renovation 2024"></div>
+        <h4 contenteditable="true">Interior Design</h4>
+        <div class="item" contenteditable="true" data-placeholder="Bespoke millwork &amp; cabinetry"></div>
+        <h4 contenteditable="true">Stone &amp; Surfaces</h4>
+        <div class="item" contenteditable="true" data-placeholder="Calacatta-style quartz · Honed marble"></div>
+        <h4 contenteditable="true">Lighting</h4>
+        <div class="item" contenteditable="true" data-placeholder="Crystal chandeliers · Designer pendants"></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 14 — MIXED IMAGE + TEXT (PRIMARY SUITE) (20 ONLY)
+     ============================================================ -->
+<div class="page mix-page t20 t24 t32">
+  <div class="page-content">
+    <div class="text-block" style="margin-top: 0; margin-bottom: 30px;">
+      <h3 contenteditable="true">The Lower Residence</h3>
+      <h2 contenteditable="true" data-placeholder="A Second Home,&#10;Below."></h2>
+      <div class="pullquote" contenteditable="true" data-placeholder="A fully self-contained apartment, with its own walk-out to the ravine yard."></div>
+    </div>
+    <div class="duo">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+    <ul class="spec-list">
+      <li><span class="key" contenteditable="true">Configuration</span><span class="val" contenteditable="true">1 Bed · Kitchen · Living · Bath</span></li>
+      <li><span class="key" contenteditable="true">Access</span><span class="val" contenteditable="true">Private Grade-Level Walk-Out</span></li>
+      <li><span class="key" contenteditable="true">Best For</span><span class="val" contenteditable="true">In-Law · Nanny · Income Suite</span></li>
+    </ul>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 15 — FOUR VERTICAL #2 (20 ONLY)
+     ============================================================ -->
+<div class="page four-vertical-page t20 t24 t32">
+  <div class="page-content">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <h3 contenteditable="true">Exterior &amp; Grounds</h3>
+      <div class="label-xs" contenteditable="true" data-placeholder="Plate V — VIII"></div>
+    </div>
+    <div class="four-vertical">
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+      <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+    </div>
+    <div class="four-vertical-cap">
+      <div contenteditable="true" data-placeholder="Façade"></div>
+      <div contenteditable="true" data-placeholder="Deck"></div>
+      <div contenteditable="true" data-placeholder="Ravine"></div>
+      <div contenteditable="true" data-placeholder="Garden"></div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 16 — FULL-BLEED #4 (20 ONLY)
+     ============================================================ -->
+<div class="page t16 t20 t24 t32">
+  <div class="img" style="width:100%; height:100%;">
+    <input type="file" onchange="loadImage(event, this)"><img alt="">
+  </div>
+  <div class="page-num" style="color: rgba(255,255,255,0.6); mix-blend-mode: difference;"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 16B — FLOOR PLAN (24 & 32)
+     ============================================================ -->
+<div class="page floorplan-page t24 t32">
+  <div class="page-content">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <h3 contenteditable="true">The Floor Plan</h3>
+      <div class="label-xs" contenteditable="true" data-placeholder="Plate IX"></div>
+    </div>
+    <h2 contenteditable="true" data-placeholder="Upper Level." style="margin-top: 6px;"></h2>
+    <div class="floor-plan-large img">
+      <input type="file" onchange="loadImage(event, this)"><img alt="">
+    </div>
+    <div class="floor-legend">
+      <div class="legend-item">
+        <span class="key" contenteditable="true">Approx. Footprint</span>
+        <span class="val" contenteditable="true" data-placeholder="1,850 sq ft"></span>
+      </div>
+      <div class="legend-item">
+        <span class="key" contenteditable="true">Ceiling Height</span>
+        <span class="val" contenteditable="true" data-placeholder="9 ft"></span>
+      </div>
+      <div class="legend-item">
+        <span class="key" contenteditable="true">Orientation</span>
+        <span class="val" contenteditable="true" data-placeholder="South-Facing Rear"></span>
+      </div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 17 — NEIGHBOURHOOD (16 & 20)
+     ============================================================ -->
+<div class="page neighborhood t16 t20 t24 t32">
+  <div class="page-content">
+    <h3 contenteditable="true">The Enclave</h3>
+    <h2 contenteditable="true" data-placeholder="Jefferson &amp; Beyond."></h2>
+    <div class="map-area img">
+      <input type="file" onchange="loadImage(event, this)"><img alt="">
+    </div>
+    <div class="col-grid">
+      <div>
+        <h4>Top-Ranked Schools</h4>
+        <div class="field-line" contenteditable="true" data-placeholder="St. Theresa of Lisieux CHS"></div>
+        <div class="field-line" contenteditable="true" data-placeholder="Richmond Hill HS"></div>
+      </div>
+      <div>
+        <h4>Lifestyle</h4>
+        <div class="field-line" contenteditable="true" data-placeholder="Ravine Trails &amp; Parks"></div>
+        <div class="field-line" contenteditable="true" data-placeholder="Yonge Street Corridor"></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 17B — DAY &amp; NIGHT (32 ONLY)
+     ============================================================ -->
+<div class="page day-night-page t32">
+  <div class="page-content no-pad" style="height: 100%;">
+    <div class="stack-two-cap" style="padding: 0.5in;">
+      <div class="row">
+        <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+        <div class="cap" contenteditable="true" data-placeholder="By Day"></div>
+      </div>
+      <div class="row">
+        <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+        <div class="cap" contenteditable="true" data-placeholder="By Night"></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 18 — SPECS / FLOOR PLAN (ALL)
+     ============================================================ -->
+<div class="page specs-page t8 t10 t12 t16 t20 t24 t32">
+  <div class="page-content">
+    <h3 contenteditable="true">The Blueprint</h3>
+    <h2 contenteditable="true" data-placeholder="By the Numbers."></h2>
+    <div class="floor-plan img" style="margin-top: 24px;">
+      <input type="file" onchange="loadImage(event, this)"><img alt="">
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="lbl">Beds</div><div class="val" contenteditable="true">4+1</div></div>
+      <div class="stat"><div class="lbl">Baths</div><div class="val" contenteditable="true">5</div></div>
+      <div class="stat"><div class="lbl">Sq Ft</div><div class="val" contenteditable="true">3,800</div></div>
+      <div class="stat"><div class="lbl">Lot</div><div class="val" contenteditable="true">50 ft</div></div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 19 — SITE PLAN (16 & 20)
+     ============================================================ -->
+<div class="page site-plan t16 t20 t24 t32">
+  <div class="page-content">
+    <h3 contenteditable="true">The Estate Site Plan</h3>
+    <h2 contenteditable="true" data-placeholder="Lot &amp; Setting."></h2>
+    <div class="blueprint img" style="margin-top: 24px;">
+      <input type="file" onchange="loadImage(event, this)"><img alt="">
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 19B — SCHOOLS &amp; PARKS (24 & 32)
+     ============================================================ -->
+<div class="page schools-page t24 t32">
+  <div class="page-content">
+    <h3 contenteditable="true">Schools &amp; Parks</h3>
+    <h2 contenteditable="true" data-placeholder="The Surrounding&#10;Area."></h2>
+    <div class="pullquote" contenteditable="true" data-placeholder="A neighbourhood is the sum of its schools, its trails, and the families who choose to stay." style="margin-top: 14px;"></div>
+
+    <div class="sp-section">
+      <div class="sp-section-head">
+        <span class="sp-roman">I</span>
+        <span class="sp-label" contenteditable="true">Top-Ranked Schools</span>
+        <span class="sp-rule"></span>
+      </div>
+      <div class="sp-list">
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="St. Theresa of Lisieux CHS"></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="Secondary · Catholic"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="1.2 km"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="Richmond Hill High School"></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="Secondary · Public · IB Program"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="2.0 km"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="Beverley Acres P.S."></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="Elementary · Public · Gifted Program"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="0.6 km"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="Holy Trinity School"></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="JK – Grade 12 · Private"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="3.4 km"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-head">
+        <span class="sp-roman">II</span>
+        <span class="sp-label" contenteditable="true">Parks &amp; Recreation</span>
+        <span class="sp-rule"></span>
+      </div>
+      <div class="sp-list">
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="Mill Pond Park"></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="Heritage Pond · Walking Trails"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="1.5 km"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="Rumble Pond Trail"></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="Ravine Network · Direct Backyard Access"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="At rear"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="Richmond Green Sports Centre"></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="Tennis · Soccer · Outdoor Rink"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="3.2 km"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-name" contenteditable="true" data-placeholder="Lake Wilcox &amp; Oak Ridges Trail"></div>
+          <div class="sp-meta" contenteditable="true" data-placeholder="Swimming · Cycling · 30 km Trail Network"></div>
+          <div class="sp-dist" contenteditable="true" data-placeholder="6.5 km"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sp-note" contenteditable="true" data-placeholder="Distances are approximate and measured by road from the subject property. School boundaries are subject to change; please confirm with the relevant board prior to closing."></div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 19C — HIGHLIGHTS / WHAT SETS THIS HOME APART (32 ONLY)
+     ============================================================ -->
+<div class="page highlights-page t32">
+  <div class="page-content">
+    <h3 contenteditable="true">Highlights</h3>
+    <h2 contenteditable="true" data-placeholder="What Sets This&#10;Home Apart."></h2>
+    <div class="pullquote" contenteditable="true" data-placeholder="Four reasons this residence stands quietly above the rest." style="margin-top: 14px; margin-bottom: 24px;"></div>
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+        <div class="meta">
+          <div class="feature-roman">I.</div>
+          <div class="feature-name" contenteditable="true" data-placeholder="The Ravine Setting"></div>
+          <div class="feature-desc" contenteditable="true" data-placeholder="Uninterrupted treetop views and no rear neighbours, ever. A protected greenbelt directly behind the home."></div>
+        </div>
+      </div>
+      <div class="highlight-card">
+        <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+        <div class="meta">
+          <div class="feature-roman">II.</div>
+          <div class="feature-name" contenteditable="true" data-placeholder="The Walk-Out Suite"></div>
+          <div class="feature-desc" contenteditable="true" data-placeholder="A fully self-contained one-bedroom residence on the lower level with private grade-level entry to the yard."></div>
+        </div>
+      </div>
+      <div class="highlight-card">
+        <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+        <div class="meta">
+          <div class="feature-roman">III.</div>
+          <div class="feature-name" contenteditable="true" data-placeholder="The Chef's Kitchen"></div>
+          <div class="feature-desc" contenteditable="true" data-placeholder="A comprehensive $150,000+ renovation — custom millwork, brass hardware, and a bookmatched quartz statement wall."></div>
+        </div>
+      </div>
+      <div class="highlight-card">
+        <div class="img"><input type="file" onchange="loadImage(event, this)"><img alt=""></div>
+        <div class="meta">
+          <div class="feature-roman">IV.</div>
+          <div class="feature-name" contenteditable="true" data-placeholder="The Primary Retreat"></div>
+          <div class="feature-desc" contenteditable="true" data-placeholder="A spa-inspired five-piece ensuite, walnut accents, marble flooring, and oversized windows framing the canopy."></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 19D — WITH GRATITUDE / CLOSING REFLECTION (32 ONLY)
+     ============================================================ -->
+<div class="page gratitude-page t32">
+  <div class="page-content">
+    <h3 contenteditable="true">In Closing</h3>
+    <h1 contenteditable="true" data-placeholder="A home of this calibre&#10;deserves a quiet,&#10;considered handover.">A home of this calibre deserves a quiet, considered handover.</h1>
+    <div class="gold-rule"></div>
+    <div class="body-text" contenteditable="true" data-placeholder="To the family who have entrusted me with this listing — thank you. To the reader who has taken the time to walk through these pages — thank you also.&#10;&#10;What comes next is a private viewing, a thoughtful conversation, and, when the moment is right, a decision made without pressure. That has always been the way I prefer to work, and I believe it is the way the right buyer prefers to be served."></div>
+    <div class="colophon" contenteditable="true" data-placeholder="— Peter Luo · Broker —"></div>
+  </div>
+  <div class="page-num"></div>
+</div>
+
+<!-- ============================================================
+     PAGE 20 — AGENT / CLOSING (ALL)
+     ============================================================ -->
+<div class="page agent-page t4 t8 t10 t12 t16 t20 t24 t32">
+  <div class="page-content">
+    <h1>Exclusively Presented.</h1>
+    <div class="tag">— by appointment only —</div>
+
+    <div class="portrait">
+      <div class="img">
+        <input type="file" onchange="loadImage(event, this)"><img alt="">
+      </div>
+    </div>
+
+    <div class="agent-name" contenteditable="true" data-placeholder="Peter Luo">Peter Luo</div>
+    <div class="designations" contenteditable="true" data-placeholder="SRS · MCNE · FRI">SRS · MCNE · FRI</div>
+
+    <div class="gold-rule"></div>
+
+    <div class="role">Broker · Pinnacle Listing System</div>
+    <div class="brokerage" contenteditable="true" data-placeholder="RE/MAX Realtron Realty Inc., Brokerage">RE/MAX Realtron Realty Inc., Brokerage</div>
+
+    <div class="contact-block">
+      <div class="row">
+        <div class="key">Direct</div>
+        <div class="val" contenteditable="true" data-placeholder="+1 (416) 000-0000"></div>
+      </div>
+      <div class="row">
+        <div class="key">Email</div>
+        <div class="val" contenteditable="true" data-placeholder="peter@peterluo.homes"></div>
+      </div>
+      <div class="row">
+        <div class="key">Website</div>
+        <div class="val" contenteditable="true" data-placeholder="peterluo.homes">peterluo.homes</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-note">All information deemed reliable · Not intended to solicit clients under contract</div>
+</div>
+
+</div><!-- /.stage -->
+
+<!-- ============================================================
+     PAGE INDEX MATRIX MODAL
+     ============================================================ -->
+<div class="matrix-modal" id="matrixModal">
+  <div class="matrix-backdrop" onclick="toggleMatrix()"></div>
+  <div class="matrix-content">
+    <button class="matrix-close" onclick="toggleMatrix()" aria-label="Close">×</button>
+    <div class="matrix-header">
+      <h3>Page Composition</h3>
+      <div class="matrix-sub">Across All Editions</div>
+    </div>
+    <div class="matrix-body">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th data-col="4"><span class="ed-num">4</span>pg</th>
+            <th data-col="8"><span class="ed-num">8</span>pg</th>
+            <th data-col="10"><span class="ed-num">10</span>pg</th>
+            <th data-col="12"><span class="ed-num">12</span>pg</th>
+            <th data-col="16"><span class="ed-num">16</span>pg</th>
+            <th data-col="20"><span class="ed-num">20</span>pg</th>
+            <th data-col="24"><span class="ed-num">24</span>pg</th>
+            <th data-col="32"><span class="ed-num">32</span>pg</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="page-name">Cover</td>
+            <td data-col="4">1</td><td data-col="8">1</td><td data-col="10">1</td><td data-col="12">1</td>
+            <td data-col="16">1</td><td data-col="20">1</td><td data-col="24">1</td><td data-col="32">1</td>
+          </tr>
+          <tr>
+            <td class="page-name">Twilight Exterior</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">2</td>
+          </tr>
+          <tr>
+            <td class="page-name">Title Page</td>
+            <td data-col="4" class="empty">—</td><td data-col="8">2</td><td data-col="10">2</td><td data-col="12">2</td>
+            <td data-col="16">2</td><td data-col="20">2</td><td data-col="24">2</td><td data-col="32">3</td>
+          </tr>
+          <tr>
+            <td class="page-name">Letter from Your Broker</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24">3</td><td data-col="32">4</td>
+          </tr>
+          <tr>
+            <td class="page-name">Vision (descriptive text)</td>
+            <td data-col="4">2</td><td data-col="8">3</td><td data-col="10">3</td><td data-col="12">3</td>
+            <td data-col="16">3</td><td data-col="20">3</td><td data-col="24">4</td><td data-col="32">5</td>
+          </tr>
+          <tr>
+            <td class="page-name">Full-Bleed #1</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10">4</td><td data-col="12">4</td>
+            <td data-col="16">4</td><td data-col="20">4</td><td data-col="24">5</td><td data-col="32">6</td>
+          </tr>
+          <tr>
+            <td class="page-name">Two 3:2 Stacked #1</td>
+            <td data-col="4" class="empty">—</td><td data-col="8">4</td><td data-col="10">5</td><td data-col="12">5</td>
+            <td data-col="16">5</td><td data-col="20">5</td><td data-col="24">6</td><td data-col="32">7</td>
+          </tr>
+          <tr>
+            <td class="page-name">Outdoor Living</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">8</td>
+          </tr>
+          <tr>
+            <td class="page-name">Culinary Arts / Kitchen</td>
+            <td data-col="4" class="empty">—</td><td data-col="8">5</td><td data-col="10">6</td><td data-col="12">6</td>
+            <td data-col="16">6</td><td data-col="20">6</td><td data-col="24">7</td><td data-col="32">9</td>
+          </tr>
+          <tr>
+            <td class="page-name">The Lounge &amp; Cellar</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">10</td>
+          </tr>
+          <tr>
+            <td class="page-name">Four Vertical #1 / Interior Studies</td>
+            <td data-col="4">3</td><td data-col="8">6</td><td data-col="10">7</td><td data-col="12">7</td>
+            <td data-col="16">7</td><td data-col="20">7</td><td data-col="24">8</td><td data-col="32">11</td>
+          </tr>
+          <tr>
+            <td class="page-name">Full-Bleed #2</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12">8</td>
+            <td data-col="16">8</td><td data-col="20">8</td><td data-col="24">9</td><td data-col="32">12</td>
+          </tr>
+          <tr>
+            <td class="page-name">Primary Retreat (cream)</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10">8</td><td data-col="12">9</td>
+            <td data-col="16">9</td><td data-col="20">9</td><td data-col="24">10</td><td data-col="32">13</td>
+          </tr>
+          <tr>
+            <td class="page-name">Setting &amp; Heritage</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24">11</td><td data-col="32">14</td>
+          </tr>
+          <tr>
+            <td class="page-name">Asymmetric Collage</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12">10</td>
+            <td data-col="16">10</td><td data-col="20">10</td><td data-col="24">12</td><td data-col="32">15</td>
+          </tr>
+          <tr>
+            <td class="page-name">Grounds (full-bleed)</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">16</td>
+          </tr>
+          <tr>
+            <td class="page-name">Two 3:2 Stacked #2</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20">11</td><td data-col="24">13</td><td data-col="32">17</td>
+          </tr>
+          <tr>
+            <td class="page-name">Full-Bleed #3</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20">12</td><td data-col="24">14</td><td data-col="32">18</td>
+          </tr>
+          <tr>
+            <td class="page-name">Materials &amp; Artistry</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16">11</td><td data-col="20">13</td><td data-col="24">15</td><td data-col="32">19</td>
+          </tr>
+          <tr>
+            <td class="page-name">Designer's Notes</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">20</td>
+          </tr>
+          <tr>
+            <td class="page-name">The Lower Residence</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20">14</td><td data-col="24">16</td><td data-col="32">21</td>
+          </tr>
+          <tr>
+            <td class="page-name">Four Vertical #2 / Exterior</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20">15</td><td data-col="24">17</td><td data-col="32">22</td>
+          </tr>
+          <tr>
+            <td class="page-name">Full-Bleed #4</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16">12</td><td data-col="20">16</td><td data-col="24">18</td><td data-col="32">23</td>
+          </tr>
+          <tr>
+            <td class="page-name">Floor Plan (Upper Level)</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24">19</td><td data-col="32">24</td>
+          </tr>
+          <tr>
+            <td class="page-name">Neighbourhood</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16">13</td><td data-col="20">17</td><td data-col="24">20</td><td data-col="32">25</td>
+          </tr>
+          <tr>
+            <td class="page-name">By Day, By Night</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">26</td>
+          </tr>
+          <tr>
+            <td class="page-name">Specs / Floor Plan + Stats</td>
+            <td data-col="4" class="empty">—</td><td data-col="8">7</td><td data-col="10">9</td><td data-col="12">11</td>
+            <td data-col="16">14</td><td data-col="20">18</td><td data-col="24">21</td><td data-col="32">27</td>
+          </tr>
+          <tr>
+            <td class="page-name">Site Plan</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16">15</td><td data-col="20">19</td><td data-col="24">22</td><td data-col="32">28</td>
+          </tr>
+          <tr>
+            <td class="page-name">Schools &amp; Parks</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24">23</td><td data-col="32">29</td>
+          </tr>
+          <tr>
+            <td class="page-name">Highlights — What Sets This Home Apart</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">30</td>
+          </tr>
+          <tr>
+            <td class="page-name">With Gratitude (closing)</td>
+            <td data-col="4" class="empty">—</td><td data-col="8" class="empty">—</td><td data-col="10" class="empty">—</td><td data-col="12" class="empty">—</td>
+            <td data-col="16" class="empty">—</td><td data-col="20" class="empty">—</td><td data-col="24" class="empty">—</td><td data-col="32">31</td>
+          </tr>
+          <tr>
+            <td class="page-name">Agent / Closing</td>
+            <td data-col="4">4</td><td data-col="8">8</td><td data-col="10">10</td><td data-col="12">12</td>
+            <td data-col="16">16</td><td data-col="20">20</td><td data-col="24">24</td><td data-col="32">32</td>
+          </tr>
+          <tr class="totals">
+            <td class="page-name">Total Pages</td>
+            <td data-col="4">4</td><td data-col="8">8</td><td data-col="10">10</td><td data-col="12">12</td>
+            <td data-col="16">16</td><td data-col="20">20</td><td data-col="24">24</td><td data-col="32">32</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="matrix-footer">
+      The <span class="gold">highlighted column</span> shows your active edition
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   PHOTO PERSISTENCE — IndexedDB
+   Uploaded photos are stored as Blobs and restored on reload.
+   ============================================================ */
+const DB_NAME = 'luxury_brochure_photos';
+const DB_VERSION = 1;
+const STORE = 'photos';
+let dbPromise = null;
+
+function openDB() {
+  if (dbPromise) return dbPromise;
+  dbPromise = new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(STORE)) {
+        db.createObjectStore(STORE);
+      }
+    };
+    req.onsuccess = (e) => resolve(e.target.result);
+    req.onerror = (e) => reject(e.target.error);
+  });
+  return dbPromise;
+}
+
+async function putPhoto(id, blob) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).put(blob, id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = (e) => reject(e.target.error);
+  });
+}
+
+async function getPhoto(id) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).get(id);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = (e) => reject(e.target.error);
+  });
+}
+
+async function deleteAllPhotos() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).clear();
+    tx.oncomplete = () => resolve();
+    tx.onerror = (e) => reject(e.target.error);
+  });
+}
+
+/* ---------- Stable IDs for image slots ---------- */
+function assignPhotoIds() {
+  document.querySelectorAll('.img').forEach((box, idx) => {
+    if (!box.dataset.photoId) {
+      box.dataset.photoId = 'photo-' + idx;
+    }
+  });
+}
+
+/* ---------- Object URL tracking (to avoid memory leaks) ---------- */
+const activeURLs = new Map(); // photoId -> objectURL
+
+function setImageFromBlob(box, blob) {
+  const img = box.querySelector('img');
+  if (!img) return;
+  const id = box.dataset.photoId;
+  // revoke previous URL for this slot, if any
+  if (activeURLs.has(id)) {
+    URL.revokeObjectURL(activeURLs.get(id));
+  }
+  const url = URL.createObjectURL(blob);
+  activeURLs.set(id, url);
+  img.src = url;
+  img.classList.add('loaded');
+}
+
+function clearImage(box) {
+  const img = box.querySelector('img');
+  const id = box.dataset.photoId;
+  if (activeURLs.has(id)) {
+    URL.revokeObjectURL(activeURLs.get(id));
+    activeURLs.delete(id);
+  }
+  if (img) {
+    img.src = '';
+    img.classList.remove('loaded');
+  }
+  const fileInput = box.querySelector('input[type="file"]');
+  if (fileInput) fileInput.value = '';
+}
+
+/* ---------- Save status indicator ---------- */
+let statusTimer = null;
+function flashStatus(msg) {
+  const el = document.getElementById('saveStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+/* ---------- File upload handler (called from inputs) ---------- */
+async function loadImage(event, input) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const box = input.parentElement;
+  const id = box.dataset.photoId;
+  // Show immediately
+  setImageFromBlob(box, file);
+  // Persist
+  try {
+    await putPhoto(id, file);
+    flashStatus('Saved');
+  } catch (err) {
+    console.warn('Photo save failed:', err);
+    flashStatus('Save failed');
+  }
+}
+
+/* ---------- Restore photos on load ---------- */
+async function restoreAllPhotos() {
+  const boxes = document.querySelectorAll('.img[data-photo-id]');
+  let restored = 0;
+  for (const box of boxes) {
+    try {
+      const blob = await getPhoto(box.dataset.photoId);
+      if (blob) {
+        setImageFromBlob(box, blob);
+        restored++;
+      }
+    } catch (err) {
+      console.warn('Restore failed for', box.dataset.photoId, err);
+    }
+  }
+  if (restored > 0) flashStatus(restored + ' photos restored');
+}
+
+/* ---------- Clear button ---------- */
+async function clearAllPhotos() {
+  const ok = confirm('Clear all uploaded photos?\n\nThis will remove every photo from this brochure and from local storage. Text edits are not affected. This cannot be undone.');
+  if (!ok) return;
+  try {
+    await deleteAllPhotos();
+    document.querySelectorAll('.img[data-photo-id]').forEach(clearImage);
+    flashStatus('Photos cleared');
+  } catch (err) {
+    console.warn('Clear failed:', err);
+    flashStatus('Clear failed');
+  }
+}
+
+/* ---------- Template switching ---------- */
+function setTemplate(n) {
+  document.body.className = 'show-' + n;
+  document.querySelectorAll('.seg button').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.len) === n);
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+/* ---------- Page Index Matrix Modal ---------- */
+function toggleMatrix() {
+  const m = document.getElementById('matrixModal');
+  if (m) m.classList.toggle('open');
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('matrixModal');
+    if (m && m.classList.contains('open')) m.classList.remove('open');
+  }
+});
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  assignPhotoIds();
+  restoreAllPhotos();
+});
+
+/* Revoke object URLs when leaving the page */
+window.addEventListener('beforeunload', () => {
+  for (const url of activeURLs.values()) {
+    URL.revokeObjectURL(url);
+  }
+});
+</script>
+</body>
+</html>
