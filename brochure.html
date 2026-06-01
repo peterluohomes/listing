@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Luxury Listing Brochure — 4 / 8 / 10 / 12 / 16 / 20 / 24 / 32 Page Editions</title>
+<title>Listing Brochure</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 
@@ -78,158 +78,6 @@
     transition: opacity 0.3s; opacity: 0;
   }
   .controls .save-status.show { opacity: 1; color: var(--accent-light); }
-
-  /* -------- Property Selector Button (in controls) -------- */
-  .property-btn {
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(157,129,71,0.12); border: 1px solid rgba(157,129,71,0.45);
-    color: #fff; padding: 8px 14px;
-    font-family: 'DM Sans', sans-serif; cursor: pointer; border-radius: 3px;
-    transition: all 0.2s;
-    max-width: 280px;
-  }
-  .property-btn:hover { background: rgba(157,129,71,0.22); border-color: var(--accent); }
-  .property-btn-label {
-    font-size: 9px; letter-spacing: 0.2em; color: var(--accent-light);
-    text-transform: uppercase; font-weight: 600;
-  }
-  .property-btn-name {
-    font-family: 'Playfair Display', serif; font-size: 13px;
-    color: #fff; letter-spacing: 0.03em;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    max-width: 180px;
-  }
-  .property-btn-arrow { color: var(--accent-light); font-size: 10px; }
-
-  /* -------- Property Manager Modal -------- */
-  .property-modal {
-    display: none;
-    position: fixed; inset: 0; z-index: 1500;
-    align-items: flex-start; justify-content: center;
-    padding: 90px 24px 40px;
-    overflow-y: auto;
-  }
-  .property-modal.open { display: flex; }
-  .property-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(11,23,41,0.78);
-    backdrop-filter: blur(4px);
-  }
-  .property-content {
-    position: relative;
-    background: var(--bg-warm);
-    width: 100%; max-width: 720px;
-    border: 1px solid var(--accent);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  }
-  .property-header {
-    padding: 28px 36px;
-    display: flex; align-items: flex-start; justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    background: var(--navy);
-    color: #fff;
-  }
-  .property-title-tag {
-    font-family: 'DM Sans', sans-serif; font-size: 10px;
-    letter-spacing: 0.3em; color: var(--accent-light);
-    text-transform: uppercase; font-weight: 600; margin-bottom: 6px;
-  }
-  .property-title-main {
-    font-family: 'Playfair Display', serif; font-size: 24px;
-    color: #fff; letter-spacing: 0.01em;
-  }
-  .property-close {
-    background: transparent; border: none; color: var(--accent-light);
-    font-size: 32px; cursor: pointer; line-height: 1;
-    padding: 0; transition: color 0.2s;
-  }
-  .property-close:hover { color: #fff; }
-
-  .property-list {
-    padding: 24px 36px;
-    max-height: 50vh; overflow-y: auto;
-  }
-  .property-item {
-    display: flex; align-items: center; gap: 16px;
-    padding: 16px 20px;
-    background: #fff; border: 1px solid var(--border);
-    margin-bottom: 10px;
-    transition: all 0.2s;
-  }
-  .property-item:hover { border-color: var(--accent-light); }
-  .property-item.active {
-    border-color: var(--accent);
-    background: var(--bg-cream);
-    box-shadow: 0 0 0 1px var(--accent);
-  }
-  .property-item-info { flex: 1; min-width: 0; }
-  .property-item-name {
-    font-family: 'Playfair Display', serif; font-size: 17px;
-    color: var(--navy); margin-bottom: 2px;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .property-item-name input {
-    font-family: 'Playfair Display', serif; font-size: 17px;
-    color: var(--navy); border: none; border-bottom: 1px solid var(--accent);
-    background: transparent; outline: none; width: 100%; padding: 0;
-  }
-  .property-item-meta {
-    font-family: 'DM Sans', sans-serif; font-size: 10px;
-    letter-spacing: 0.15em; color: var(--text-soft);
-    text-transform: uppercase;
-  }
-  .property-item-actions {
-    display: flex; gap: 6px; flex-shrink: 0;
-  }
-  .property-item-btn {
-    background: transparent; border: 1px solid var(--border);
-    color: var(--text-soft); padding: 6px 12px;
-    font-family: 'DM Sans', sans-serif; font-size: 10px;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .property-item-btn:hover {
-    border-color: var(--accent); color: var(--navy);
-  }
-  .property-item-btn.primary {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-  }
-  .property-item-btn.primary:hover {
-    background: var(--accent-light); border-color: var(--accent-light);
-  }
-  .property-item-btn.danger:hover {
-    border-color: #d65555; color: #d65555;
-  }
-  .property-item-active-badge {
-    display: inline-block; background: var(--accent); color: #fff;
-    padding: 3px 8px; font-size: 9px; letter-spacing: 0.18em;
-    text-transform: uppercase; font-weight: 600;
-    margin-left: 8px; vertical-align: middle;
-  }
-
-  .property-footer {
-    padding: 20px 36px 28px;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 16px; flex-wrap: wrap;
-    border-top: 1px solid var(--border);
-    background: var(--bg-light);
-  }
-  .property-new-btn {
-    background: var(--navy); color: #fff; border: none;
-    padding: 11px 22px; font-family: 'DM Sans', sans-serif;
-    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; font-weight: 500; transition: all 0.2s;
-  }
-  .property-new-btn:hover { background: var(--navy-deep); }
-  .property-help {
-    font-family: 'DM Sans', sans-serif; font-size: 10px;
-    color: var(--text-soft); letter-spacing: 0.08em;
-  }
-
-  /* Hide modal completely on print */
-  @media print {
-    .property-modal { display: none !important; }
-  }
 
   /* -------- Page Index Matrix Modal -------- */
   .matrix-modal {
@@ -565,6 +413,18 @@
   .stats-row .stat:last-child { border-right: none; }
   .stats-row .stat .lbl { font-size: 8.5px; letter-spacing: 0.3em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
   .stats-row .stat .val { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--navy-deep); }
+  .stats-row .stat .val.editable-stat { cursor: text; border-radius: 3px; transition: background 0.15s, box-shadow 0.15s; }
+  .stats-row .stat .val.editable-stat:hover { box-shadow: inset 0 -2px 0 rgba(157,129,71,0.45); }
+  .stats-row .stat .val.editable-stat:focus { background: rgba(157,129,71,0.10); box-shadow: inset 0 -2px 0 var(--accent); }
+  .stats-row .stat .lbl.editable-stat-label { cursor: text; border-radius: 3px; padding: 7px 4px; margin-bottom: 2px; transition: background 0.15s, box-shadow 0.15s; }
+  .stats-row .stat .lbl.editable-stat-label:hover { box-shadow: inset 0 -2px 0 rgba(157,129,71,0.45); }
+  .stats-row .stat .lbl.editable-stat-label:focus { background: rgba(157,129,71,0.10); box-shadow: inset 0 -2px 0 var(--accent); }
+  @media print {
+    .stats-row .stat .val.editable-stat:hover,
+    .stats-row .stat .val.editable-stat:focus,
+    .stats-row .stat .lbl.editable-stat-label:hover,
+    .stats-row .stat .lbl.editable-stat-label:focus { box-shadow: none; background: transparent; }
+  }
 
   /* -------- Site Plan -------- */
   .site-plan .blueprint { flex: 1; background: #fcfaf4; }
@@ -820,11 +680,6 @@
 <!-- ========== CONTROL BAR ========== -->
 <div class="controls">
   <div class="brand">The Collector Edition</div>
-  <button class="property-btn" id="propertyBtn" onclick="togglePropertyModal()">
-    <span class="property-btn-label">PROPERTY</span>
-    <span class="property-btn-name" id="propertyBtnName">Default Listing</span>
-    <span class="property-btn-arrow">▾</span>
-  </button>
   <div class="seg">
     <button data-len="4"  onclick="setTemplate(4)">4 Pg</button>
     <button data-len="8"  onclick="setTemplate(8)">8 Pg</button>
@@ -840,27 +695,6 @@
   <button class="matrix-btn" onclick="toggleMatrix()">Page Index</button>
   <button class="clear-btn" onclick="clearAllPhotos()">Clear Photos</button>
   <button class="print" onclick="window.print()">Export PDF</button>
-</div>
-
-<!-- ====== Property Manager Modal ====== -->
-<div class="property-modal" id="propertyModal">
-  <div class="property-backdrop" onclick="togglePropertyModal()"></div>
-  <div class="property-content">
-    <div class="property-header">
-      <div class="property-title">
-        <div class="property-title-tag">Multi-Property</div>
-        <div class="property-title-main">Properties Library</div>
-      </div>
-      <button class="property-close" onclick="togglePropertyModal()">×</button>
-    </div>
-    <div class="property-list" id="propertyList">
-      <!-- populated by JS -->
-    </div>
-    <div class="property-footer">
-      <button class="property-new-btn" onclick="newProperty()">＋ New Property</button>
-      <span class="property-help">Each property keeps its own photos &amp; text · Auto-saved locally</span>
-    </div>
-  </div>
 </div>
 
 <div class="stage">
@@ -1355,10 +1189,10 @@
       <input type="file" onchange="loadImage(event, this)"><img alt="">
     </div>
     <div class="stats-row">
-      <div class="stat"><div class="lbl">Beds</div><div class="val" contenteditable="true">4+1</div></div>
-      <div class="stat"><div class="lbl">Baths</div><div class="val" contenteditable="true">5</div></div>
-      <div class="stat"><div class="lbl">Sq Ft</div><div class="val" contenteditable="true">3,800</div></div>
-      <div class="stat"><div class="lbl">Lot</div><div class="val" contenteditable="true">50 ft</div></div>
+      <div class="stat"><div class="lbl editable-stat-label" contenteditable="true" data-skey="beds-lbl" data-placeholder="Beds">Beds</div><div class="val editable-stat" contenteditable="true" data-skey="beds" data-placeholder="4+1">4+1</div></div>
+      <div class="stat"><div class="lbl editable-stat-label" contenteditable="true" data-skey="baths-lbl" data-placeholder="Baths">Baths</div><div class="val editable-stat" contenteditable="true" data-skey="baths" data-placeholder="5">5</div></div>
+      <div class="stat"><div class="lbl editable-stat-label" contenteditable="true" data-skey="sqft-lbl" data-placeholder="Sq Ft">Sq Ft</div><div class="val editable-stat" contenteditable="true" data-skey="sqft" data-placeholder="3,800">3,800</div></div>
+      <div class="stat"><div class="lbl editable-stat-label" contenteditable="true" data-skey="lot-lbl" data-placeholder="Lot">Lot</div><div class="val editable-stat" contenteditable="true" data-skey="lot" data-placeholder="50 ft">50 ft</div></div>
     </div>
   </div>
   <div class="page-num"></div>
@@ -1757,36 +1591,22 @@
 
 <script>
 /* ============================================================
-   MULTI-PROPERTY BROCHURE SYSTEM
-   - Each property has its own photos (IndexedDB) and text (IndexedDB)
-   - Property metadata in LocalStorage
-   - Auto-migrates v1 single-brochure data to "Default Listing"
+   PHOTO PERSISTENCE — IndexedDB
+   Uploaded photos are stored as Blobs and restored on reload.
    ============================================================ */
-
 const DB_NAME = 'luxury_brochure_photos';
-const DB_VERSION = 2; // bumped from 1
-const STORE_PHOTOS = 'photos';
-const STORE_TEXTS = 'texts';
-
-const LS_PROPS = 'brochure_properties_v1';
-const LS_ACTIVE = 'brochure_active_property_v1';
-
+const DB_VERSION = 1;
+const STORE = 'photos';
 let dbPromise = null;
-let currentPropertyId = null;
-const activeURLs = new Map(); // photoId -> objectURL
 
-/* -------- DB -------- */
 function openDB() {
   if (dbPromise) return dbPromise;
   dbPromise = new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
     req.onupgradeneeded = (e) => {
       const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE_PHOTOS)) {
-        db.createObjectStore(STORE_PHOTOS);
-      }
-      if (!db.objectStoreNames.contains(STORE_TEXTS)) {
-        db.createObjectStore(STORE_TEXTS);
+      if (!db.objectStoreNames.contains(STORE)) {
+        db.createObjectStore(STORE);
       }
     };
     req.onsuccess = (e) => resolve(e.target.result);
@@ -1795,308 +1615,37 @@ function openDB() {
   return dbPromise;
 }
 
-async function dbGet(store, key) {
+async function putPhoto(id, blob) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).get(key);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = (e) => reject(e.target.error);
-  });
-}
-
-async function dbPut(store, key, value) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    tx.objectStore(store).put(value, key);
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).put(blob, id);
     tx.oncomplete = () => resolve();
     tx.onerror = (e) => reject(e.target.error);
   });
 }
 
-async function dbDelete(store, key) {
+async function getPhoto(id) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    tx.objectStore(store).delete(key);
-    tx.oncomplete = () => resolve();
-    tx.onerror = (e) => reject(e.target.error);
-  });
-}
-
-async function dbGetAllKeys(store) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).getAllKeys();
+    const tx = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).get(id);
     req.onsuccess = () => resolve(req.result);
     req.onerror = (e) => reject(e.target.error);
   });
 }
 
-async function deleteKeysWithPrefix(store, prefix) {
-  const keys = await dbGetAllKeys(store);
-  for (const k of keys) {
-    if (typeof k === 'string' && k.startsWith(prefix)) {
-      await dbDelete(store, k);
-    }
-  }
+async function deleteAllPhotos() {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).clear();
+    tx.oncomplete = () => resolve();
+    tx.onerror = (e) => reject(e.target.error);
+  });
 }
 
-async function getAllPropertyKeys(store, propertyId) {
-  const prefix = propertyId + '::';
-  const keys = await dbGetAllKeys(store);
-  return keys.filter(k => typeof k === 'string' && k.startsWith(prefix));
-}
-
-/* -------- Property Management -------- */
-function uuid() {
-  return 'p-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
-}
-
-function getProperties() {
-  try {
-    const raw = localStorage.getItem(LS_PROPS);
-    if (!raw) return [];
-    return JSON.parse(raw);
-  } catch (e) { return []; }
-}
-
-function setProperties(arr) {
-  try { localStorage.setItem(LS_PROPS, JSON.stringify(arr)); } catch (e) {}
-}
-
-function getActiveId() {
-  return localStorage.getItem(LS_ACTIVE);
-}
-
-function setActiveId(id) {
-  if (id) localStorage.setItem(LS_ACTIVE, id);
-  else localStorage.removeItem(LS_ACTIVE);
-}
-
-async function ensureDefaultProperty() {
-  let props = getProperties();
-  if (props.length > 0) return;
-  // Check if there's legacy data (unprefixed photo keys from v1)
-  const legacyKeys = await dbGetAllKeys(STORE_PHOTOS);
-  const hasLegacy = legacyKeys.some(k => typeof k === 'string' && k.startsWith('photo-'));
-  const id = uuid();
-  const name = hasLegacy ? 'Default Listing' : 'Untitled Property';
-  const now = Date.now();
-  props = [{ id, name, created: now, modified: now }];
-  setProperties(props);
-  setActiveId(id);
-  if (hasLegacy) {
-    // Migrate legacy photo keys to namespaced keys
-    for (const k of legacyKeys) {
-      if (typeof k === 'string' && k.startsWith('photo-')) {
-        const blob = await dbGet(STORE_PHOTOS, k);
-        if (blob) {
-          await dbPut(STORE_PHOTOS, id + '::' + k, blob);
-          await dbDelete(STORE_PHOTOS, k);
-        }
-      }
-    }
-    flashStatus('Migrated existing data');
-  }
-}
-
-function getActiveProperty() {
-  const id = getActiveId();
-  const props = getProperties();
-  return props.find(p => p.id === id) || props[0] || null;
-}
-
-async function newProperty(initialName) {
-  const id = uuid();
-  const name = initialName || ('Property ' + (getProperties().length + 1));
-  const now = Date.now();
-  const props = getProperties();
-  props.push({ id, name, created: now, modified: now });
-  setProperties(props);
-  await switchProperty(id);
-  refreshPropertyUI();
-  flashStatus('New property created');
-}
-
-function renameProperty(id, newName) {
-  const props = getProperties();
-  const p = props.find(x => x.id === id);
-  if (!p) return;
-  p.name = newName.trim() || 'Untitled';
-  p.modified = Date.now();
-  setProperties(props);
-  refreshPropertyUI();
-  if (id === currentPropertyId) {
-    document.getElementById('propertyBtnName').textContent = p.name;
-  }
-  flashStatus('Renamed');
-}
-
-async function duplicateProperty(id) {
-  const props = getProperties();
-  const src = props.find(p => p.id === id);
-  if (!src) return;
-  const newId = uuid();
-  const now = Date.now();
-  const newProp = { id: newId, name: src.name + ' (copy)', created: now, modified: now };
-  // Copy all photos
-  const photoKeys = await getAllPropertyKeys(STORE_PHOTOS, id);
-  for (const k of photoKeys) {
-    const blob = await dbGet(STORE_PHOTOS, k);
-    if (blob) {
-      const slot = k.substring((id + '::').length);
-      await dbPut(STORE_PHOTOS, newId + '::' + slot, blob);
-    }
-  }
-  // Copy text
-  const text = await dbGet(STORE_TEXTS, id);
-  if (text) await dbPut(STORE_TEXTS, newId, text);
-  props.push(newProp);
-  setProperties(props);
-  refreshPropertyUI();
-  flashStatus('Duplicated');
-}
-
-async function deleteProperty(id) {
-  const props = getProperties();
-  const p = props.find(x => x.id === id);
-  if (!p) return;
-  const ok = confirm(`Delete "${p.name}"?\n\nAll photos and text for this property will be permanently removed. This cannot be undone.`);
-  if (!ok) return;
-  // Delete photos
-  const photoKeys = await getAllPropertyKeys(STORE_PHOTOS, id);
-  for (const k of photoKeys) await dbDelete(STORE_PHOTOS, k);
-  // Delete texts
-  await dbDelete(STORE_TEXTS, id);
-  // Remove from list
-  const newProps = props.filter(x => x.id !== id);
-  setProperties(newProps);
-  // If active was deleted, switch to another or create new
-  if (id === currentPropertyId) {
-    if (newProps.length > 0) {
-      await switchProperty(newProps[0].id);
-    } else {
-      await newProperty('Untitled Property');
-      return; // newProperty already refreshed
-    }
-  }
-  refreshPropertyUI();
-  flashStatus('Deleted');
-}
-
-async function switchProperty(id) {
-  // Save current text edits before switching
-  if (currentPropertyId) {
-    await saveTextNow();
-  }
-  // Clear DOM
-  clearAllDOMPhotos();
-  clearAllDOMText();
-  // Switch
-  currentPropertyId = id;
-  setActiveId(id);
-  // Update header
-  const p = getProperties().find(x => x.id === id);
-  if (p) document.getElementById('propertyBtnName').textContent = p.name;
-  // Load new
-  await restoreAllPhotos();
-  await restoreAllText();
-  refreshPropertyUI();
-}
-
-/* -------- Property modal UI -------- */
-function togglePropertyModal() {
-  const m = document.getElementById('propertyModal');
-  if (!m) return;
-  if (m.classList.contains('open')) {
-    m.classList.remove('open');
-  } else {
-    refreshPropertyUI();
-    m.classList.add('open');
-  }
-}
-
-function refreshPropertyUI() {
-  const listEl = document.getElementById('propertyList');
-  if (!listEl) return;
-  const props = getProperties().slice().sort((a, b) => b.modified - a.modified);
-  listEl.innerHTML = '';
-  for (const p of props) {
-    const item = document.createElement('div');
-    item.className = 'property-item' + (p.id === currentPropertyId ? ' active' : '');
-
-    const info = document.createElement('div');
-    info.className = 'property-item-info';
-
-    const nameEl = document.createElement('div');
-    nameEl.className = 'property-item-name';
-    const nameText = document.createElement('span');
-    nameText.textContent = p.name;
-    nameEl.appendChild(nameText);
-    if (p.id === currentPropertyId) {
-      const badge = document.createElement('span');
-      badge.className = 'property-item-active-badge';
-      badge.textContent = 'Active';
-      nameEl.appendChild(badge);
-    }
-
-    const meta = document.createElement('div');
-    meta.className = 'property-item-meta';
-    const d = new Date(p.modified);
-    meta.textContent = 'Modified ' + d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-
-    info.appendChild(nameEl);
-    info.appendChild(meta);
-
-    const actions = document.createElement('div');
-    actions.className = 'property-item-actions';
-
-    // Switch / Active
-    if (p.id !== currentPropertyId) {
-      const switchBtn = document.createElement('button');
-      switchBtn.className = 'property-item-btn primary';
-      switchBtn.textContent = 'Open';
-      switchBtn.onclick = async () => {
-        await switchProperty(p.id);
-        togglePropertyModal();
-      };
-      actions.appendChild(switchBtn);
-    }
-
-    // Rename
-    const renameBtn = document.createElement('button');
-    renameBtn.className = 'property-item-btn';
-    renameBtn.textContent = 'Rename';
-    renameBtn.onclick = () => {
-      const newName = prompt('Rename property:', p.name);
-      if (newName !== null) renameProperty(p.id, newName);
-    };
-    actions.appendChild(renameBtn);
-
-    // Duplicate
-    const dupBtn = document.createElement('button');
-    dupBtn.className = 'property-item-btn';
-    dupBtn.textContent = 'Duplicate';
-    dupBtn.onclick = () => duplicateProperty(p.id);
-    actions.appendChild(dupBtn);
-
-    // Delete (only if more than one OR is not current; always allow but warn handles it)
-    const delBtn = document.createElement('button');
-    delBtn.className = 'property-item-btn danger';
-    delBtn.textContent = 'Delete';
-    delBtn.onclick = () => deleteProperty(p.id);
-    actions.appendChild(delBtn);
-
-    item.appendChild(info);
-    item.appendChild(actions);
-    listEl.appendChild(item);
-  }
-}
-
-/* -------- Photos -------- */
+/* ---------- Stable IDs for image slots ---------- */
 function assignPhotoIds() {
   document.querySelectorAll('.img').forEach((box, idx) => {
     if (!box.dataset.photoId) {
@@ -2105,22 +1654,24 @@ function assignPhotoIds() {
   });
 }
 
-function photoKey(slotId) {
-  return currentPropertyId + '::' + slotId;
-}
+/* ---------- Object URL tracking (to avoid memory leaks) ---------- */
+const activeURLs = new Map(); // photoId -> objectURL
 
 function setImageFromBlob(box, blob) {
   const img = box.querySelector('img');
   if (!img) return;
   const id = box.dataset.photoId;
-  if (activeURLs.has(id)) URL.revokeObjectURL(activeURLs.get(id));
+  // revoke previous URL for this slot, if any
+  if (activeURLs.has(id)) {
+    URL.revokeObjectURL(activeURLs.get(id));
+  }
   const url = URL.createObjectURL(blob);
   activeURLs.set(id, url);
   img.src = url;
   img.classList.add('loaded');
 }
 
-function clearImageDOM(box) {
+function clearImage(box) {
   const img = box.querySelector('img');
   const id = box.dataset.photoId;
   if (activeURLs.has(id)) {
@@ -2135,19 +1686,28 @@ function clearImageDOM(box) {
   if (fileInput) fileInput.value = '';
 }
 
-function clearAllDOMPhotos() {
-  document.querySelectorAll('.img[data-photo-id]').forEach(clearImageDOM);
+/* ---------- Save status indicator ---------- */
+let statusTimer = null;
+function flashStatus(msg) {
+  const el = document.getElementById('saveStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => el.classList.remove('show'), 1800);
 }
 
+/* ---------- File upload handler (called from inputs) ---------- */
 async function loadImage(event, input) {
   const file = event.target.files[0];
   if (!file) return;
   const box = input.parentElement;
-  const slotId = box.dataset.photoId;
+  const id = box.dataset.photoId;
+  // Show immediately
   setImageFromBlob(box, file);
+  // Persist
   try {
-    await dbPut(STORE_PHOTOS, photoKey(slotId), file);
-    bumpModified();
+    await putPhoto(id, file);
     flashStatus('Saved');
   } catch (err) {
     console.warn('Photo save failed:', err);
@@ -2155,12 +1715,13 @@ async function loadImage(event, input) {
   }
 }
 
+/* ---------- Restore photos on load ---------- */
 async function restoreAllPhotos() {
   const boxes = document.querySelectorAll('.img[data-photo-id]');
   let restored = 0;
   for (const box of boxes) {
     try {
-      const blob = await dbGet(STORE_PHOTOS, photoKey(box.dataset.photoId));
+      const blob = await getPhoto(box.dataset.photoId);
       if (blob) {
         setImageFromBlob(box, blob);
         restored++;
@@ -2172,14 +1733,13 @@ async function restoreAllPhotos() {
   if (restored > 0) flashStatus(restored + ' photos restored');
 }
 
+/* ---------- Clear button ---------- */
 async function clearAllPhotos() {
-  const p = getActiveProperty();
-  const ok = confirm(`Clear all photos in "${p ? p.name : 'this property'}"?\n\nThis only affects the active property. Text is not affected. This cannot be undone.`);
+  const ok = confirm('Clear all uploaded photos?\n\nThis will remove every photo from this brochure and from local storage. Text edits are not affected. This cannot be undone.');
   if (!ok) return;
   try {
-    const keys = await getAllPropertyKeys(STORE_PHOTOS, currentPropertyId);
-    for (const k of keys) await dbDelete(STORE_PHOTOS, k);
-    document.querySelectorAll('.img[data-photo-id]').forEach(clearImageDOM);
+    await deleteAllPhotos();
+    document.querySelectorAll('.img[data-photo-id]').forEach(clearImage);
     flashStatus('Photos cleared');
   } catch (err) {
     console.warn('Clear failed:', err);
@@ -2187,107 +1747,7 @@ async function clearAllPhotos() {
   }
 }
 
-/* -------- Text persistence (NEW) -------- */
-function assignTextIds() {
-  document.querySelectorAll('[contenteditable]').forEach((el, idx) => {
-    if (!el.dataset.editId) {
-      el.dataset.editId = 'edit-' + idx;
-    }
-  });
-}
-
-function collectAllText() {
-  const data = {};
-  document.querySelectorAll('[contenteditable][data-edit-id]').forEach(el => {
-    const id = el.dataset.editId;
-    const html = el.innerHTML.trim();
-    // Only save if not empty and different from placeholder default
-    if (html) data[id] = html;
-  });
-  return data;
-}
-
-function clearAllDOMText() {
-  document.querySelectorAll('[contenteditable][data-edit-id]').forEach(el => {
-    // Restore original content (from data-original attribute if present, else clear)
-    if (el.dataset.original !== undefined) {
-      el.innerHTML = el.dataset.original;
-    } else {
-      el.innerHTML = '';
-    }
-  });
-}
-
-function snapshotOriginalText() {
-  document.querySelectorAll('[contenteditable][data-edit-id]').forEach(el => {
-    if (el.dataset.original === undefined) {
-      el.dataset.original = el.innerHTML;
-    }
-  });
-}
-
-async function restoreAllText() {
-  try {
-    const data = await dbGet(STORE_TEXTS, currentPropertyId);
-    if (!data) return;
-    document.querySelectorAll('[contenteditable][data-edit-id]').forEach(el => {
-      const saved = data[el.dataset.editId];
-      if (saved !== undefined) el.innerHTML = saved;
-    });
-  } catch (e) {
-    console.warn('Text restore failed:', e);
-  }
-}
-
-let textSaveTimer = null;
-function scheduleTextSave() {
-  clearTimeout(textSaveTimer);
-  textSaveTimer = setTimeout(saveTextNow, 600);
-}
-
-async function saveTextNow() {
-  if (!currentPropertyId) return;
-  clearTimeout(textSaveTimer);
-  try {
-    const data = collectAllText();
-    await dbPut(STORE_TEXTS, currentPropertyId, data);
-    bumpModified();
-    flashStatus('Saved');
-  } catch (e) {
-    console.warn('Text save failed:', e);
-  }
-}
-
-function attachTextSaveHandlers() {
-  document.querySelectorAll('[contenteditable][data-edit-id]').forEach(el => {
-    if (el.dataset.handlerAttached) return;
-    el.dataset.handlerAttached = '1';
-    el.addEventListener('input', scheduleTextSave);
-    el.addEventListener('blur', saveTextNow);
-  });
-}
-
-/* -------- Misc -------- */
-function bumpModified() {
-  if (!currentPropertyId) return;
-  const props = getProperties();
-  const p = props.find(x => x.id === currentPropertyId);
-  if (p) {
-    p.modified = Date.now();
-    setProperties(props);
-  }
-}
-
-let statusTimer = null;
-function flashStatus(msg) {
-  const el = document.getElementById('saveStatus');
-  if (!el) return;
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(statusTimer);
-  statusTimer = setTimeout(() => el.classList.remove('show'), 1800);
-}
-
+/* ---------- Template switching ---------- */
 function setTemplate(n) {
   document.body.className = 'show-' + n;
   document.querySelectorAll('.seg button').forEach(b => {
@@ -2296,41 +1756,72 @@ function setTemplate(n) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
+/* ---------- Page Index Matrix Modal ---------- */
 function toggleMatrix() {
   const m = document.getElementById('matrixModal');
   if (m) m.classList.toggle('open');
 }
-
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     const m = document.getElementById('matrixModal');
     if (m && m.classList.contains('open')) m.classList.remove('open');
-    const pm = document.getElementById('propertyModal');
-    if (pm && pm.classList.contains('open')) pm.classList.remove('open');
   }
 });
 
-/* -------- Init -------- */
-document.addEventListener('DOMContentLoaded', async () => {
+/* ---------- Stat field persistence (Beds / Baths / Sq Ft / Lot — labels & values) ----------
+   Text edits weren't saved anywhere (only photos were). These eight fields
+   (the four labels and four values) now persist to localStorage so they
+   survive reloads, like the photos do. */
+const STAT_KEY = 'luxury_brochure_stats';
+function saveStats() {
+  try {
+    const data = {};
+    document.querySelectorAll('.stats-row [data-skey]').forEach(el => {
+      data[el.dataset.skey] = el.textContent.trim();
+    });
+    localStorage.setItem(STAT_KEY, JSON.stringify(data));
+    flashStatus('Saved');
+  } catch (err) { console.warn('Stat save failed:', err); }
+}
+function restoreStats() {
+  try {
+    const raw = localStorage.getItem(STAT_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    document.querySelectorAll('.stats-row [data-skey]').forEach(el => {
+      const v = data[el.dataset.skey];
+      if (v != null && v !== '') el.textContent = v;
+    });
+  } catch (err) { console.warn('Stat restore failed:', err); }
+}
+function initStatEditing() {
+  document.querySelectorAll('.stats-row [data-skey]').forEach(el => {
+    el.addEventListener('input', () => {
+      clearTimeout(el._saveTimer);
+      el._saveTimer = setTimeout(saveStats, 400);
+    });
+    el.addEventListener('blur', () => {
+      // a cleared contenteditable can keep a stray <br>; force it truly empty
+      // so the placeholder shows instead of an empty-looking box
+      if (el.textContent.trim() === '') el.innerHTML = '';
+      saveStats();
+    });
+  });
+}
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded', () => {
   assignPhotoIds();
-  assignTextIds();
-  snapshotOriginalText();   // capture defaults to restore on switch
-  await ensureDefaultProperty();
-  const active = getActiveProperty();
-  if (active) {
-    currentPropertyId = active.id;
-    setActiveId(active.id);
-    document.getElementById('propertyBtnName').textContent = active.name;
-  }
-  await restoreAllPhotos();
-  await restoreAllText();
-  attachTextSaveHandlers();
+  restoreAllPhotos();
+  restoreStats();
+  initStatEditing();
 });
 
+/* Revoke object URLs when leaving the page */
 window.addEventListener('beforeunload', () => {
-  // Best-effort sync save (browsers may not run async)
-  saveTextNow();
-  for (const url of activeURLs.values()) URL.revokeObjectURL(url);
+  for (const url of activeURLs.values()) {
+    URL.revokeObjectURL(url);
+  }
 });
 </script>
 </body>
