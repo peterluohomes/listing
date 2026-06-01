@@ -243,6 +243,21 @@
   }
   .matrix-footer .gold { color: var(--accent); }
   .controls .hint { font-size: 10px; color: #888; letter-spacing: 0.1em; }
+  .controls .propbar { display: flex; align-items: center; gap: 8px; }
+  .controls .prop-label { font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent-light); font-weight: 500; }
+  .controls .prop-select {
+    background: rgba(255,255,255,0.08); color: #fff;
+    border: 1px solid rgba(157,129,71,0.5); border-radius: 3px;
+    padding: 8px 10px; font-family: 'DM Sans', sans-serif; font-size: 11px;
+    letter-spacing: 0.04em; cursor: pointer; max-width: 200px;
+  }
+  .controls .prop-select option { color: #111; }
+  .controls .prop-btn {
+    background: transparent; color: var(--accent-light); border: 1px solid rgba(157,129,71,0.5);
+    padding: 8px 12px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; border-radius: 3px; transition: all 0.2s;
+  }
+  .controls .prop-btn:hover { color: #fff; border-color: var(--accent); background: rgba(157,129,71,0.18); }
 
   .stage { padding-top: 80px; }
 
@@ -691,6 +706,13 @@
     <button data-len="32" onclick="setTemplate(32)">32 Pg</button>
   </div>
   <span class="hint">Click images to upload · Click any text to edit</span>
+  <div class="propbar">
+    <span class="prop-label">Property</span>
+    <select id="propSelect" class="prop-select" onchange="switchProperty(this.value)"></select>
+    <button class="prop-btn" onclick="newProperty()">+ New</button>
+    <button class="prop-btn" onclick="renameProperty()">Rename</button>
+    <button class="prop-btn" onclick="deleteProperty()">Delete</button>
+  </div>
   <span class="save-status" id="saveStatus">Saved</span>
   <button class="matrix-btn" onclick="toggleMatrix()">Page Index</button>
   <button class="clear-btn" onclick="clearAllPhotos()">Clear Photos</button>
@@ -1707,7 +1729,7 @@ async function loadImage(event, input) {
   setImageFromBlob(box, file);
   // Persist
   try {
-    await putPhoto(id, file);
+    await putPhoto(pkey(id), file);
     flashStatus('Saved');
   } catch (err) {
     console.warn('Photo save failed:', err);
@@ -1721,7 +1743,7 @@ async function restoreAllPhotos() {
   let restored = 0;
   for (const box of boxes) {
     try {
-      const blob = await getPhoto(box.dataset.photoId);
+      const blob = await getPhoto(pkey(box.dataset.photoId));
       if (blob) {
         setImageFromBlob(box, blob);
         restored++;
@@ -1733,12 +1755,15 @@ async function restoreAllPhotos() {
   if (restored > 0) flashStatus(restored + ' photos restored');
 }
 
-/* ---------- Clear button ---------- */
+/* ---------- Clear button (current property only) ---------- */
 async function clearAllPhotos() {
-  const ok = confirm('Clear all uploaded photos?\n\nThis will remove every photo from this brochure and from local storage. Text edits are not affected. This cannot be undone.');
+  const props = loadProps();
+  const cur = props.find(p => p.id === getCurrentId());
+  const nm = cur ? cur.name : 'this property';
+  const ok = confirm('Clear all photos for "' + nm + '"?\n\nThis removes the photos for the current property only — other properties and all text are unaffected. This cannot be undone.');
   if (!ok) return;
   try {
-    await deleteAllPhotos();
+    await deletePropertyPhotos(getCurrentId());
     document.querySelectorAll('.img[data-photo-id]').forEach(clearImage);
     flashStatus('Photos cleared');
   } catch (err) {
@@ -1768,24 +1793,66 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-/* ---------- Stat field persistence (Beds / Baths / Sq Ft / Lot — labels & values) ----------
-   Text edits weren't saved anywhere (only photos were). These eight fields
-   (the four labels and four values) now persist to localStorage so they
-   survive reloads, like the photos do. */
-const STAT_KEY = 'luxury_brochure_stats';
+/* ============================================================
+   MULTI-PROPERTY SYSTEM
+   Each property keeps its own stats + photos so one brochure
+   file can hold several listings. Storage is namespaced by a
+   property id, with an in-memory fallback so it still works
+   where localStorage is blocked (e.g. sandboxed previews).
+   ============================================================ */
+const _mem = { props: null, current: null, stats: {} };
+
+function loadProps() {
+  try { const v = localStorage.getItem('lb_props'); if (v != null) return JSON.parse(v) || []; } catch (e) {}
+  return _mem.props || [];
+}
+function saveProps(arr) {
+  _mem.props = arr;
+  try { localStorage.setItem('lb_props', JSON.stringify(arr)); } catch (e) {}
+}
+function getCurrentId() {
+  try { const v = localStorage.getItem('lb_current'); if (v != null) return v; } catch (e) {}
+  return _mem.current;
+}
+function setCurrentId(id) {
+  _mem.current = id;
+  try { localStorage.setItem('lb_current', id); } catch (e) {}
+}
+function genId() { return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function pkey(slot) { return getCurrentId() + '::' + slot; }
+
+/* ---------- Stat defaults (captured from the original markup) ---------- */
+const STAT_DEFAULTS = {};
+function captureStatDefaults() {
+  document.querySelectorAll('.stats-row [data-skey]').forEach(el => {
+    STAT_DEFAULTS[el.dataset.skey] = el.textContent;
+  });
+}
+function resetStatsToDefaults() {
+  document.querySelectorAll('.stats-row [data-skey]').forEach(el => {
+    el.textContent = (STAT_DEFAULTS[el.dataset.skey] != null) ? STAT_DEFAULTS[el.dataset.skey] : '';
+  });
+}
+
+/* ---------- Stat persistence (per property) ---------- */
+function statStorageKey() { return 'lb_stats:' + getCurrentId(); }
 function saveStats() {
   try {
     const data = {};
     document.querySelectorAll('.stats-row [data-skey]').forEach(el => {
       data[el.dataset.skey] = el.textContent.trim();
     });
-    localStorage.setItem(STAT_KEY, JSON.stringify(data));
+    const json = JSON.stringify(data);
+    _mem.stats[statStorageKey()] = json;
+    try { localStorage.setItem(statStorageKey(), json); } catch (e) {}
     flashStatus('Saved');
   } catch (err) { console.warn('Stat save failed:', err); }
 }
 function restoreStats() {
   try {
-    const raw = localStorage.getItem(STAT_KEY);
+    let raw = null;
+    try { raw = localStorage.getItem(statStorageKey()); } catch (e) {}
+    if (raw == null) raw = _mem.stats[statStorageKey()] || null;
     if (!raw) return;
     const data = JSON.parse(raw);
     document.querySelectorAll('.stats-row [data-skey]').forEach(el => {
@@ -1809,13 +1876,128 @@ function initStatEditing() {
   });
 }
 
-/* ---------- Init ---------- */
-document.addEventListener('DOMContentLoaded', () => {
-  assignPhotoIds();
-  restoreAllPhotos();
+/* ---------- Property dropdown ---------- */
+function renderPropSelect() {
+  const sel = document.getElementById('propSelect');
+  if (!sel) return;
+  const props = loadProps();
+  const cur = getCurrentId();
+  sel.innerHTML = '';
+  props.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p.id;
+    o.textContent = p.name;
+    if (p.id === cur) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+
+/* ---------- Photo deletion helpers (per property) ---------- */
+async function deletePhoto(key) {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).delete(key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = (e) => reject(e.target.error);
+  });
+}
+async function deletePropertyPhotos(id) {
+  const boxes = document.querySelectorAll('.img[data-photo-id]');
+  for (const box of boxes) {
+    try { await deletePhoto(id + '::' + box.dataset.photoId); } catch (e) {}
+  }
+}
+
+/* ---------- Property actions ---------- */
+async function switchProperty(id) {
+  if (!id) return;
+  setCurrentId(id);
+  resetStatsToDefaults();
   restoreStats();
+  document.querySelectorAll('.img[data-photo-id]').forEach(clearImage);
+  await restoreAllPhotos();
+  renderPropSelect();
+  flashStatus('Switched');
+}
+async function newProperty() {
+  const props = loadProps();
+  const name = (prompt('Name this property (e.g. the address):', 'Property ' + (props.length + 1)) || '').trim();
+  if (!name) return;
+  const id = genId();
+  props.push({ id, name });
+  saveProps(props);
+  await switchProperty(id);   // fresh id => defaults + no photos
+  flashStatus('Created');
+}
+function renameProperty() {
+  const props = loadProps();
+  const cur = props.find(p => p.id === getCurrentId());
+  if (!cur) return;
+  const name = (prompt('Rename this property:', cur.name) || '').trim();
+  if (!name) return;
+  cur.name = name;
+  saveProps(props);
+  renderPropSelect();
+  flashStatus('Renamed');
+}
+async function deleteProperty() {
+  let props = loadProps();
+  const cur = props.find(p => p.id === getCurrentId());
+  if (!cur) return;
+  if (props.length <= 1) { alert('This is your only property — use Rename instead of deleting it.'); return; }
+  if (!confirm('Delete "' + cur.name + '"?\n\nThis removes its saved stats and photos. Other properties are unaffected. This cannot be undone.')) return;
+  try { localStorage.removeItem('lb_stats:' + cur.id); } catch (e) {}
+  delete _mem.stats['lb_stats:' + cur.id];
+  await deletePropertyPhotos(cur.id);
+  props = props.filter(p => p.id !== cur.id);
+  saveProps(props);
+  await switchProperty(props[0].id);
+  flashStatus('Deleted');
+}
+
+/* ---------- One-time migration of pre-multi-property data ---------- */
+async function migrateLegacyData(id) {
+  try {
+    const legacy = localStorage.getItem('luxury_brochure_stats');
+    if (legacy && !localStorage.getItem('lb_stats:' + id)) {
+      localStorage.setItem('lb_stats:' + id, legacy);
+    }
+  } catch (e) {}
+  try {
+    const boxes = document.querySelectorAll('.img[data-photo-id]');
+    for (const box of boxes) {
+      const slot = box.dataset.photoId;
+      let blob = null;
+      try { blob = await getPhoto(slot); } catch (e) {}      // legacy un-namespaced key
+      if (blob) { try { await putPhoto(id + '::' + slot, blob); } catch (e) {} }
+    }
+  } catch (e) {}
+}
+async function ensurePropsInitialized() {
+  let props = loadProps();
+  if (!props || props.length === 0) {
+    const id = genId();
+    props = [{ id, name: 'Property 1' }];
+    saveProps(props);
+    setCurrentId(id);
+    await migrateLegacyData(id);   // preserve any existing work as "Property 1"
+  } else if (!getCurrentId() || !props.find(p => p.id === getCurrentId())) {
+    setCurrentId(props[0].id);
+  }
+}
+
+/* ---------- Init ---------- */
+async function initApp() {
+  assignPhotoIds();
+  captureStatDefaults();
   initStatEditing();
-});
+  await ensurePropsInitialized();
+  renderPropSelect();
+  restoreStats();
+  await restoreAllPhotos();
+}
+document.addEventListener('DOMContentLoaded', () => { initApp(); });
 
 /* Revoke object URLs when leaving the page */
 window.addEventListener('beforeunload', () => {
