@@ -719,7 +719,24 @@
   <span class="save-status" id="saveStatus">Saved</span>
   <button class="matrix-btn" onclick="toggleMatrix()">Page Index</button>
   <button class="clear-btn" onclick="clearAllPhotos()">Clear Photos</button>
+  <button class="matrix-btn" onclick="runStorageDiagnostics()">Test saving</button>
   <button class="print" onclick="window.print()">Export PDF</button>
+</div>
+
+<div id="diagPanel" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(8,15,30,.78);
+  align-items:center; justify-content:center; padding:20px;">
+  <div style="background:#fff; max-width:560px; width:100%; border-radius:6px; overflow:hidden;
+    font-family:'DM Sans',sans-serif; box-shadow:0 30px 80px rgba(0,0,0,.4);">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px;
+      background:#0E1C38; color:#fff;">
+      <strong style="letter-spacing:.08em;">Storage diagnostics</strong>
+      <button onclick="document.getElementById('diagPanel').style.display='none'"
+        style="background:none; border:1px solid rgba(255,255,255,.4); color:#fff; border-radius:3px;
+        padding:5px 12px; cursor:pointer;">Close</button>
+    </div>
+    <pre id="diagOut" style="margin:0; padding:20px; font-size:13px; line-height:1.65; white-space:pre-wrap;
+      word-break:break-word; color:#23262B; max-height:70vh; overflow:auto;"></pre>
+  </div>
 </div>
 
 <div id="storageWarning" style="display:none; background:#7a1f1f; color:#fff; font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.5; padding:12px 20px; text-align:center;">
@@ -2113,6 +2130,79 @@ async function checkStorage() {
   }
   detail.textContent = ' ' + msg;
   banner.style.display = 'block';
+}
+
+const BUILD_VERSION = '2026-06-10c (arraybuffer + diagnostics)';
+
+async function runStorageDiagnostics() {
+  const out = document.getElementById('diagOut');
+  const panel = document.getElementById('diagPanel');
+  panel.style.display = 'flex';
+  const L = [];
+  L.push('Build: ' + BUILD_VERSION);
+  L.push('URL: ' + location.href);
+  L.push('Origin: ' + location.origin);
+  L.push('');
+
+  // localStorage
+  try {
+    localStorage.setItem('__diag__', '1'); localStorage.removeItem('__diag__');
+    L.push('localStorage: OK');
+    L.push('  lb_current = ' + (localStorage.getItem('lb_current') || '(none)'));
+    const props = localStorage.getItem('lb_props');
+    L.push('  lb_props   = ' + (props ? props.slice(0, 120) : '(none)'));
+    const cKeys = Object.keys(localStorage).filter(k => k.indexOf('lb_content:') === 0).length;
+    L.push('  saved-text records = ' + cKeys);
+  } catch (e) {
+    L.push('localStorage: BLOCKED (' + e.name + ')');
+  }
+  L.push('');
+
+  // existing photos in IndexedDB
+  try {
+    const db = await openDB();
+    const keys = await new Promise((res, rej) => {
+      const r = db.transaction(STORE, 'readonly').objectStore(STORE).getAllKeys();
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+    L.push('Photos currently in IndexedDB: ' + keys.length);
+    keys.slice(0, 8).forEach(k => L.push('  ' + k));
+    if (keys.length > 8) L.push('  ... +' + (keys.length - 8) + ' more');
+  } catch (e) {
+    L.push('IndexedDB read: FAILED (' + e.name + ': ' + e.message + ')');
+  }
+  L.push('');
+
+  // realistic write test (~3 MB, the size of a real photo)
+  try {
+    const bytes = new Uint8Array(3 * 1024 * 1024);
+    bytes.fill(7);
+    const blob = new Blob([bytes], { type: 'image/jpeg' });
+    await putPhoto('__diag_write__', blob);
+    const back = await getPhoto('__diag_write__');
+    const size = back ? (await back.arrayBuffer()).byteLength : 0;
+    await deletePhoto('__diag_write__');
+    if (size === bytes.length) L.push('Photo write test (3 MB): OK \u2014 wrote and read back correctly');
+    else L.push('Photo write test: PROBLEM \u2014 wrote 3 MB but read back ' + size + ' bytes');
+  } catch (e) {
+    L.push('Photo write test: FAILED \u2014 ' + e.name + ': ' + e.message);
+    if (/quota/i.test(e.name + e.message)) L.push('  \u2192 This is a storage-quota limit on this site.');
+  }
+  L.push('');
+
+  // quota / persistence
+  try {
+    if (navigator.storage && navigator.storage.estimate) {
+      const est = await navigator.storage.estimate();
+      L.push('Quota:  ' + Math.round(est.quota / 1048576) + ' MB');
+      L.push('In use: ' + (Math.round(est.usage / 1048576 * 100) / 100) + ' MB');
+    } else { L.push('Quota: (storage.estimate not available)'); }
+    if (navigator.storage && navigator.storage.persisted) {
+      L.push('Persistent storage granted: ' + (await navigator.storage.persisted()));
+    }
+  } catch (e) { L.push('Quota check: ' + e.name); }
+
+  out.textContent = L.join('\n');
 }
 
 async function initApp() {
