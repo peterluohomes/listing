@@ -1645,9 +1645,15 @@ function openDB() {
 
 async function putPhoto(id, blob) {
   const db = await openDB();
+  // Store raw bytes (ArrayBuffer) + MIME type rather than the Blob itself.
+  // Safari/WebKit can fail to round-trip Blob/File objects through IndexedDB
+  // (the write succeeds but reads back empty); ArrayBuffers persist reliably
+  // across all browsers.
+  const buf = await blob.arrayBuffer();
+  const record = { buf, type: blob.type || 'image/jpeg' };
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, 'readwrite');
-    tx.objectStore(STORE).put(blob, id);
+    tx.objectStore(STORE).put(record, id);
     tx.oncomplete = () => resolve();
     tx.onerror = (e) => reject(e.target.error);
   });
@@ -1658,7 +1664,14 @@ async function getPhoto(id) {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, 'readonly');
     const req = tx.objectStore(STORE).get(id);
-    req.onsuccess = () => resolve(req.result);
+    req.onsuccess = () => {
+      const r = req.result;
+      if (!r) { resolve(undefined); return; }
+      // New format: { buf, type } -> rebuild a Blob from the stored bytes.
+      if (r.buf) { resolve(new Blob([r.buf], { type: r.type || 'image/jpeg' })); return; }
+      // Legacy format: a Blob was stored directly (still works where supported).
+      resolve(r);
+    };
     req.onerror = (e) => reject(e.target.error);
   });
 }
