@@ -1647,14 +1647,30 @@ let dbPromise = null;
 function openDB() {
   if (dbPromise) return dbPromise;
   dbPromise = new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    // Open at the database's CURRENT version (no version argument). Hard-coding
+    // a version throws VersionError if another build/tool on this origin already
+    // bumped the database to a higher version. Omitting it opens whatever exists
+    // (or creates it at v1 if it doesn't exist yet).
+    const req = indexedDB.open(DB_NAME);
     req.onupgradeneeded = (e) => {
       const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE)) {
-        db.createObjectStore(STORE);
-      }
+      if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
     };
-    req.onsuccess = (e) => resolve(e.target.result);
+    req.onsuccess = (e) => {
+      const db = e.target.result;
+      if (db.objectStoreNames.contains(STORE)) { resolve(db); return; }
+      // DB exists at some version but lacks our photo store — bump the version
+      // once to add it, then resolve.
+      const nextV = db.version + 1;
+      db.close();
+      const req2 = indexedDB.open(DB_NAME, nextV);
+      req2.onupgradeneeded = (e2) => {
+        const db2 = e2.target.result;
+        if (!db2.objectStoreNames.contains(STORE)) db2.createObjectStore(STORE);
+      };
+      req2.onsuccess = (e2) => resolve(e2.target.result);
+      req2.onerror = (e2) => reject(e2.target.error);
+    };
     req.onerror = (e) => reject(e.target.error);
   });
   return dbPromise;
@@ -2132,7 +2148,7 @@ async function checkStorage() {
   banner.style.display = 'block';
 }
 
-const BUILD_VERSION = '2026-06-10c (arraybuffer + diagnostics)';
+const BUILD_VERSION = '2026-06-10d (open-existing-version fix)';
 
 async function runStorageDiagnostics() {
   const out = document.getElementById('diagOut');
