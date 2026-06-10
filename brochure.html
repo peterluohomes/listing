@@ -1800,7 +1800,7 @@ document.addEventListener('keydown', (e) => {
    property id, with an in-memory fallback so it still works
    where localStorage is blocked (e.g. sandboxed previews).
    ============================================================ */
-const _mem = { props: null, current: null, stats: {} };
+const _mem = { props: null, current: null, stats: {}, content: {} };
 
 function loadProps() {
   try { const v = localStorage.getItem('lb_props'); if (v != null) return JSON.parse(v) || []; } catch (e) {}
@@ -1876,6 +1876,72 @@ function initStatEditing() {
   });
 }
 
+/* ============================================================
+   GENERAL CONTENT PERSISTENCE
+   The brochure is one large set of contenteditable regions:
+   headings, addresses, body copy, pull-quotes, feature lists,
+   captions, etc. The stats row keeps its own dedicated store
+   (above); EVERYTHING ELSE editable is saved here, per property,
+   so the designed brochure survives reloads and switches.
+   No contenteditable is nested inside another, so each region's
+   innerHTML can be saved and restored independently.
+   ============================================================ */
+function contentEls() {
+  return document.querySelectorAll('[contenteditable]:not([data-skey])');
+}
+function assignContentKeys() {
+  let i = 0;
+  contentEls().forEach(el => { el.dataset.ckey = 'c' + (i++); });
+}
+const CONTENT_DEFAULTS = {};
+function captureContentDefaults() {
+  contentEls().forEach(el => { CONTENT_DEFAULTS[el.dataset.ckey] = el.innerHTML; });
+}
+function resetContentToDefaults() {
+  contentEls().forEach(el => {
+    const d = CONTENT_DEFAULTS[el.dataset.ckey];
+    el.innerHTML = (d != null) ? d : '';
+  });
+}
+function contentStorageKey() { return 'lb_content:' + getCurrentId(); }
+function saveContent() {
+  try {
+    const data = {};
+    contentEls().forEach(el => { data[el.dataset.ckey] = el.innerHTML; });
+    const json = JSON.stringify(data);
+    _mem.content[contentStorageKey()] = json;
+    try { localStorage.setItem(contentStorageKey(), json); } catch (e) {}
+    flashStatus('Saved');
+  } catch (err) { console.warn('Content save failed:', err); }
+}
+function restoreContent() {
+  try {
+    let raw = null;
+    try { raw = localStorage.getItem(contentStorageKey()); } catch (e) {}
+    if (raw == null) raw = _mem.content[contentStorageKey()] || null;
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    contentEls().forEach(el => {
+      const v = data[el.dataset.ckey];
+      if (v != null) el.innerHTML = v;
+    });
+  } catch (err) { console.warn('Content restore failed:', err); }
+}
+function initContentEditing() {
+  contentEls().forEach(el => {
+    el.addEventListener('input', () => {
+      clearTimeout(el._saveTimer);
+      el._saveTimer = setTimeout(saveContent, 400);
+    });
+    el.addEventListener('blur', () => {
+      // a cleared contenteditable can keep a stray <br>; force it truly empty
+      // so the placeholder shows instead of an empty-looking box
+      if (el.textContent.trim() === '') el.innerHTML = '';
+      saveContent();
+    });
+  });
+}
+
 /* ---------- Property dropdown ---------- */
 function renderPropSelect() {
   const sel = document.getElementById('propSelect');
@@ -1915,6 +1981,8 @@ async function switchProperty(id) {
   setCurrentId(id);
   resetStatsToDefaults();
   restoreStats();
+  resetContentToDefaults();
+  restoreContent();
   document.querySelectorAll('.img[data-photo-id]').forEach(clearImage);
   await restoreAllPhotos();
   renderPropSelect();
@@ -1949,6 +2017,8 @@ async function deleteProperty() {
   if (!confirm('Delete "' + cur.name + '"?\n\nThis removes its saved stats and photos. Other properties are unaffected. This cannot be undone.')) return;
   try { localStorage.removeItem('lb_stats:' + cur.id); } catch (e) {}
   delete _mem.stats['lb_stats:' + cur.id];
+  try { localStorage.removeItem('lb_content:' + cur.id); } catch (e) {}
+  delete _mem.content['lb_content:' + cur.id];
   await deletePropertyPhotos(cur.id);
   props = props.filter(p => p.id !== cur.id);
   saveProps(props);
@@ -1990,11 +2060,15 @@ async function ensurePropsInitialized() {
 /* ---------- Init ---------- */
 async function initApp() {
   assignPhotoIds();
+  assignContentKeys();
   captureStatDefaults();
+  captureContentDefaults();
   initStatEditing();
+  initContentEditing();
   await ensurePropsInitialized();
   renderPropSelect();
   restoreStats();
+  restoreContent();
   await restoreAllPhotos();
 }
 document.addEventListener('DOMContentLoaded', () => { initApp(); });
