@@ -719,7 +719,24 @@
   <span class="save-status" id="saveStatus">Saved</span>
   <button class="matrix-btn" onclick="toggleMatrix()">Page Index</button>
   <button class="clear-btn" onclick="clearAllPhotos()">Clear Photos</button>
+  <label class="pdf-size" style="display:inline-flex; align-items:center; gap:6px; font-family:'DM Sans',sans-serif; font-size:12px; color:#33405c; margin:0 4px;">
+    Max
+    <input id="pdfTargetMB" type="number" min="0.3" step="0.5" value="5"
+      style="width:54px; padding:4px 6px; border:1px solid #c8cdd8; border-radius:3px; font-size:12px; text-align:right;">
+    MB
+  </label>
+  <button class="print" onclick="exportCompressedPDF()">Compressed PDF</button>
   <button class="print" onclick="window.print()">Export PDF</button>
+</div>
+
+<div id="pdfProgress" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(8,15,30,.82);
+  align-items:center; justify-content:center; font-family:'DM Sans',sans-serif;">
+  <div style="background:#fff; border-radius:6px; padding:26px 34px; min-width:280px; text-align:center; box-shadow:0 30px 80px rgba(0,0,0,.45);">
+    <div id="pdfProgressMsg" style="font-size:14px; color:#0E1C38; letter-spacing:.02em;">Preparing\u2026</div>
+    <div style="height:4px; background:#e6e8ee; border-radius:2px; margin-top:16px; overflow:hidden;">
+      <div id="pdfProgressBar" style="height:100%; width:0%; background:#A8824A; transition:width .2s ease;"></div>
+    </div>
+  </div>
 </div>
 
 <div id="storageWarning" style="display:none; background:#7a1f1f; color:#fff; font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.5; padding:12px 20px; text-align:center;">
@@ -1630,14 +1647,30 @@ let dbPromise = null;
 function openDB() {
   if (dbPromise) return dbPromise;
   dbPromise = new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    // Open at the database's CURRENT version (no version argument). Hard-coding
+    // a version throws VersionError if another build/tool on this origin already
+    // bumped the database to a higher version. Omitting it opens whatever exists
+    // (or creates it at v1 if it doesn't exist yet).
+    const req = indexedDB.open(DB_NAME);
     req.onupgradeneeded = (e) => {
       const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE)) {
-        db.createObjectStore(STORE);
-      }
+      if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE);
     };
-    req.onsuccess = (e) => resolve(e.target.result);
+    req.onsuccess = (e) => {
+      const db = e.target.result;
+      if (db.objectStoreNames.contains(STORE)) { resolve(db); return; }
+      // DB exists at some version but lacks our photo store — bump the version
+      // once to add it, then resolve.
+      const nextV = db.version + 1;
+      db.close();
+      const req2 = indexedDB.open(DB_NAME, nextV);
+      req2.onupgradeneeded = (e2) => {
+        const db2 = e2.target.result;
+        if (!db2.objectStoreNames.contains(STORE)) db2.createObjectStore(STORE);
+      };
+      req2.onsuccess = (e2) => resolve(e2.target.result);
+      req2.onerror = (e2) => reject(e2.target.error);
+    };
     req.onerror = (e) => reject(e.target.error);
   });
   return dbPromise;
@@ -1645,9 +1678,15 @@ function openDB() {
 
 async function putPhoto(id, blob) {
   const db = await openDB();
+  // Store raw bytes (ArrayBuffer) + MIME type rather than the Blob itself.
+  // Safari/WebKit can fail to round-trip Blob/File objects through IndexedDB
+  // (the write succeeds but reads back empty); ArrayBuffers persist reliably
+  // across all browsers.
+  const buf = await blob.arrayBuffer();
+  const record = { buf, type: blob.type || 'image/jpeg' };
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, 'readwrite');
-    tx.objectStore(STORE).put(blob, id);
+    tx.objectStore(STORE).put(record, id);
     tx.oncomplete = () => resolve();
     tx.onerror = (e) => reject(e.target.error);
   });
@@ -1658,7 +1697,14 @@ async function getPhoto(id) {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE, 'readonly');
     const req = tx.objectStore(STORE).get(id);
-    req.onsuccess = () => resolve(req.result);
+    req.onsuccess = () => {
+      const r = req.result;
+      if (!r) { resolve(undefined); return; }
+      // New format: { buf, type } -> rebuild a Blob from the stored bytes.
+      if (r.buf) { resolve(new Blob([r.buf], { type: r.type || 'image/jpeg' })); return; }
+      // Legacy format: a Blob was stored directly (still works where supported).
+      resolve(r);
+    };
     req.onerror = (e) => reject(e.target.error);
   });
 }
@@ -2100,6 +2146,123 @@ async function checkStorage() {
   }
   detail.textContent = ' ' + msg;
   banner.style.display = 'block';
+}
+
+const BUILD_VERSION = '2026-06-10e (compressed pdf export)';
+
+/* ============================================================
+   COMPRESSED PDF EXPORT
+   Renders each visible brochure page to an image and packs them
+   into a PDF, searching JPEG quality so the file lands at or
+   under the user's target size. Text is rasterized (the cost of
+   size control); the plain "Export PDF" button stays for crisp
+   vector text.
+   ============================================================ */
+function loadScriptOnce(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = resolve;
+    s.onerror = () => reject(new Error('Could not load ' + src));
+    document.head.appendChild(s);
+  });
+}
+async function ensurePdfLibs() {
+  if (!window.html2canvas) {
+    await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  }
+  if (!(window.jspdf && window.jspdf.jsPDF)) {
+    await loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  }
+}
+function pdfProgress(msg, pct) {
+  const wrap = document.getElementById('pdfProgress');
+  const m = document.getElementById('pdfProgressMsg');
+  const bar = document.getElementById('pdfProgressBar');
+  if (wrap) wrap.style.display = 'flex';
+  if (m && msg != null) m.textContent = msg;
+  if (bar && pct != null) bar.style.width = Math.max(0, Math.min(100, pct)) + '%';
+}
+function pdfProgressDone() {
+  const wrap = document.getElementById('pdfProgress');
+  if (wrap) wrap.style.display = 'none';
+}
+function estJpegBytes(canvas, q) {
+  // base64 chars * 3/4 ≈ byte length
+  return Math.round(canvas.toDataURL('image/jpeg', q).length * 0.75);
+}
+
+async function exportCompressedPDF() {
+  const targetMB = parseFloat(document.getElementById('pdfTargetMB').value);
+  if (!targetMB || targetMB <= 0) { alert('Enter a target size in MB (e.g. 5).'); return; }
+  const targetBytes = targetMB * 1024 * 1024;
+
+  const pages = [...document.querySelectorAll('.page')]
+    .filter(p => getComputedStyle(p).display !== 'none');
+  if (!pages.length) { alert('No pages to export.'); return; }
+
+  try {
+    pdfProgress('Loading PDF tools\u2026', 2);
+    await ensurePdfLibs();
+    if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
+
+    // Pick a render resolution sized to the target so quality lands in a good range.
+    const perPageKB = (targetMB * 1024) / pages.length;
+    const scale = perPageKB > 300 ? 2.2 : perPageKB > 150 ? 1.8 : perPageKB > 80 ? 1.5 : 1.2;
+
+    // 1) Render each visible page to a canvas (the expensive step).
+    const canvases = [];
+    for (let i = 0; i < pages.length; i++) {
+      pdfProgress('Rendering page ' + (i + 1) + ' of ' + pages.length + '\u2026', 5 + (i / pages.length) * 70);
+      const c = await window.html2canvas(pages[i], {
+        scale, useCORS: true, backgroundColor: '#ffffff', logging: false,
+        windowWidth: pages[i].scrollWidth, windowHeight: pages[i].scrollHeight,
+      });
+      canvases.push(c);
+    }
+
+    // 2) Binary-search JPEG quality to fit the target (with ~5% headroom for PDF overhead).
+    pdfProgress('Compressing to target size\u2026', 80);
+    let lo = 0.35, hi = 0.95, chosen = 0.35;
+    for (let i = 0; i < 7; i++) {
+      const q = (lo + hi) / 2;
+      let bytes = 0;
+      for (const c of canvases) bytes += estJpegBytes(c, q);
+      if (bytes <= targetBytes * 0.95) { chosen = q; lo = q; } else { hi = q; }
+    }
+
+    // 3) Build the PDF (Letter, 8.5 x 11 in) at the chosen quality.
+    pdfProgress('Building PDF\u2026', 90);
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'in', format: 'letter', orientation: 'portrait' });
+    for (let i = 0; i < canvases.length; i++) {
+      if (i > 0) doc.addPage('letter', 'portrait');
+      const data = canvases[i].toDataURL('image/jpeg', chosen);
+      doc.addImage(data, 'JPEG', 0, 0, 8.5, 11, undefined, 'FAST');
+    }
+
+    const blob = doc.output('blob');
+    const actualMB = blob.size / 1024 / 1024;
+    const url = URL.createObjectURL(blob);
+    const cur = loadProps().find(p => p.id === getCurrentId());
+    const base = (cur && cur.name ? cur.name : 'brochure').replace(/[^\w\-]+/g, '_').slice(0, 60);
+    const a = document.createElement('a');
+    a.href = url; a.download = base + '.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+
+    pdfProgressDone();
+    if (blob.size > targetBytes) {
+      alert('Saved at ' + actualMB.toFixed(2) + ' MB.\n\nThat is the smallest this many pages compress to at usable quality \u2014 it could not fit under ' +
+        targetMB + ' MB. To go smaller: raise the target, use fewer pages, or upload smaller photos.');
+    } else {
+      flashStatus('PDF saved \u2014 ' + actualMB.toFixed(2) + ' MB');
+    }
+  } catch (err) {
+    pdfProgressDone();
+    console.warn('Compressed PDF failed:', err);
+    alert('Could not build the compressed PDF: ' + err.message +
+      '\n\nIf you are offline, the compressor needs a connection the first time (it loads a small library). The plain "Export PDF" button works offline.');
+  }
 }
 
 async function initApp() {
