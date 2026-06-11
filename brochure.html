@@ -698,6 +698,7 @@
 <!-- ========== CONTROL BAR ========== -->
 <div class="controls">
   <div class="brand">The Collector Edition</div>
+  <div class="pgrow" style="display:flex; align-items:center; gap:8px; flex-wrap:nowrap;">
   <div class="seg">
     <button data-len="4"  onclick="setTemplate(4)">4 Pg</button>
     <button data-len="8"  onclick="setTemplate(8)">8 Pg</button>
@@ -707,6 +708,11 @@
     <button data-len="20" onclick="setTemplate(20)">20 Pg</button>
     <button data-len="24" onclick="setTemplate(24)">24 Pg</button>
     <button data-len="32" onclick="setTemplate(32)">32 Pg</button>
+  </div>
+    <label class="pdf-size" style="display:inline-flex; align-items:center; gap:5px; font-family:'DM Sans',sans-serif; font-size:12px; color:#33405c; margin:0 2px;">Max <input id="pdfTargetMB" type="number" min="0.3" step="0.5" value="5" style="width:50px; padding:4px 6px; border:1px solid #c8cdd8; border-radius:3px; font-size:12px; text-align:right;"> MB</label>
+    <button class="matrix-btn" onclick="openVideoModal()">🎬 Video</button>
+    <button class="print" onclick="exportCompressedPDF()">Compressed PDF</button>
+    <button class="print" onclick="window.print()">Export PDF</button>
   </div>
   <span class="hint">Click images to upload · Click any text to edit</span>
   <div class="propbar">
@@ -719,14 +725,6 @@
   <span class="save-status" id="saveStatus">Saved</span>
   <button class="matrix-btn" onclick="toggleMatrix()">Page Index</button>
   <button class="clear-btn" onclick="clearAllPhotos()">Clear Photos</button>
-  <label class="pdf-size" style="display:inline-flex; align-items:center; gap:6px; font-family:'DM Sans',sans-serif; font-size:12px; color:#33405c; margin:0 4px;">
-    Max
-    <input id="pdfTargetMB" type="number" min="0.3" step="0.5" value="5"
-      style="width:54px; padding:4px 6px; border:1px solid #c8cdd8; border-radius:3px; font-size:12px; text-align:right;">
-    MB
-  </label>
-  <button class="print" onclick="exportCompressedPDF()">Compressed PDF</button>
-  <button class="print" onclick="window.print()">Export PDF</button>
 </div>
 
 <div id="pdfProgress" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(8,15,30,.82);
@@ -2287,6 +2285,245 @@ window.addEventListener('beforeunload', () => {
     URL.revokeObjectURL(url);
   }
 });
+</script>
+
+<!-- ===================== VIDEO RENDER ===================== -->
+<div id="videoModal" class="matrix-modal">
+  <div class="matrix-backdrop" onclick="closeVideoModal()"></div>
+  <div class="matrix-content" style="max-width:620px;">
+    <div class="matrix-header">
+      <div>
+        <div class="matrix-sub">PINNACLE LISTING SYSTEM</div>
+        <h3>Render brochure to video</h3>
+      </div>
+      <button class="matrix-close" onclick="closeVideoModal()">&times;</button>
+    </div>
+    <div style="padding:22px 36px 8px; font-family:'DM Sans',sans-serif; color:#1a1a1a;">
+
+      <div style="display:flex; gap:26px; flex-wrap:wrap; margin-bottom:18px;">
+        <div>
+          <div style="font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:#9d8147; font-weight:600; margin-bottom:7px;">Aspect</div>
+          <div id="vidAspect" class="vidseg">
+            <button data-a="9:16" class="active">9:16</button>
+            <button data-a="1:1">1:1</button>
+            <button data-a="16:9">16:9</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:#9d8147; font-weight:600; margin-bottom:7px;">Page fill</div>
+          <div id="vidMode" class="vidseg">
+            <button data-m="fit" class="active">Fit (whole page)</button>
+            <button data-m="fill">Fill (crop)</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:#9d8147; font-weight:600; margin-bottom:7px;">Seconds / page</div>
+          <input id="vidDur" type="number" min="1.5" step="0.5" value="3.5"
+            style="width:80px; padding:7px 9px; border:1px solid #E3DECF; border-radius:4px; font-family:'DM Sans',sans-serif; font-size:13px;">
+        </div>
+      </div>
+
+      <div style="font-size:11.5px; color:#5b5b5b; margin:-4px 0 14px; line-height:1.5;">Ken Burns motion + camera pan is applied to every page. Output size follows the <b>Max MB</b> target in the toolbar. Recording is real-time \u2014 keep this tab in front.</div>
+      <div style="font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:#9d8147; font-weight:600; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+        <span>Pages to include</span>
+        <span style="cursor:pointer; color:#5b5b5b;" onclick="vidToggleAll()">select / clear all</span>
+      </div>
+      <div id="vidPageList" style="max-height:230px; overflow:auto; border:1px solid #E3DECF; border-radius:6px; padding:8px 10px; background:#FBF8F1;"></div>
+
+      <a id="vidDownload" class="dl" download style="display:none; margin-top:14px; text-align:center; color:#14213D; font-weight:700; text-decoration:none; font-size:14px;"></a>
+    </div>
+    <div class="matrix-footer" style="display:flex; gap:12px; justify-content:flex-end; padding:16px 36px 22px;">
+      <button onclick="closeVideoModal()" style="padding:10px 18px; border:1px solid #E3DECF; background:#fff; border-radius:6px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px;">Cancel</button>
+      <button onclick="videoRender()" style="padding:10px 22px; border:none; background:#9d8147; color:#fff; border-radius:6px; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; letter-spacing:.04em;">Render video</button>
+    </div>
+  </div>
+</div>
+<style>
+  .vidseg{display:inline-flex; background:#FBF8F1; border:1px solid #E3DECF; border-radius:6px; padding:3px; gap:3px;}
+  .vidseg button{border:none; background:transparent; color:#5b5b5b; padding:7px 12px; border-radius:4px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif; letter-spacing:.03em;}
+  .vidseg button.active{background:#9d8147; color:#fff;}
+  .vid-page{display:flex; align-items:center; gap:9px; padding:6px 4px; font-size:13px; color:#1a1a1a; border-bottom:.5px solid #ece7d8;}
+  .vid-page:last-child{border-bottom:none;}
+  .vid-page input{accent-color:#9d8147; width:15px; height:15px;}
+</style>
+<script>
+(function(){
+  "use strict";
+  var NAVY="#14213D", GOLD="#9d8147", GOLDL="#C2A77A";
+  var VID_PAGES=[];
+
+  function ease(x){ return x<0.5 ? 2*x*x : 1-Math.pow(-2*x+2,2)/2; }
+  function spaced(s){ return s.split('').join('\u200a\u200a'); }
+  function dims(a){ if(a==='1:1') return [1080,1080]; if(a==='16:9') return [1920,1080]; return [1080,1920]; }
+
+  function pageLabel(pg,i){
+    var c=pg.className, map=[['cover','Cover'],['agent-page','Agent'],['cream-page','Description'],
+      ['letter-page','Letter'],['heritage-page','Heritage'],['specs-page','Specs'],['floorplan-page','Floor plan'],
+      ['neighborhood','Neighborhood'],['site-plan','Site plan'],['four-vertical-page','Filmstrip'],
+      ['mix-page','Image + text'],['collage','Collage'],['materials','Materials'],['stack-two','Stack']];
+    for(var k=0;k<map.length;k++){ if(c.indexOf(map[k][0])>=0) return 'Page '+(i+1)+' \u00b7 '+map[k][1]; }
+    return 'Page '+(i+1);
+  }
+
+  window.openVideoModal=function(){
+    VID_PAGES=[].slice.call(document.querySelectorAll('.page')).filter(function(p){ return getComputedStyle(p).display!=='none'; });
+    var list=document.getElementById('vidPageList'); list.innerHTML='';
+    VID_PAGES.forEach(function(pg,i){
+      var row=document.createElement('label'); row.className='vid-page';
+      row.innerHTML='<input type="checkbox" value="'+i+'" checked><span>'+pageLabel(pg,i)+'</span>';
+      list.appendChild(row);
+    });
+    var dl=document.getElementById('vidDownload'); dl.style.display='none';
+    document.getElementById('videoModal').classList.add('open');
+  };
+  window.closeVideoModal=function(){ document.getElementById('videoModal').classList.remove('open'); };
+  window.vidToggleAll=function(){
+    var boxes=document.querySelectorAll('#vidPageList input'); var anyOff=false;
+    boxes.forEach(function(b){ if(!b.checked) anyOff=true; });
+    boxes.forEach(function(b){ b.checked=anyOff; });
+  };
+
+  // seg toggles
+  document.addEventListener('click', function(e){
+    var b=e.target.closest('#vidAspect button, #vidMode button'); if(!b) return;
+    var par=b.parentElement;
+    [].forEach.call(par.children,function(c){ c.classList.remove('active'); });
+    b.classList.add('active');
+  });
+
+  function ensureH2C(){
+    if(window.html2canvas) return Promise.resolve();
+    return new Promise(function(res,rej){
+      var s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      s.onload=res; s.onerror=function(){ rej(new Error('Could not load renderer library')); };
+      document.head.appendChild(s);
+    });
+  }
+  function prog(msg,pct){ if(typeof window.pdfProgress==='function') window.pdfProgress(msg,pct); }
+  function progDone(){ if(typeof window.pdfProgressDone==='function') window.pdfProgressDone(); }
+
+  function rasterize(pages, scale){
+    var out=[], i=0;
+    function next(){
+      if(i>=pages.length) return Promise.resolve(out);
+      prog('Rendering page '+(i+1)+' of '+pages.length+'\u2026', (i/pages.length)*48);
+      return window.html2canvas(pages[i], {scale:scale, backgroundColor:'#ffffff', useCORS:true, logging:false,
+        windowWidth:pages[i].scrollWidth, windowHeight:pages[i].scrollHeight}).then(function(c){ c.__kb=KB[Math.floor(Math.random()*KB.length)]; out.push(c); i++; return next(); });
+    }
+    return next();
+  }
+
+  var KB=[
+    {z0:1.04,z1:1.12,px:-0.03,py:0.0},{z0:1.12,z1:1.04,px:0.03,py:0.0},
+    {z0:1.05,z1:1.12,px:0.0,py:-0.03},{z0:1.12,z1:1.05,px:0.0,py:0.03},
+    {z0:1.05,z1:1.13,px:0.022,py:0.018},{z0:1.13,z1:1.05,px:-0.022,py:-0.018}
+  ];
+  function clamp(v,lo,hi){ return v<lo?lo:(v>hi?hi:v); }
+  function drawPage(cx,img,W,H,p,mode,alpha){
+    cx.save(); cx.globalAlpha=alpha;
+    var kb=img.__kb||KB[0], e=ease(p);
+    var z=kb.z0+(kb.z1-kb.z0)*e, panx=kb.px*e, pany=kb.py*e;
+    if(mode==='fill'){
+      var cover=Math.max(W/img.width, H/img.height)*z;
+      var dw=img.width*cover, dh=img.height*cover;
+      var x=clamp((W-dw)/2 + panx*W, W-dw, 0);
+      var y=clamp((H-dh)/2 + pany*H, H-dh, 0);
+      cx.drawImage(img,x,y,dw,dh);
+    } else {
+      var s=Math.min(W/img.width, H/img.height)*z;
+      var dw2=img.width*s, dh2=img.height*s;
+      var x2=(W-dw2)/2 + panx*W*0.5, y2=(H-dh2)/2 + pany*H*0.5;
+      cx.drawImage(img,x2,y2,dw2,dh2);
+      var topBand=(H-dh2)/2;
+      if(topBand > Math.min(W,H)*0.05){
+        cx.textAlign='center'; cx.fillStyle=GOLD;
+        cx.font='700 '+(Math.min(W,H)*0.018)+'px "DM Sans"';
+        cx.fillText(spaced('PINNACLE LISTING SYSTEM'), W/2, topBand*0.62);
+        cx.font='500 '+(Math.min(W,H)*0.014)+'px "DM Sans"'; cx.fillStyle=GOLDL;
+        cx.fillText(spaced('PETER LUO   \u00b7   647-824-3718   \u00b7   PETERLUO.HOMES'), W/2, H-topBand*0.5);
+      }
+    }
+    cx.restore();
+  }
+
+  function drawComposite(cx,imgs,t,W,H,dur,xf,mode){
+    cx.fillStyle=NAVY; cx.fillRect(0,0,W,H);
+    var i=Math.min(imgs.length-1, Math.floor(t/dur));
+    var lt=t-i*dur, p=Math.min(1, lt/dur);
+    drawPage(cx,imgs[i],W,H,p,mode,1);
+    if(i<imgs.length-1 && lt>dur-xf){
+      var a=(lt-(dur-xf))/xf; a=Math.min(1,Math.max(0,a));
+      drawPage(cx,imgs[i+1],W,H,0,mode,a);
+    }
+    if(t>imgs.length*dur-0.5){
+      var fo=(t-(imgs.length*dur-0.5))/0.5;
+      cx.save(); cx.globalAlpha=Math.min(1,Math.max(0,fo)); cx.fillStyle='#000'; cx.fillRect(0,0,W,H); cx.restore();
+    }
+  }
+
+  function pickMime(){
+    var c=['video/mp4;codecs=avc1.4d002a,mp4a.40.2','video/mp4;codecs=avc1.42E01E','video/mp4',
+           'video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+    for(var i=0;i<c.length;i++){ if(window.MediaRecorder && MediaRecorder.isTypeSupported(c[i])) return c[i]; }
+    return 'video/webm';
+  }
+
+  function record(imgs, opts){
+    var d=dims(opts.aspect), W=d[0], H=d[1];
+    var cv=document.createElement('canvas'); cv.width=W; cv.height=H; var cx=cv.getContext('2d');
+    var dur=opts.dur, xf=Math.min(0.6, dur*0.28), total=imgs.length*dur;
+    var stream=cv.captureStream(30), mime=pickMime();
+    var bitrate=(W>=1920||H>=1920)?12000000:8000000;
+    if(opts.targetMB && opts.targetMB>0){ bitrate=Math.min(16000000, Math.max(1500000, Math.round(opts.targetMB*1048576*8/total))); }
+    var rec;
+    try{ rec=new MediaRecorder(stream,{mimeType:mime, videoBitsPerSecond:bitrate}); }
+    catch(e){ rec=new MediaRecorder(stream); }
+    var chunks=[]; rec.ondataavailable=function(e){ if(e.data&&e.data.size) chunks.push(e.data); };
+    rec.onstop=function(){
+      progDone();
+      var blob=new Blob(chunks,{type:(mime.split(';')[0])});
+      var ext=mime.indexOf('mp4')>=0?'mp4':'webm';
+      var url=URL.createObjectURL(blob);
+      var a=document.getElementById('vidDownload');
+      a.href=url; a.download='listing-video-'+opts.aspect.replace(':','x')+'.'+ext;
+      a.textContent='\u2193 Download video ('+(blob.size/1048576).toFixed(1)+' MB \u00b7 '+ext.toUpperCase()+')';
+      a.style.display='block'; a.click();
+    };
+    var t0=performance.now();
+    rec.start();
+    function frame(){
+      var t=(performance.now()-t0)/1000;
+      if(t>=total){ drawComposite(cx,imgs,total-0.001,W,H,dur,xf,opts.mode); prog('Finishing\u2026',99); setTimeout(function(){ rec.stop(); },120); return; }
+      drawComposite(cx,imgs,t,W,H,dur,xf,opts.mode);
+      prog('Recording \u2014 keep this tab in front\u2026', 50+(t/total)*48);
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  window.videoRender=function(){
+    var checks=[].slice.call(document.querySelectorAll('#vidPageList input:checked'));
+    if(!checks.length){ alert('Select at least one page to render.'); return; }
+    var pages=checks.map(function(ch){ return VID_PAGES[+ch.value]; });
+    var aspect=(document.querySelector('#vidAspect .active')||{}).dataset.a||'9:16';
+    var mode=(document.querySelector('#vidMode .active')||{}).dataset.m||'fit';
+    var dur=parseFloat(document.getElementById('vidDur').value)||3.5;
+    var tEl=document.getElementById('pdfTargetMB'); var targetMB=tEl?parseFloat(tEl.value):0;
+    if(!window.MediaRecorder){ alert('This browser can\u2019t record video. Use a recent Chrome, Edge or Safari.'); return; }
+    prog('Loading renderer\u2026',2);
+    ensureH2C().then(function(){
+      if(document.fonts&&document.fonts.ready){ return document.fonts.ready.catch(function(){}); }
+    }).then(function(){
+      return rasterize(pages, 2);
+    }).then(function(imgs){
+      prog('Starting recorder\u2026',49);
+      record(imgs, {aspect:aspect, mode:mode, dur:dur, targetMB:targetMB});
+    }).catch(function(err){
+      progDone(); alert('Video render failed: '+(err&&err.message||err));
+    });
+  };
+})();
 </script>
 </body>
 </html>
