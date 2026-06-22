@@ -319,7 +319,7 @@
     </div>
     <canvas id="bigCanvas" class="composer" width="320" height="568" style="display:block; margin:0 auto;"></canvas>
     <div id="bigFits" class="slot-fits" style="justify-content:center; margin-top:12px;"></div>
-    <div style="font-size:12px; color:var(--soft); text-align:center; margin-top:8px;">Tap a slot to add or replace \u00b7 drag to pan \u00b7 scroll to zoom</div>
+    <div style="font-size:12px; color:var(--soft); text-align:center; margin-top:8px;">Tap a slot to add or replace \u00b7 drag to pan \u00b7 pinch or scroll to zoom</div>
   </div>
 </div>
 
@@ -870,7 +870,7 @@
       fits+='</div>';
       var note = filled<n
         ? '<div class="gnote">\u25a6 '+filled+'/'+n+' photos \u2014 click an empty slot to add</div>'
-        : '<div class="gnote dim">\u25a6 '+n+' photo'+(n>1?'s':'')+' \u00b7 tap=replace \u00b7 drag=pan \u00b7 scroll=zoom \u00b7 \u2922 enlarge</div>';
+        : '<div class="gnote dim">\u25a6 '+n+' photo'+(n>1?'s':'')+' \u00b7 tap=replace \u00b7 drag=pan \u00b7 pinch/scroll=zoom \u00b7 \u2922 enlarge</div>';
       el.innerHTML=
         '<canvas class="composer" data-id="'+f.id+'" width="'+cs[0]+'" height="'+cs[1]+'"></canvas>'+
         '<div class="scene-body">'+
@@ -888,7 +888,7 @@
   function esc(s){ return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
   // events on scene list (delegation)
-  var pendingFill=null, drag=null, wpT=null, bigOpen=false;
+  var pendingFill=null, wpT=null, bigOpen=false, GP={}, gdrag=null, gpinch=null;
   function wheelPersist(){ if(wpT) clearTimeout(wpT); wpT=setTimeout(persist, 400); }
 
   $('scenes').addEventListener('click', function(e){
@@ -927,32 +927,57 @@
     var bc=$('bigCanvas'); if(bc && bigOpen && +bc.dataset.id===frame.id) drawComposer(frame, bc);
     if(!playing) drawAt(curT);
   }
+  function gSlot(frameId, idx){ var fr=frameById(frameId); return fr ? fr.slots[idx] : null; }
+  function gSamePointers(cv, idx){ return Object.keys(GP).filter(function(id){ return GP[id].cv===cv && GP[id].idx===idx; }); }
   document.addEventListener('pointerdown', function(e){
     var cv=e.target.closest('canvas.composer'); if(!cv) return;
     var hit=composerHit(cv, e); if(!hit) return;
     var fr=hit.frame; ensureSlots(fr); var slot=fr.slots[hit.idx];
-    drag={frame:fr, idx:hit.idx, cv:cv, startX:e.clientX, startY:e.clientY, lastX:e.clientX, lastY:e.clientY, moved:false, pid:e.pointerId,
-          filled: !!(slot && slot.img && slot.img.naturalWidth)};
+    GP[e.pointerId]={cv:cv, frameId:fr.id, idx:hit.idx, x:e.clientX, y:e.clientY};
     try{ cv.setPointerCapture(e.pointerId); }catch(_){}
+    var same=gSamePointers(cv, hit.idx);
+    if(same.length>=2 && slot && slot.img && slot.img.naturalWidth){
+      var a=GP[same[0]], b=GP[same[1]];
+      gpinch={frameId:fr.id, idx:hit.idx, cv:cv, startDist:(Math.hypot(a.x-b.x, a.y-b.y)||1), startZoom:(slot.zoom||1), ids:[same[0], same[1]]};
+      gdrag=null;                                   // two fingers -> zoom, not pan
+    } else {
+      gdrag={frameId:fr.id, idx:hit.idx, cv:cv, startX:e.clientX, startY:e.clientY, lastX:e.clientX, lastY:e.clientY, moved:false, pid:e.pointerId,
+             filled: !!(slot && slot.img && slot.img.naturalWidth)};
+    }
   });
   document.addEventListener('pointermove', function(e){
-    if(!drag) return;
-    if(!drag.moved && (Math.abs(e.clientX-drag.startX)>4 || Math.abs(e.clientY-drag.startY)>4)) drag.moved=true;
-    if(drag.moved && drag.filled){
-      var rect=drag.cv.getBoundingClientRect(), k=dims()[0]/rect.width;
-      var s=drag.frame.slots[drag.idx];
-      s.panX=(s.panX||0)+(e.clientX-drag.lastX)*k;
-      s.panY=(s.panY||0)+(e.clientY-drag.lastY)*k;
-      refreshFrameCanvases(drag.frame); e.preventDefault();
+    var p=GP[e.pointerId]; if(p){ p.x=e.clientX; p.y=e.clientY; }
+    if(gpinch){
+      var a=GP[gpinch.ids[0]], b=GP[gpinch.ids[1]];
+      if(a && b){
+        var dist=Math.hypot(a.x-b.x, a.y-b.y)||1, s=gSlot(gpinch.frameId, gpinch.idx);
+        if(s){ s.zoom=Math.min(4, Math.max(1, gpinch.startZoom*(dist/gpinch.startDist))); var fr=frameById(gpinch.frameId); if(fr) refreshFrameCanvases(fr); }
+        e.preventDefault();
+      }
+      return;
     }
-    drag.lastX=e.clientX; drag.lastY=e.clientY;
+    if(!gdrag) return;
+    if(!gdrag.moved && (Math.abs(e.clientX-gdrag.startX)>4 || Math.abs(e.clientY-gdrag.startY)>4)) gdrag.moved=true;
+    if(gdrag.moved && gdrag.filled){
+      var rect=gdrag.cv.getBoundingClientRect(), k=dims()[0]/rect.width, s2=gSlot(gdrag.frameId, gdrag.idx);
+      if(s2){ s2.panX=(s2.panX||0)+(e.clientX-gdrag.lastX)*k; s2.panY=(s2.panY||0)+(e.clientY-gdrag.lastY)*k; var fr2=frameById(gdrag.frameId); if(fr2) refreshFrameCanvases(fr2); }
+      e.preventDefault();
+    }
+    gdrag.lastX=e.clientX; gdrag.lastY=e.clientY;
   });
-  document.addEventListener('pointerup', function(e){
-    if(!drag) return; var d=drag; drag=null;
-    try{ d.cv.releasePointerCapture(d.pid); }catch(_){}
+  function gEnd(e){
+    var had=GP[e.pointerId]; delete GP[e.pointerId];
+    try{ if(had && had.cv) had.cv.releasePointerCapture(e.pointerId); }catch(_){}
+    if(gpinch){
+      if(gpinch.ids.indexOf(String(e.pointerId))>=0){ persist(); gpinch=null; gdrag=null; }   // a pinch finger lifted -> end gesture (no jump-pan)
+      return;
+    }
+    if(!gdrag) return; var d=gdrag; gdrag=null;
     if(d.moved && d.filled){ persist(); return; }
-    pendingFill={id:d.frame.id, idx:d.idx}; $('slotFile').click();
-  });
+    pendingFill={id:d.frameId, idx:d.idx}; $('slotFile').click();           // tap = add / replace
+  }
+  document.addEventListener('pointerup', gEnd);
+  document.addEventListener('pointercancel', gEnd);
   document.addEventListener('wheel', function(e){
     var cv=e.target.closest('canvas.composer'); if(!cv) return;
     var hit=composerHit(cv, e); if(!hit) return;
